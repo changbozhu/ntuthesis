@@ -1,0 +1,353 @@
+\chapter{表格}\label{cha:table}
+引入样式宏包cnbasesetup.sty时，传入\verb|tab|参数引入表格绘制的宏包。
+\begin{verbatim}
+    \usepackage[super,tikz,tab,list,math]{style/cnbasesetup}
+\end{verbatim}
+
+\section{表格的定义环境}\label{sec:table-def-env}
+
+
+\verb|tabular|及\verb|tabular*|环境是表格绘制的基本环境。tabular 环境可以用来排版带有横线和竖线的表格，\LaTeX 自动确定表格的宽度。tabular*环境与 tabular 环境类似，只是可以用参数指定表格的整体宽度，此外列参数必须在第一列后面的某个地方包含一个合适的表达式 (见下面说明)\footnote{在数学模式下使用的 array 环境的语法和参数的意义与 tabular 环境中的完全一样}。他们的语法格式如下：
+\begin{verbatim}
+    \begin{tabular}[位置可选参数]{列格式参数}
+    每行由\\划分
+    \end{tabular}
+    \begin{tabular*}{宽度}[位置可选参数]{列格式参数}
+    每行由\\划分
+\end{tabular*}
+\end{verbatim}
+
+
+
+\section{表格环境参数格式}
+\parwords{位置可选参数}
+当然，有些时候我们需要更细致地控制表格的位置。\verb|table|环境中额外的位置控制参数为我们提供了一套控制表格位置的方法。下面我们给出一个简单的例子。
+\begin{table}[!hpbt]
+    \caption[表格插入位置控制选项]{\enspace 表格插入位置控制选项}
+    \label{tab:table-position-options}
+    \centering
+    \normalsize% fontsize 
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{ll}
+    \toprule
+    选项 & 位置 \\
+    \midrule
+    h	& 将浮动元素的位置设定为 here\\
+    t	& 将浮动元素的位置设定为页面的上方（top）\\
+    b	& 将浮动元素的位置设定为页面的底部（bottom）\\
+    p	& 将浮动元素仅放置在一个特殊的页面\\
+    !	& 重新设置 \LaTeX{} 的一个内部参数\\
+    H	& 浮动元素精确地放置在文本中所出现的位置\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+其中， \verb|\begin{table}[h]|，方括号中的参数 \verb|h| 意味着 here,即大约插入到当前上下文位置，而不是完全精确地插入到给定位置。 参数 \verb|!| 决定了 \LaTeX{} 如何判断一个浮动元素的位置够不够“好”，参数 H 需要引入float包，它有可能会造成一些错误，有时候等价于h!。表~\ref{tab:table-position-options}~中列出了参数的可选值。总之，\verb|table|环境位置控制参数与 \verb|figure| 环境一致。
+
+\parwords{列必选参数}
+这个参数控制表格的列格式，故又称为列格式参数。在这个参数中，对每一列必须有一个相应的格式符号，另外还可能包含相应于表格左右边界和列间距的其它项。列格式符号可以取下列值：
+\begin{table}[!hpbt]
+    \caption[表格列格式参数]{\enspace 表格列格式参数}
+    \label{tab:table-col-options}
+    \centering
+    \normalsize% fontsize 
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{ll}
+    \toprule
+    位置参数 & 位置 \\
+    \midrule
+    l	& 列中文本左对齐\\
+    r	& 列中文本右对齐\\
+    c	& 列中文本居中\\
+    p	& \makecell[l]{宽度: 指定列的文本宽度，由宽度参数给出,\\ 列中文本按该宽度自动换行}\\
+    |	& 画一条竖直线\\
+    ||	& 画二条紧相邻的竖直线\\
+    *\{num\}\{col-format\}& \makecell[l]{包含在col-format中的列格式被复制成num份，\\ 例如 *\{5\}\{|c\} 等价于 \texttt{|c|c|c|c|c}}\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{表格文本行中的命令}
+表格中的每一水平行都由 \verb|\\| 结束。这些行由一组彼此之间用 \& 符号分开的列条目组
+成。因此每一行应具有与列定义中列中相同数目的列条目，其中有些条目可以是空白的。
+\begin{enumerate}
+    \item \emph{ \backslash tabularnewline 命令}~~ \verb|\tabularnewline| 命令用于强制表格中一行的结束，而 \backslash\backslash 除了可以结束整个一行表格内容外，还可以在单个列的内容中实现换行。
+    \item \emph{ \backslash hline 命令}~~ 这条命令只能位于第一行前面或紧接在行结束命令 \verb|\\| 的后面，表示在刚结束的那一行画一根水平的直线。如果这条命令位于表格的开头，那么就会在表格顶部画一横线，横线的宽度与表格的宽度相同。 放在一起的两条水平 \verb|\hline| 命令就会画出两条间隔很小的水平线。
+    \item \emph{ \backslash cline\{n-m\}  命令}~~ \verb|\cline{n-m}| 命令的放置同 \verb|\hline| 命令，并且在一行中可以出现多次。该命令从第 n 列的左边开始，画一条到第 m 列右边结束的水平线。
+    \item \emph{ \backslash vline 命令}~~ 该命令画一条竖直线，其高度等于其所在行的行高。用这种命令，可以得到那些不是贯穿整个表格的竖直线。
+    \item \emph{ \backslash multicolumn\{列数\}\{ALIGNMENT\}\{CONTENT\} 命令}~~ 该命令用于合并列单元格，并可以在合并的单元格内进行内容的对齐，即该表格单元占据的列数，ALIGNMENT代表表格内容的对齐方式（填*,l,c或者r），CONTENT则是表格单元里的内容。例如，\backslash multicolumn\{3\}\{|c|\}\{内容\} 表示将内容合并到三列，并居中对齐。
+    \item \emph{ \backslash multirow 命令}~~ 该命令用于合并行单元格，并可以在合并的单元格内进行内容的对齐，其基本语法为：
+    \begin{verbatim} \multirow[⟨vpos⟩]{⟨nrows⟩}[⟨bigstruts⟩]{⟨width⟩}[⟨vmove⟩]{⟨text⟩} \end{verbatim}
+    
+    其中参数意义如下：
+    \begin{itemize}
+        \item \verb|⟨vpos⟩|~ 定义了合并后单元格内文本竖直位置的对齐方式，参数 \verb|t| 表示顶部对齐， \verb|b| 表底部部对齐，\verb|c|表示居中对齐，缺省默认值为 \verb|b|；
+        \item \verb|⟨nrows⟩|~ 定义了合并后单元格纵向跨越的行数。该列的其他行必须留空，否则 \verb|\multirow| 创建的内容会覆盖已有数据。当 \verb|⟨nrows⟩| 为正值时，纵向范围涵盖当前行及下方 \verb|(⟨nrows⟩-1)| 行；为负值时则涵盖当前行及上方 \verb|(-⟨nrows⟩-1)| 行；\verb|⟨nrows⟩| 允许使用分数值，便于进行精细调整；
+        \item \verb|⟨bigstruts⟩|~  参数主要在使用 bigstrut 宏包时生效。其数值表示跨行区域内所有 \verb|\bigstrut| 命令的使用次数总和。具体计数规则为：(1)无参数版本 \verb|\bigstrut| 计为 2 次,(2)带位置参数的 \verb|\bigstrut[⟨x⟩]|（\verb|⟨x⟩|为 \verb|t| 或 \verb|b|）计为 1 次，默认值为 0；\verb|⟨bigstruts⟩| 参数可添加字母前缀（\verb|t|、\verb|b| 或 \verb|tb|）实现精细控制（详细内容参见 \href{https://texdoc.org/serve/multirow.pdf/0}{multirow宏包文档}）；字母与数值间可保留空格，格式为 \verb|t 3| 或 \verb|tb 2|；
+        \item \verb|⟨width⟩|~ 参数指定文本排版宽度，特殊取值包括：（1） \verb|*| 表示采用文本的自然宽度，（2） \verb|=| 表示采用当前列（即 \verb|\multirow| 条目所在列）的预设宽度；
+        \item \verb|⟨vmove⟩|~ 是用于微调的长度值：文本将在原始位置基础上，根据该长度值上移（若 \verb|⟨vmove⟩| 为负值则下移）；
+        \item \verb|⟨text⟩|~ 为实际文本内容。根据宽度设定方式不同，排版规则如下：(1)如果显式指定宽度时，文本将置于指定宽度的 \verb|\parbox| 中，可通过 \\ 强制换行；(2)如果宽度设为 \verb|*| 时，文本以行内模式 (LR mode) 排版，需多行显示时，应在 ⟨text⟩ 内嵌套 tabular 或 array 环境；(3)如果宽度设为 \verb|=| 时，仅当 \verb|\multirow| 条目位于预定义宽度的列中生效（如：\verb|p{}| 列、tabularx 的 X 列、tabulary 的 \verb|L/C/R/J| 列），文本将置于该列预设宽度的 \verb|\parbox| 中，非适用场景使用 \verb|=| 将导致异常（通常表现为列宽过大）。
+    \end{itemize}
+    \item \emph{ at表达式命令}~~ \verb|@{}|表达式为每行的某两个相邻的列之间插入文本，同时自动去掉原来在这两列之间插入的空白。
+    \begin{figure}[!hpbt]
+        \begin{minipage}{0.5\textwidth}
+        \begin{lstlisting}[language=tex]
+        \begin{tabular}{r@{.}l}
+        3   & 14159 \\
+        16  & 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{lstlisting}%
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+        \centering
+        \begin{tabular}{r@{.}l}
+        3   & 14159 \\
+        16  & 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{minipage}
+    \end{figure}
+
+    对于\verb|@{}|，有下面几点需要说明：
+    \begin{itemize}
+        \item 如果我们需要继续使用空白，必须在 \verb|@{}| 表达式的文本参数中必须包含 \verb|\hspace{<wsep>}| 命令，或者使用 \verb|!{}| 替换；\verb|<wsep>| 为空白长度，可以是指定的长度（例如 \verb|4pt| ）或者弹性长度 \verb|\fill|；
+        \begin{figure}[!hpbt]
+        \begin{minipage}{0.5\textwidth}
+        \begin{lstlisting}[language=tex]
+        \begin{tabular}{r@{.\hspace{\fill}}l}
+        3   & 14159 \\
+        16  & 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{lstlisting}%
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+        \centering
+        \begin{tabular}{r@{.\hspace{\fill}}l}
+        3   & 14159 \\
+        16  & 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{minipage}
+        \end{figure}
+        \item 如果希望某两个特定列之间的间隔与缺省的标准间隔不同，可以在表格环境的行参数中相应的位置上放上 \verb|@{\hsapce{<wsep>}}| 控制，此时该处列间间隔将变成 \verb|<wsep>|；
+        \begin{figure}[!hpbt]
+        \begin{minipage}{0.5\textwidth}
+        \begin{lstlisting}[language=tex]
+        \begin{tabular}{r@{.\hspace{\fill}}l}
+        3   & 14159 \\
+        16  & 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{lstlisting}%
+        \end{minipage}
+        \begin{minipage}{0.45\textwidth}
+        \centering
+        \begin{tabular}{rl}
+        3   & 14159 \\
+        16  @{.\hspace{\fill}}& 2     \\
+        123 & 456   \\
+        \end{tabular}
+        \end{minipage}
+        \end{figure}
+        \item \verb|@{}| 表达式中可以使用 \verb|\extracolsep{<wsep>}| 控制，使后面所有列间间隔在原来标准间隔的基础上增加\verb|<wsep>|大小；
+        \item 在 \verb|tabular*| 环境中。必须使用 \verb|@{\extracolsep\fill}| 命令，使得后面所有列间距可以伸展到预定义的表格宽度；
+        \item 一个表格即使左右边界没有竖线或其他表征符号，相应的位置与后面 (前面) 的列之间也会插入等于标准列间隔一半的空白；如果不希望有这些空白，可以在行参数开始或结束处使用 \verb|@{}| 表达式。
+    \end{itemize}
+\end{enumerate}
+
+
+\section{表格浮动体环境}
+\texttt{table}环境用于将表格进行浮动处理，使其可以自动调整到合适的位置，并能够添加表格标题和标签。一个简单的表格环境格式如下：
+\begin{verbatim}
+\begin{table}[位置可选参数]
+  \caption{T.}
+  \label{table:1}%
+    ... ...
+\end{table}
+\end{verbatim}
+这里需要注意：
+（1）常用的位置选项与 \verb|figure| 环境一致，如表 \ref{tab:table-position-options} ，包含： \verb|h| ：在当前位置放置表格； \verb|t| ：将表格放置在页面的顶部； \verb|b| ：将表格放置在页面的底部；\verb|p|：单独放置表格到一页等。
+（2）给定表标题 \verb|\caption{<短标题>}{<长标题>}| ，可放置在表上方或者下方。
+（3）给表打标签 \verb|\label{<标签名称>}| ，表格标签名称一般使用“table:”作为前缀，以方便辨认和分类管理。注意：这个命令必须位于 \verb|\caption|之后。
+（4）可以使用命令  \verb|\ref{<标签名称>}| 引用表格，也可以使用命令 \verb|\pageref{<标签名称>}| 定位其所在页码。
+
+
+\texttt{table}环境用通常与\texttt{tabular}或\texttt{tabular*}搭配使用，\texttt{table}环境控制表格的位置、标题及标签，\texttt{tabular}或\texttt{tabular*}绘制表格。同时，为了使表格在页面上居中，还会利用 center 环境或 \backslash centering 命令:
+\begin{verbatim}
+\begin{table}[位置可选参数]
+  \begin{center}%让表格居中
+  \caption{T.}%resnet50 on imagenet1k
+  \label{table:1}%
+    \begin{tabular}{列格式参数}
+    每行由\\划分
+    \end{tabular}
+  \end{center}
+\end{table}
+\begin{table}[位置选项]
+  \begin{center}%让表格居中
+  \caption{T.}%resnet50 on imagenet1k
+  \label{table:1}%
+    \begin{tabular*}{宽度}{列格式参数}
+    每行由\\划分
+    \end{tabular*}
+  \end{center}
+\end{table}
+\end{verbatim}
+
+
+\section{表格样例}
+我们先看一个表格样例：
+\begin{lstlisting}[language=tex]
+    \begin{table}[!htbp]
+        \bicaption{这是一个样表。}{This is a sample table.}
+        \label{tab:sample}
+        \centering
+        \footnotesize% fontsize
+        \setlength{\tabcolsep}{4pt}% column separation
+        \renewcommand{\arraystretch}{1.2}%row space 
+        \begin{tabular}{l|cccc>{\columncolor{blue}}cccc}
+            \hline
+            \rowcolor{gray} 行号 & \multicolumn{8}{c}{跨多列的标题}\\
+            \hline
+            \cellcolor{red} R1 & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+            R2 & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+            \cline{2-9}% partial hline from column i to column j
+            \multirow{2}{l}{R3-4}& $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+             & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & \textcolor{red}{$8$}\\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{lstlisting}
+其中
+\begin{itemize}
+    \item \texttt{[!htbp]}：表示表格的浮动位置，\texttt{!}表示必须出现在文档的当前位置，\texttt{h}表示在当前位置，\texttt{t}表示在文本顶部，\texttt{b}表示在文本底部，\texttt{p}表示在浮动页。
+    \item \texttt{\textbackslash bicaption\{中文标题\}\{英文标题\}}命令用于设置表格的标题，第一个参数为中文标题，第二个参数为英文标题。这个命令的完整版格式为\texttt{\textbackslash bicaption \textbackslash [中文表目录显示标题 \textbackslash ]\{中文标题\}\textbackslash [英文表目录显示标题 \textbackslash ]\{英文标题\}}。
+    \item \texttt{\textbackslash label\{标签名\}}命令用于设置表格的标签，标签名可以自定义。
+    \item \texttt{\textbackslash centering}命令用于设置表格居中。
+    \item \texttt{\textbackslash footnotesize}命令用于设置表格字体大小。
+    \item \texttt{\textbackslash tabcolsep\{4pt\}}命令用于设置表格列间距。
+    \item \texttt{\textbackslash renewcommand\{\textbackslash arraystretch\}\{1.2\}}命令用于设置表格行间距。
+    \item \texttt{\textbackslash begin\{tabular\}\{l|cccc>\{\textbackslash columncolor\{blue\}\}cccc\}}命令用于设置表格单元格中内容对齐方式，\texttt{l}表示左对齐，\texttt{c}表示居中对齐，\texttt{r}表示右对齐, |表示列之间画竖线隔开。\texttt{>\{\textbackslash columncolor\{blue\}\}}表示列的颜色。
+    \item \texttt{\textbackslash hline}命令用于设置表格的横线。
+    \item \texttt{\textbackslash multicolumn\{8\}\{c\}\{跨多列的标题\}}命令用于设置表格的跨列单元格。
+    \item \texttt{\textbackslash multirow\{2\}\{*\}\{Row3-4\}}命令用于设置表格的跨行单元格。
+    \item \texttt{\textbackslash cline\{2-9\}}命令用于设置表格的部分横线。
+    \item \texttt{\textbackslash \textbackslash}命令用于设置表格的换行。
+    \item \texttt{\&}命令用于行内单元格分割。
+    \item \texttt{\textbackslash rowcolor\{gray\}}命令用于设置表格的行颜色。
+    \item \texttt{\textbackslash cellcolor\{gray\}}命令用于设置表格的单元格颜色。
+    \item \texttt{\textbackslash textcolor\{red\}\{红色文字\}}命令用于设置表格的文字颜色。
+\end{itemize}
+请见表~\ref{tab:sample}(注意：使用命令\texttt{\textbackslash ref\{tab:sample\}}引用表格)。
+\begin{table}[!htbp]
+    \bicaption{这是一个样表。}{This is a sample table.}
+    \label{tab:sample}
+    \centering
+    \footnotesize% fontsize
+    \setlength{\tabcolsep}{4pt}% column separation
+    \renewcommand{\arraystretch}{1.2}%row space 
+    \begin{tabular}{l|cccc>{\columncolor{blue}}cccc}
+        \hline
+        \rowcolor{gray} 行号 & \multicolumn{8}{c}{跨多列的标题}\\
+        \hline
+        \cellcolor{red} R1 & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+        R2 & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+        \cline{2-9}% partial hline from column i to column j
+        \multirow[c]{2}*{R3-4}& $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$\\
+        & $1$ & $2$ & $3$ & $4$ & $5$ & $6$ & $7$ & \textcolor{red}{$8$}\\
+        \hline
+    \end{tabular}
+\end{table}
+
+许多专业排版的书籍和期刊都使用简单的表格，它们在行上下有适当的间距，而且几乎从不使用垂直线。许多 \LaTeX{} 表格示例（包括这本）展示了垂直线的使用（使用“|”）和双线的使用（使用“||”），这些在专业出版物中被认为是不必要的，而且会分散注意力。 booktabs 包可以方便地为  \LaTeX{} 表格提供这种专业性，它的文档 也提供了关于构成“良好”表格的指南。
+
+简而言之，该包使用 \verb|\toprule| 表示最上面的规则（或线）， \verb|\midrule| 表示出现在表格中间的规则（例如标题下面的规则）， \verb|\bottomrule| 表示最下面的规则。这确保了规则的宽度和间距是可以接受的。此外， \verb|\cmidrule| 可以用来表示跨越指定列的中间规则。
+
+%以下示例对比了 booktabs 的使用和两种等效的正常 LaTeX 实现（第二个示例需要在序言中使用 \verb|\usepackage{array}| 或 \verb|\usepackage{dcolumn}|，第三个示例需要在序言中使用 \verb|\usepackage{booktabs}|）。
+
+\begin{example}三线表是科技期刊与论文常用的表格，本例给出了一种简单的三线表格绘制样例。
+\begin{lstlisting}[language=tex]
+\begin{table}[!hbtp]
+    \caption[峰谷电价]{\enspace 峰谷电价}
+    \label{tab:elec-price}
+    \centering
+    \normalsize% fontsize 
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{40pt}<{\raggedright}m{120pt}<{\raggedright}m{80pt}<{\raggedright}}
+    \toprule
+    周期 & 时段 & 电价 (CNY/kWh) \\
+    \midrule
+    Peak & 12:00--15:00, 18:00--21:00 & 1.3782\\
+    Flat & 9:00--10:00, 15:00--18:00, 21:00--23:00 & 0.8595\\
+    Valley & 1:00--7:00, 23:00--0:00 & 0.3658\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+\end{lstlisting}
+其显示效果如表\ref{tab:elec-price}。
+\end{example}
+\begin{table}[!hbtp]
+    \caption[峰谷电价]{\enspace 峰谷电价}
+    \label{tab:elec-price}
+    \centering
+    \normalsize% fontsize 
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{40pt}<{\raggedright}m{120pt}<{\raggedright}m{80pt}<{\raggedright}}
+    \toprule
+    周期 & 时段 & 电价 (CNY/kWh) \\
+    \midrule
+    Peak & 12:00--15:00, 18:00--21:00 & 1.3782\\
+    Flat & 9:00--10:00, 15:00--18:00, 21:00--23:00 & 0.8595\\
+    Valley & 1:00--7:00, 23:00--0:00 & 0.3658\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\begin{example}在绘制表格时，常常需要对表格进行注释，然而 \verb|tabular|环境不支持脚注。这里给出一种基于 \verb|minipage| 环境的 \verb|tabular| 表格脚注解决方案，供读者参考。
+\begin{lstlisting}[language=tex]
+\begin{table}[tb]
+    \begin{center}
+	\begin{minipage}{0.6\textwidth}%这里需要根据实际表格做合适调整。
+    \caption[正常组小鼠各主要组织的砷分布]{\enspace 正常组小鼠各主要组织的砷分布}
+    \label{tab:mice-As}
+    \normalsize% \zihao{5}
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{100pt}<{\raggedright}m{110pt}<{\raggedright}}
+    \toprule
+    脏器 & 砷含量 （$\bar{X} \pm S, \mu g/g$）\\
+    \midrule
+    大脑 &  BDL\\
+    肺 &  $0.1023 \pm 0.0659$\\
+    心脏 &  BDL\\
+    \bottomrule
+    \end{tabular}
+    {\newline BDL：低于检出限}
+\end{minipage}
+\end{center}
+\end{table}
+\end{lstlisting}
+其显示效果如表\ref{tab:mice-As}。
+\end{example}
+\begin{table}[tb]
+    \begin{center}
+	\begin{minipage}{0.6\textwidth}
+    \caption[正常组小鼠各主要组织的砷分布]{\enspace 正常组小鼠各主要组织的砷分布}
+    \label{tab:mice-As}
+    \normalsize% \zihao{5}
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{100pt}<{\raggedright}m{110pt}<{\raggedright}}
+    \toprule
+    脏器 & 砷含量 （$\bar{X} \pm S, \mu g/g$）\\
+    \midrule
+    大脑 &  BDL\\
+    肺 &  $0.1023 \pm 0.0659$\\
+    心脏 &  BDL\\
+    \bottomrule
+    \end{tabular}
+    {\newline BDL：低于检出限}
+\end{minipage}
+\end{center}
+\end{table}
+制作\LaTeX{}表格的的更多范例，请参见 \href{https://wikibooks.cn/wiki/LaTeX/Tables}{WiKibook Tables}。

@@ -1,0 +1,48 @@
+
+\chapter{常见使用问题}\label{cha:question}
+
+\begin{enumerate}
+    \item 模板每次发布前，都已在Windows，Linux系统上测试通过。
+
+    \item 模板文档的编码为UTF-8编码。所有文件都必须采用UTF-8编码，否则编译后生成的文档将出现乱码文本。若出现文本编辑器无法打开文档或打开文档乱码的问题，请检查编辑器对UTF-8编码的支持。如果使用WinEdt作为文本编辑器（\textbf{不推荐使用}），应在其Options -> Preferences -> wrapping选项卡下将两种Wrapping Modes中的内容： 
+    
+        TeX;HTML;ANSI;ASCII|DTX...
+        
+        修改为：TeX;\textbf{UTF-8|ACP;}HTML;ANSI;ASCII|DTX...
+        
+        同时，取消Options -> Preferences -> Unicode中的Enable ANSI Format。
+
+    \item 推荐选择xelatex编译引擎编译中文文档。编译脚本的默认设定为xelatex编译引擎。你也可以选择不使用脚本编译，如直接使用 \LaTeX{}文本编辑器编译。注：\LaTeX{}文本编辑器编译的默认设定为pdflatex编译引擎，若选择xelatex编译引擎，请进入下拉菜单选择。为正确生成引用链接和参考文献，需要进行\textbf{全编译}。
+
+    \item Texmaker使用简介
+        \begin{enumerate}
+            \footnotesize
+            \item 使用 Texmaker “打开 (Open)” \projectname.tex。
+            \item 菜单 “选项 (Options)” -> “设置当前文档为主文档 (Define as ntuthesis Document)”
+            \item 菜单 “自定义 (User)” -> “自定义命令 (User Commands)” -> “编辑自定义命令 (Edit User Commands)” -> 左侧选择 “command 1”，右侧 “菜单项 (Menu Item)” 填入 Auto Build -> 点击下方“向导 (Wizard)” -> “添加 (Add)”: xelatex + bibtex + xelatex + xelatex + pdf viewer -> 点击“完成 (OK)”
+            \item 使用 Auto Build 编译带有未生成引用链接的源文件，可以仅使用 xelatex 编译带有已经正确生成引用链接的源文件。
+            \item 编译完成，“查看(View)” PDF，在PDF中 “ctrl+click” 可链接到相对应的源文件。
+        \end{enumerate}
+    %\item Visual Studio Code 使用简介
+    %\begin{enumerate}
+    %   \footnotesize
+    %    \item 安装 Visual Studio Code, 打开vscode并安装 LaTeX Workshop 插件。
+    %    \item 下面以Linux平台为例，给出Visual Studio Code的配置样例。%把本仓库settings.json的配置信息添加到 vscode的配置文件中。
+    %\end{enumerate}
+    \item 模版的设计可能地考虑了适应性。致谢等所有条目都是通过最为通用的
+
+        \verb+\chapter{item name}+  and \verb+\section*{item name}+
+
+        来显式实现的 (请观察Backmatter.tex)，从而可以随意添加，放置，和修改，如同一般章节。对于图表目录名称则可在 \projectname.cfg中进行修改。
+
+    %\item 设置文档样式: 在artratex.sty中搜索关键字定位相应命令，然后修改
+    %    \begin{enumerate}
+    %        \item 正文行距：启用和设置 \verb|\linespread{1.25}|，默认1.25倍行距。
+    %        \item 参考文献行距：修改 \verb|\setlength{\bibsep}{0.0ex}|
+    %        \item 目录显示级数：修改 \verb|\setcounter{tocdepth}{2}|
+    %        \item 文档超链接的颜色及其显示：修改 \verb|\hypersetup|
+    %    \end{enumerate}
+
+    
+    
+\end{enumerate}

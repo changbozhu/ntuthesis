@@ -1,0 +1,135 @@
+\chapter{\projectname 文档类配置}\label{cha:clscfg}
+
+\input{doc/import\projectname}
+
+
+\section{字体}\label{sec:fontset}
+\subsection{中文字体族配置}
+为了确保字体兼容的稳定性，可以下载已经打包好的\href{https://gofile.me/77KDf/jFhXkred0}{字体包}:\url{https://gofile.me/77KDf/jFhXkred0}，该字体包提供了本模版兼容的全部字体。下载后，如果是在windows、Linux、MacOS图形界面操作，那么可以把‘Font.zip’文件以“解压到当前文件夹”的方式解压，如果是在Linux、MacOS命令行窗口操作，用下述命令操作：
+\begin{lstlisting}
+unzip  Font.zip
+\end{lstlisting}
+解压完成后，把得到的Font文件移动到模版根目录。
+
+
+\parwords{基于操作系统平台的字体族选择} 一般情况下，不需要特殊配置，采用默认设置即可。
+\projectname 默认自动根据操作系统或平台调用和配置中英文字体族：
+\begin{itemize}
+    \item Windows（fontset=windows）\footnote{此版本的模版( \project )各个功能均基于 \projectwindows 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为中易字体；
+    \item MacOS （fontset=mac）\footnote{本模版( \project )各个功能均没有在 \projectmacos 上测试，也不保证能够通过测试，如用户在该平台遇到任何问题最好自行解决，也鼓励反馈至讨论区。}： 默认中文为SC 类字体；
+    \item Linux （fontset=none）\footnote{此版本的模版( \project )各个功能均基于 \projectlinux 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为Adobe 中文字体；
+    \item Adobe （fontset=adobe）：默认中文为Adobe 中文字体。
+\end{itemize}
+如果想手动调用特定字体族，只须在引入 \projectname.cls文档类时，通过给定 ‘fontset’ 选项指定相应的值即可 （需确保当前操作系统或Font文件夹已安装 \texttt{fontset=选项} 所需要的相应字体）。\texttt{fontset=选项}只能够调用ntuthesis.cls中为不同操作系统平台配置好的默认字体族。事实上，本模版中\texttt{fontset=选项}参数只能够强制使字体族选择不受操作系统平台影响。也就是说，一般在操作系统平台识别错误时，使用此方法能达到预期的目标。
+
+\begin{table}[!htbp]
+    \caption{中文字体列表}
+    \label{tab:zhcnfont}
+    \centering
+    \small% fontsize
+    \setlength{\tabcolsep}{4pt}% column separation
+    \renewcommand{\arraystretch}{1.2}%row space 
+    \begin{tabular}{lll}
+        \toprule
+         模版中字体名称 & 描述 &支持的fontset选项 \\
+        \midrule
+        \texttt{windows} & Windows系统默认Sim类字体 & windows  \\
+        \texttt{zhongyi} & 中易字体 & windows、none \\
+        %\texttt{founder} & 方正字体 & windows、none \\
+        \texttt{fandol}  & Fandol字体 & windows、none \\
+        %\texttt{sinotype} & 华文字体 & windows、none \\
+        %\texttt{noto} & 思源字体 & windows、none \\
+        \texttt{adobe} & Adobe字体 & none \\
+        \texttt{mac} & MacOS中SC类字体 & mac \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\parwords{基于 \projectname .cfg配置字体族} 为了增强字体配置的灵活性，我们在配置文件 \projectname .cfg中指定了选项 fontset=<windows|mac|none> 所关联到的字体族:
+\begin{itemize}
+\item "\texttt{\backslash def\backslash \projectname @value@zhcn@mainfontfamily@windows\{zhongyi\}}"把“zhongyi”配置为选项"fontset=windows"的字体族;
+\item "\texttt{\backslash def\backslash \projectname @value@zhcn@mainfontfamily@maco\{mac\}}"把“mac”配置为选项"fontset=mac"的字体族;
+\item "\texttt{\backslash def\backslash \projectname @value@zhcn@mainfontfamily@none\{fandol\}}"把“fandol”配置为选项"fontset=none"的字体族。
+\end{itemize}
+
+本模版支持的中文字体如表\ref{tab:zhcnfont}所列。
+
+
+
+
+\subsection{文档内中文字体切换方法}
+    完成字体族配置后，可以通过表 \ref{tab:fontswitch_cmd} 给出的命令选择或切换字体。表 \ref{tab:fontswitch_cmd} 中第一列是字体名称，第二列给出了选择字体的命令，每个字体均给出了两种选择命令方式，第三列呈现所选字体的效果。\emph[red]{一定要通过观察此表确定字体是否全部正确呈现}。中文没有斜体字体，斜体字体由楷体替代。
+    \def\testtext{字体测试，mathematic数学$f(x)=x^2+\sin(x)$}
+    \begin{table}[!hpbt]
+    %\bicaption{字体切换命令。}{Font switch commands.}
+    \caption{中文字体切换命令}\label{tab:fontswitch_cmd}
+    \footnotesize% fontsize
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{center}
+    \begin{tabular}{c|l|c}
+        \hline
+        字体 & 命令 & 效果 \\
+        \hline
+        \multirow{2}{*}{宋体} & 默认 & \testtext \\
+        \cline{2-3} & \verb|{ \rmfamily $\cdots$ }| & { \rmfamily \testtext}\\
+        \hline
+        \multirow{2}{*}{粗宋体} & \texttt{ \{ \textbackslash bfseries $\cdots$ \} } & {\bfseries \testtext }  \\
+        \cline{2-3} & \texttt{\textbackslash textbf\{ $\cdots$ \} } & \textbf{\testtext} \\
+        \hline
+        \multirow{2}{*}{黑体} & \texttt{ \{ \textbackslash sffamily $\cdots$\}} & {\sffamily \testtext}  \\
+        \cline{2-3} & \texttt{\textbackslash textsf\{ $\cdots$ \} } & \textsf{\testtext}\\
+        \hline
+        \multirow{2}{*}{粗黑体} & \texttt{\{\textbackslash bfseries \textbackslash sffamily $\cdots$ \}} & {\bfseries\sffamily \testtext}  \\
+        \cline{2-3} & \texttt{\textbackslash textsf\{\textbackslash bfseries $\cdots$ \}} & \textsf{\bfseries \testtext}\\
+        \hline
+        \multirow{2}{*}{仿宋} & \texttt{ \{ \textbackslash ttfamily $\cdots$\}} & {\ttfamily \testtext}  \\
+        \cline{2-3} & \texttt{\textbackslash texttt\{ $\cdots$ \}} & \texttt{\testtext}\\
+        \hline
+        \multirow{2}{*}{粗仿宋} & \texttt{\{ \textbackslash bfseries\textbackslash ttfamily $\cdots$\}} & {\bfseries \ttfamily \testtext}  \\
+        \cline{2-3} & \texttt{\textbackslash texttt\{\textbackslash bfseries $\cdots$\} } & \texttt{\bfseries \testtext}\\
+        \hline
+        \multirow{2}{*}{楷体} & \texttt{ \{ \textbackslash kaishu $\cdots$ \} } & {\kaishu \testtext}  \\
+        \cline{2-3} & \verb| \textks{$\cdots$} |  &  \textks{ \testtext} \\
+        \hline
+        \multirow{2}{*}{粗楷体} & \texttt{ \{ \textbackslash bfseries \textbackslash kaishu $\cdots$ \} } & {\bfseries\kaishu \testtext}  \\
+        \cline{2-3} & \texttt{\textbackslash textks\{\textbackslash bfseries $\cdots$\} } & \textks{\bfseries \testtext}\\
+        \hline
+        \multirow{2}{*}{斜体} & \texttt{ \{ \textbackslash itshape $\cdots$ \} } & {\itshape 中文没有斜体，实际为楷体}  \\
+        \cline{2-3} & \texttt{\textbackslash textit\{ $\cdots$ \} }   & \textit{中文没有斜体，实际为楷体}\\
+        \hline
+    \end{tabular}
+    \end{center}
+    \end{table}
+
+
+
+\subsection{英文与数学符号字体配置}
+
+\href{https://github.com/aliftype/xits}{XITS} 是一款专为数学与科学出版设计的Times风格字体，基于STIX字体开发。其主要使命是通过增强OpenType数学表格功能，提供STIX字体的优化版本，使其能完美兼容支持数学公式的OpenType排版系统（如Microsoft Office 2007以上版本、XeTeX及LuaTeX），实现高质量的数学公式排版。这是模版推荐和默认配置使用的字体。
+
+模版也尝试内置 latin modern 字体，但是本模版对该字体支持还不完善，不推荐使用。
+
+英文与数学字体族的选择与中文字体族配置类似，可以通过  \projectname.cls的配置文件  \projectname.cfg指定英文与数学字体族。打开\projectname.cfg，搜索并定位到代码
+“\texttt{\backslash def\backslash \projectname @value@zhcn@mathfontfamily\{xits\}}”，把xits改成需要的字体族即可，例如latinmodern。
+
+\begin{table}[!htbp]
+    \caption{英文与数学符号字体族列表}
+    \label{tab:enmathfont}
+    \centering
+    \small% fontsize
+    \setlength{\tabcolsep}{4pt}% column separation
+    \renewcommand{\arraystretch}{1.2}%row space 
+    \begin{tabular}{ll}
+        \toprule
+         模版中字体名称 & 描述  \\
+        \midrule
+        \texttt{xits} &  \href{https://github.com/aliftype/xits}{XITS} 字体族\\
+        \texttt{latinmodern} & latin modern 字体  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\section{测试生僻字}
+
+霜蟾盥薇曜灵霜颸妙鬘虚霩淩澌菀枯菡萏泬寥窅冥毰毸濩落霅霅便嬛岧峣瀺灂姽婳愔嫕飒纚棽俪緸冤莩甲摛藻卮言倥侗椒觞期颐夜阑彬蔚倥偬澄廓簪缨陟遐迤逦缥缃鹣鲽憯懔闺闼璀错媕婀噌吰澒洞阛闠覼缕玓瓑逡巡諓諓琭琭瀌瀌踽踽叆叇氤氲瓠犀流眄蹀躞赟嬛茕頔璎珞螓首蘅皋惏悷缱绻昶皴皱颟顸愀然菡萏卑陬纯懿犇麤掱暒 墌墍墎墏墐墒墒墓墔墕墖墘墖墚墛坠墝增墠墡墢墣墤墥墦墧墨墩墪樽墬墭堕墯墰墱墲坟墴墵垯墷墸墹墺墙墼墽垦墿壀壁壂壃壄壅壆坛壈壉壊垱壌壍埙壏壐壑壒压壔壕壖壗垒圹垆壛壜壝垄壠壡坜壣壤壥壦壧壨坝塆圭嫶嫷嫸嫹嫺娴嫼嫽嫾婳妫嬁嬂嬃嬄嬅嬆嬇娆嬉嬊娇嬍嬎嬏嬐嬑嬒嬓嬔嬕嬖嬗嬘嫱嬚嬛嬜嬞嬟嬠嫒嬢嬣嬥嬦嬧嬨嬩嫔嬫嬬奶嬬嬮嬯婴嬱嬲嬳嬴嬵嬶嬷婶嬹嬺嬻嬼嬽嬾嬿孀孁孂娘孄孅孆孇孆孈孉孊娈孋孊孍孎孏嫫婿媚嵭嵮嵯嵰嵱嵲嵳嵴嵵嵶嵷嵸嵹嵺嵻嵼嵽嵾嵿嶀嵝嶂嶃崭嶅嶆岖嶈嶉嶊嶋嶌嶍嶎嶏嶐嶑嶒嶓嵚嶕嶖嶘嶙嶚嶛嶜嶝嶞嶟峤嶡峣嶣嶤嶥嶦峄峃嶩嶪嶫嶬嶭崄嶯嶰嶱嶲嶳岙嶵嶶嶷嵘嶹岭嶻屿岳帋巀巁巂巃巄巅巆巇巈巉巊岿巌巍巎巏巐巑峦巓巅巕岩巗巘巙巚帠帡帢帣帤帨帩帪帬帯帰帱帲帴帵帷帹帺帻帼帽帾帿幁幂帏幄幅幆幇幈幉幊幋幌幍幎幏幐幑幒幓幖幙幚幛幜幝幞帜幠幡幢幤幥幦幧幨幩幪幭幮幯幰幱庍庎庑庖庘庛庝庠庡庢庣庤庥庨庩庪庬庮庯庰庱庲庳庴庵庹庺庻庼庽庿廀厕廃厩廅廆廇廋廌廍庼廏廐廑廒廔廕廖廗廘廙廛廜廞庑廤廥廦廧廨廭廮廯廰痈廲廵廸廹廻廼廽廿弁弅弆弇弉弖弙弚弜弝弞弡弢弣弤弨弩弪弫弬弭弮弰弲弪弴弶弸弻弼弽弿彖彗彘彚彛彜彝彞彟彴彵彶彷彸役彺彻彽彾佛徂徃徆徇徉后徍徎徏径徒従徔徕徖徙徚徛徜徝从徟徕御徢徣徤徥徦徧徨复循徫旁徭微徯徰徱徲徳徴徵徶德徸彻徺忁忂惔愔忇忈忉忔忕忖忚忛応忝忞忟忪挣挦挧挨挩挪挫挬挭挮挰掇授掉掊掋掍掎掐掑排掓掔掕挜掚挂掜掝掞掟掠采探掣掤掦措掫掬掭掮掯掰掱掲掳掴掵掶掸掹掺掻掼掽掾掿拣揁揂揃揅揄揆揇揈揉揊揋揌揍揎揑揓揔揕揖揗揘揙揤揥揦揧揨揫捂揰揱揲揳援揵揶揷揸揻揼揾揿搀搁搂搃搄搅搇搈搉搊搋搌搎搏搐搑搒摓摔摕摖摗摙摚摛掼摝摞摠摡斫斩斮斱斲斳斴斵斶斸旪旫旮旯晒晓晔晕晖晗晘晙晛晜晞晟晠晡晰晣晤晥晦晧晪晫晬晭晰晱晲晳晴晵晷晸晹晻晼晽晾晿暀暁暂暃暄暅暆暇晕晖暊暋暌暍暎暏暐暑暒暓暔暕暖暗旸暙暚暛暜暝暞暟暠暡暣暤暥暦暧暨暩暪暬暭暮暯暰昵暲暳暴暵

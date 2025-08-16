@@ -1,0 +1,179 @@
+\chapter{数学符号及公式}\label{cha:matheq}
+本部分命令依赖于宏包“mlstyle/mlmath.sty”，需要在导入宏包“cnbasesetup.sty”时，传入选项参数“math”。
+\begin{verbatim}
+    \usepackage[super,tikz,tab,list,math]{style/cnbasesetup}
+\end{verbatim}
+
+\section{数学字体}
+
+\begin{example}[数学文本测试]
+    \verb|$\textbackslash sigma, A,F,L,2,3,5$| 显示效果为 $\sigma, A,F,L,2,3,5$
+\end{example}
+\begin{example}[mathrm测试]
+    \texttt{\$\textbackslash mathrm\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathrm{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathbf测试]
+    \texttt{\$\textbackslash mathbf\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathbf{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathit测试]
+    \texttt{\$\textbackslash mathit\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathit{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathsf测试]
+    \texttt{\$\textbackslash mathsf\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathsf{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathtt测试]
+    \texttt{\$\textbackslash mathtt\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathtt{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathfrak测试]
+    \texttt{\$\textbackslash mathfrak\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathfrak{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathbb测试]
+    \texttt{\$\textbackslash mathbb\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathbb{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathcal测试]
+    \texttt{\$\textbackslash mathcal\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathcal{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[mathscr测试]
+    \texttt{\$\textbackslash mathscr\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\mathscr{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[boldsymbol测试]
+    \texttt{\$\textbackslash boldsymbol\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\boldsymbol{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[bm测试]
+    \texttt{\$\textbackslash bm\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\bm{A,F,L,2,3,5,\sigma}$
+\end{example}
+\begin{example}[向量命令测试]
+\texttt{\$\textbackslash vec\{\textbackslash sigma, T, a, F, n\}\$}显示效果为 $\vec{\sigma, T, a, F, n}$
+\end{example}
+%\begin{example}[单位向量命令测试]
+%    \texttt{\$\textbackslash unitVector\{\textbackslash sigma, T, a, F, n\}\$}显示效果为： $\unitVector{\sigma, T, a, F, n}$
+%\end{example}
+\begin{example}[矩阵命令测试]
+    \texttt{\$\textbackslash mat\{\textbackslash sigma, T, a, F, n\}\$}显示效果为： $\mat{\sigma, T, a, F, n}$
+\end{example}
+\begin{example}[单位矩阵命令测试]
+    \texttt{\$\textbackslash idmat\_n\$}显示效果为： $\idmat_n$，$n$阶单位矩阵的表示形式是固定的。
+\end{example}
+\begin{example}[张量命令测试]
+    \verb|$\tensor{\sigma, T, a, F, n}$|显示效果为： $\tensor{\sigma, T, a, F, n}$
+\end{example}
+%\begin{example}[单位张量命令测试]
+%    \texttt{\$\textbackslash unitTensor\_n\$}显示效果为： $\unitTensor_n$，$n$阶单位矩阵的表示形式是固定的。
+%\end{example}
+
+\section{数学符号及定义}
+%\notation{CN}
+在表\ref{tab:algebra-notation}中，一些自定义命令的原型定义于“mlstyle/mlmath.sty”，要想在其他模板或文档中使用，必须包含宏包“mlstyle/mlmath.sty”。如果用户不想包含宏包“mlstyle/mlmath.sty”，请不要使用这些命令，采用通用宏包命令直接实现来替代这些命令，常用数学符号参见：\url{https://www.latexlive.com/help}。
+\begin{table}[!htbp]
+    \small% fontsize
+    %\bicaption{线性代数符号表}{The notation table for linear algebra}
+    \caption{线性代数符号表}
+	\label{tab:algebra-notation}
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{center}
+    \begin{tabular}{llll}
+	    \hline
+	    \textbf{名称} & \textbf{命令} & \textbf{描述} & \textbf{样例} \\
+	    \hline
+	    \multirow{7}{*}{向量} & \texttt{\textbackslash vec\{\cdot\}} & 粗体小写字母,默认列向量 & $\vec{a}$ \\
+        \cline{2-4}
+        & \texttt{\cdot\^\{(i)\}} & 上角标索引元素$^{(i)}$ & $a^{(i)}$ \\
+		\cline{2-4}
+        & \texttt{\textbackslash numvec\{ \cdot \}} & 常数向量 & $\numvec{1}$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash cdot} & 内积 & $\vec{a}\cdot \vec{b}$ \\
+		\cline{2-4}
+        & \texttt{\textbackslash vec\{ e \}\_i} &单位正交基向量,第$i$个元素为1，其他为$0$ & $\vec{e}_i$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash norm\{ \textbackslash vec\{x\}\}\{ \textbackslash alpha \}} & $\mathcal{l}^{\alpha}-$范数符号 & $\norm{\vec{x}}{\alpha}$ \\
+		\cline{2-4}
+		& \texttt{\textbackslash fnorm\{x\}\{ \textbackslash alpha \}\{d\}\}} & $\mathcal{l}^{\alpha}-$范数表达式 & $\fnorm{x}{\alpha}{d}$ \\
+	    \hline
+	    \multirow{11}{*}{矩阵} & \texttt{\textbackslash mat\{\cdot\}} & 粗体大写字母 & $\mat{W}$ \\
+        \cline{2-4}
+        & \texttt{\cdot\_\{i,j\}} & 名称小写+下角标索引$_{i,j}$ & $w_{i,j}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash odot }& Hadamard积 & $\mat{A}\odot \mat{B}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash otimes} & Kronecker积 & $\mat{A}\otimes \mat{B}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash trace(\cdot)} & 矩阵的迹，即主对角线元素之和 & $\trace( \mat{B} )$ \\
+		\cline{2-4}
+        & \texttt{ \textbackslash ftrace\{ b \}\{ n \}} & 矩阵的迹表达式 & $\ftrace{b}{n}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash det(\cdot)} & 平方矩阵的行列式 & $\det( \mat{B} )$ \\
+        \cline{2-4}
+        & \texttt{\cdot \^ \ \{-1\}} & 平方可逆矩阵的逆 & $\mat{B}^{-1}$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash vec(\cdot)} &矩阵以列堆叠的向量化 & $\vec(\mat{B})$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash lvec(\cdot)} &下三角矩阵的非常数零区域以列堆叠的向量化 & $\lvec(\mat{L})$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash mat\{I\}\_{n}} &$n$阶单位矩阵 & $\mat{I}_n$ \\
+	    \hline
+        转置 & \texttt{\cdot \^ \ \textbackslash top} & 向量或矩阵的转置 & $\vec{x}^\top,\mat{A}^\top$ \\
+        \hline
+        向量对角化 & \texttt{\textbackslash diag(\cdot)} & 以向量$\vec{v}$为对角的矩阵 & $\diag(\vec{x})$ \\
+        \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+
+\section{数学公式}
+
+比如Navier-Stokes方程（方程~\eqref{eq:ns}）：
+\begin{equation} \label{eq:ns}
+    %\adddotsbeforeeqnnum%
+    \begin{cases}
+        \frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\Vector{V}) = 0 \ \mathrm{times\ math\ test: 1,2,3,4,5}, 1,2,3,4,5\\
+        \frac{\partial (\rho\Vector{V})}{\partial t} + \nabla\cdot(\rho\Vector{V}\Vector{V}) = \nabla\cdot\Tensor{\sigma} \ \text{times text test: 1,2,3,4,5}\\
+        \frac{\partial (\rho E)}{\partial t} + \nabla\cdot(\rho E\Vector{V}) = \nabla\cdot(k\nabla T) + \nabla\cdot(\Tensor{\sigma}\cdot\Vector{V})
+    \end{cases}
+\end{equation}
+\begin{equation}
+    \adddotsbeforeeqnnum%
+    \frac{\partial }{\partial t}\int\limits_{\Omega} u \, \mathrm{d}\Omega + \int\limits_{S} \unitVector{n}\cdot(u\Vector{V}) \, \mathrm{d}S = \dot{\phi}
+\end{equation}
+\[
+    \begin{split}
+        \mathcal{L} \{f\}(s) &= \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t, \ 
+        \mathscr{L} \{f\}(s) = \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t\\
+        \mathcal{F} {\bigl (} f(x+x_{0}) {\bigr )} &= \mathcal{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}, \ 
+        \mathscr{F} {\bigl (} f(x+x_{0}) {\bigr )} = \mathscr{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}
+    \end{split}
+\]
+
+数学公式常用命令请见 \href{https://en.wikibooks.org/wiki/LaTeX/Mathematics}{WiKibook Mathematics}。artracom.sty中对一些常用数据类型如矢量矩阵等进行了封装，这样的好处是如有一天需要修改矢量的显示形式，只需单独修改artracom.sty中的矢量定义即可实现全文档的修改。
+
+\section{数学环境}
+
+\begin{axiom}
+   这是一个公理。 
+\end{axiom}
+\begin{theorem}
+   这是一个定理。 
+\end{theorem}
+\begin{lemma}
+   这是一个引理。 
+\end{lemma}
+\begin{corollary}
+   这是一个推论。 
+\end{corollary}
+\begin{assertion}
+   这是一个断言。 
+\end{assertion}
+\begin{proposition}
+   这是一个命题。 
+\end{proposition}
+\begin{proof}
+    这是一个证明。
+\end{proof}
+\begin{definition}
+    这是一个定义。
+\end{definition}
+\begin{example}
+    这是一个例子。
+\end{example}
+\begin{remark}
+    这是一个注。
+\end{remark}

@@ -1,0 +1,1658 @@
+%---------------------------------------------------------------------------%
+%-                LaTeX macros package for Chinese books                   -%
+%-                         Setup Document Style                            -%
+%-                                                                         -%
+%---------------------------------------------------------------------------%
+%- Copyright (C) 2025-2025 Changbo Zhu <1207146285@qq.com>
+%- This is free software: you can redistribute it and/or modify it
+%- under the terms of the GNU General Public License as published by
+%- the Free Software Foundation, either version 3 of the License, or
+%- (at your option) any later version.
+%-
+%---------------------------------------------------------------------------%
+%->> Identification
+%---------------------------------------------------------------------------%
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{style/cnbasesetup}[2025/01/01 v1.0 LaTeX macros package for Chinese books]%
+
+%-->> information
+%-
+\def\info{}
+\def\info@zhauthor{朱昌波}
+\def\info@enauthor{Changbo Zhu}
+\def\info@cnbooksetup@version{1.0}
+%---------------------------------------------------------------------------%
+%->> Declare options
+%---------------------------------------------------------------------------%
+\RequirePackage{xparse}%
+\RequirePackage{xstring}%
+\RequirePackage{etoolbox}% a toolbox of programming facilities
+\RequirePackage{expl3}% LaTeX3 programming environment
+
+\def\setupifstreq{\expandafter\ifstrequal\expandafter}% expansion control
+
+
+%\newcommand\cnbook@setup@fontsetval{\csname g__ctex_fontset_tl\endcsname}
+%-
+%-> Platform fontset <windows>, <mac>, <adobe>, <none>, <times>
+%-0
+%- Fetch the fontset value as user specified or automatically set based on os type
+\ExplSyntaxOn%
+\providecommand{\g__ctex_fontset_tl}{}% platform fontset state variable
+\edef\cnbook@setup@fontset{\g__ctex_fontset_tl}% expanded platform fontset state variable
+\ExplSyntaxOff%
+
+%- Specify font set according to the value of fontset
+
+\newif\ifcnbook@setup@windows \cnbook@setup@windowsfalse
+\newif\ifcnbook@setup@mac \cnbook@setup@macfalse
+\newif\ifcnbook@setup@adobe \cnbook@setup@adobefalse
+\newif\ifcnbook@setup@none \cnbook@setup@nonefalse
+\newif\ifcnbook@setup@times \cnbook@setup@timesfalse
+\newif\ifcnbook@setup@others \cnbook@setup@othersfalse
+%\DeclareOption{fontset}{%
+    %\def\cnbook@setup@fontset{fontset}
+    %\setupifstreq{\cnbook@setup@fontset}{zhongyi}{\cnbook@setup@zhongyitrue\cnbook@setup@timestrue}{%
+    %\setupifstreq{\cnbook@setup@fontset}{founder}{\cnbook@setup@foundertrue\cnbook@setup@timestrue}{%
+    %\setupifstreq{\cnbook@setup@fontset}{sinotype}{\cnbook@setup@sinotypetrue\cnbook@setup@timestrue}{%
+    %\setupifstreq{\cnbook@setup@fontset}{fandol}{\cnbook@setup@fandoltrue\cnbook@setup@timestrue}{%
+    %\setupifstreq{\cnbook@setup@fontset}{adobe}{\cnbook@setup@adobetrue\cnbook@setup@timestrue}{%
+    %\setupifstreq{\cnbook@setup@fontset}{noto}{\cnbook@setup@nototrue\cnbook@setup@timestrue}{%
+    %\cnbook@setup@otherstrue\cnbook@setup@timesfalse}}}}}}
+%}
+\setupifstreq{\cnbook@setup@fontset}{windows}{\cnbook@setup@windowstrue\cnbook@setup@timestrue}{%
+\setupifstreq{\cnbook@setup@fontset}{mac}{\cnbook@setup@mactrue\cnbook@setup@timestrue}{%
+\setupifstreq{\cnbook@setup@fontset}{adobe}{\cnbook@setup@adobetrue\cnbook@setup@timestrue}{%
+\setupifstreq{\cnbook@setup@fontset}{none}{\cnbook@setup@nonetrue\cnbook@setup@timestrue}{%
+\cnbook@setup@otherstrue\cnbook@setup@timesfalse}}}}
+
+
+%-
+%-> LaTeX engine <pdflatex>, <lualatex>, <xelatex>
+%-
+\newif\ifcnbook@setup@pdftex \cnbook@setup@pdftexfalse%
+\newif\ifcnbook@setup@luatex \cnbook@setup@luatexfalse%
+\newif\ifcnbook@setup@xetex \cnbook@setup@xetexfalse%
+\RequirePackage{ifxetex, ifluatex}% LaTeX engine detection
+\newif\ifcnbook@setup@xecjk \cnbook@setup@xecjkfalse
+\ifxetex%
+    \cnbook@setup@xetextrue%
+    \cnbook@setup@xecjktrue%
+    \RequirePackage{xeCJK}% support calling system fonts
+\else\ifluatex%
+    \cnbook@setup@luatextrue%
+\else%
+    \cnbook@setup@pdftextrue%
+\fi\fi%
+%-
+%-> Bibliography engine <bibtex>, <biber>
+%-
+\newcommand\setcnbookbib[1]{\def\cnbookbib{#1}}
+\newif\ifcnbook@setup@bibauto \cnbook@setup@bibautotrue%
+\newif\ifcnbook@setup@bibtex \cnbook@setup@bibtexfalse%
+\newif\ifcnbook@setup@biber \cnbook@setup@biberfalse%
+\DeclareOption{bibtex}{%
+    \cnbook@setup@bibtextrue%
+    \cnbook@setup@biberfalse%
+    \cnbook@setup@bibautofalse%
+}%
+\DeclareOption{biber}{%
+    \cnbook@setup@bibtexfalse%
+    \cnbook@setup@bibertrue%
+    \cnbook@setup@bibautofalse%
+}%
+% setup for bibauto
+\DeclareOption{bibauto}{%
+	\cnbook@setup@bibautotrue%
+	\cnbook@setup@bibtexfalse%
+	\cnbook@setup@biberfalse%
+}
+%------------------------------------------------
+%-> Citation and reference style
+%-
+\newif\ifcnbook@setup@numbers \cnbook@setup@numberstrue
+\newif\ifcnbook@setup@super \cnbook@setup@superfalse
+\newif\ifcnbook@setup@authoryear \cnbook@setup@authoryearfalse
+\newif\ifcnbook@setup@alpha \cnbook@setup@alphafalse
+\newif\ifcnbook@setup@nsfc \cnbook@setup@nsfcfalse
+\DeclareOption{numbers}{%
+    \cnbook@setup@numberstrue
+    \cnbook@setup@superfalse
+    \cnbook@setup@authoryearfalse
+    \cnbook@setup@alphafalse
+}
+\DeclareOption{super}{%
+    \cnbook@setup@numberstrue
+    \cnbook@setup@supertrue
+    \cnbook@setup@authoryearfalse
+    \cnbook@setup@alphafalse
+}
+\DeclareOption{authoryear}{%
+    \cnbook@setup@numbersfalse
+    \cnbook@setup@superfalse
+    \cnbook@setup@authoryeartrue
+    \cnbook@setup@alphafalse
+}
+\DeclareOption{alpha}{%
+    \cnbook@setup@numbersfalse
+    \cnbook@setup@superfalse
+    \cnbook@setup@authoryearfalse
+    \cnbook@setup@alphatrue
+}
+\DeclareOption{nsfc}{%
+    \cnbook@setup@numbersfalse
+    \cnbook@setup@superfalse
+    \cnbook@setup@authoryearfalse
+    \cnbook@setup@alphafalse
+    \cnbook@setup@nsfctrue
+}
+%-
+%-> Page layout reconfiguration
+%-
+\newif\ifcnbook@setup@geometry \cnbook@setup@geometryfalse
+\DeclareOption{geometry}{%
+    \cnbook@setup@geometrytrue
+}
+%-
+%-> Landscape layout support
+%-
+\newif\ifcnbook@setup@lscape \cnbook@setup@lscapefalse
+\DeclareOption{lscape}{%
+    \cnbook@setup@lscapetrue
+}
+%-
+%-> Header and footer
+%-
+\newif\ifcnbook@setup@xhf \cnbook@setup@xhftrue
+\DeclareOption{xhf}{%
+    \cnbook@setup@xhffalse
+}
+%-
+%-> Color support
+%-
+\newif\ifcnbook@setup@color \cnbook@setup@colorfalse
+\DeclareOption{color}{%
+    \cnbook@setup@colortrue
+}
+\newif\ifcnbook@setup@xlink \cnbook@setup@xlinkfalse
+\DeclareOption{xlink}{%
+    \cnbook@setup@xlinktrue
+}
+%-
+%-> Page background
+%-
+\newif\ifcnbook@setup@background \cnbook@setup@backgroundfalse
+\DeclareOption{background}{%
+    \cnbook@setup@colortrue
+    \cnbook@setup@backgroundtrue
+}
+%-
+%-> Complex diagrams support
+%-
+\newif\ifcnbook@setup@tikz \cnbook@setup@tikzfalse
+\DeclareOption{tikz}{%
+    \cnbook@setup@colortrue
+    \cnbook@setup@tikztrue
+}
+%-
+%-> Complex tables support
+%-
+\newif\ifcnbook@setup@table \cnbook@setup@tablefalse
+\DeclareOption{table}{%
+    \cnbook@setup@tabletrue
+}
+%-
+%-> Enhanced list
+%-
+\newif\ifcnbook@setup@list \cnbook@setup@listfalse
+\DeclareOption{list}{%
+    \cnbook@setup@colortrue
+    \cnbook@setup@listtrue
+}
+%-
+%-> Extra math support
+%-
+\newif\ifcnbook@setup@math \cnbook@setup@mathfalse
+\DeclareOption{math}{%
+    \cnbook@setup@mathtrue
+}
+%-
+%-> Handle non-implemented options
+%-
+\DeclareOption*{%
+    \PackageWarning{cnbooksetup}{Unknown option '\CurrentOption'}%
+}
+%-
+%-> Terminates all options processing
+%-
+\ProcessOptions\relax%
+%---------------------------------------------------------------------------%
+%-->> setup auto bibliography backen
+%
+\ifcnbook@setup@bibauto
+    \if@autobibtex
+        \setcnbookbib{bibtex}
+    \else
+        \setcnbookbib{biber}
+    \fi
+\fi
+\ifcnbook@setup@bibtex \setcnbookbib{bibtex}\fi
+\ifcnbook@setup@biber \setcnbookbib{biber}\fi
+\ifcnbook@setup@bibauto
+	\setupifstreq{\cnbookbib}{bibtex}{%
+		\cnbook@setup@bibtextrue%
+		\cnbook@setup@biberfalse%
+	}{%
+		\cnbook@setup@bibtexfalse%
+		\cnbook@setup@bibertrue%
+	}%
+\fi
+%---------------------------------------------------------------------------%
+%->> Package macros
+%---------------------------------------------------------------------------%
+%-
+%-> Detect class and counter
+%-
+\newcommand*{\cnbook@setup@ifcnt}[1]{% check if counter exists
+    \ifcsname c@#1\endcsname%
+        \expandafter\@firstoftwo%
+    \else%
+        \expandafter\@secondoftwo%
+    \fi
+}
+\cnbook@setup@ifcnt{chapter}{\def\cnbook@setup@maincnt{chapter}}{\def\cnbook@setup@maincnt{section}}%
+%-
+%-> Nomenclature item
+%-
+\providecommand{\nomenclatureitem}[3][ ]{%
+    \noindent\makebox[0.15\textwidth][l]{{\rmfamily#2}}{{\rmfamily #3}\hfill{#1}}\par
+}
+\providecommand{\nomenclatureheader}[3][ ]{%
+    \noindent\makebox[0.15\textwidth][l]{{\zihao{4}\sffamily#2}}{{\zihao{4}\sffamily #3}\hfill{{\zihao{4}\sffamily#1}}}\par
+}
+%-
+%-> Macro for adding link to toc and bookmark
+%-
+\newcommand{\intotocnostar}[3]{% [<\chapter|...>,<*>,<title>][example: \intotoc\chapter*{Nomenclature}]
+    \edef\cnbook@setup@mark{\expandafter\@gobble\string#1}% get the string 'cmd' after '\' in a command '\cmd'
+    #1#2{% excute command
+        \phantomsection% create bookmark link
+        \addcontentsline{toc}{\cnbook@setup@mark}{#3}% add content #3 to toc as #1
+        #3%
+    }
+    \setupifstreq{\cnbook@setup@mark}{chapter}{%
+        \markboth{\MakeUppercase{#3}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#3}}% set right mark
+    }
+}
+\newcommand{\intotocstar}[3][\cnbook@setup@maincnt]{% [<chapter|...>,<extra commands>,<title>][example: \intotoc*{\cleardoublepage}{Abstract}]
+    #2% excute command
+    \phantomsection% create bookmark link
+    \addcontentsline{toc}{#1}{#3}% add content #3 to toc as #1
+    \setupifstreq{#1}{chapter}{%
+        \markboth{\MakeUppercase{#3}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#3}}% set right mark
+    }
+}
+\newcommand{\intotoc}{\@ifstar{\intotocstar}{\intotocnostar}}% swap starred and non-starred versions
+\newcommand{\intobmknostar}[4][0]{% [<level>,<\chapter|...>,<*>,<title>] [example: \intobmk\chapter*{Abstract}]
+    \edef\cnbook@setup@mark{\expandafter\@gobble\string#2}% get the string 'cmd' after '\' in a command '\cmd'
+    #2#3{% excute command
+        \phantomsection% create bookmark link
+        \Hy@writebookmark% write bookmark
+        {}%
+        {#4}%
+        {\@currentHref}%
+        {#1}%
+        {toc}%\@title
+        #4%
+    }%
+    \setupifstreq{\cnbook@setup@mark}{chapter}{%
+        \markboth{\MakeUppercase{#4}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#4}}% set right mark
+    }
+}
+\newcommand{\intobmkstar}[3][0]{% [<level>,<extra commands>,<title>] [example: \intobmk*{\cleardoublepage}{\contentsname}]
+    #2% excute command
+    \phantomsection% create bookmark link
+    \Hy@writebookmark% write bookmark
+    {}%
+    {#3}%
+    {\@currentHref}%
+    {#1}%
+    {toc}%
+    \setupifstreq{#1}{0}{%
+        \markboth{\MakeUppercase{#3}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#3}}% set right mark
+    }
+}
+\newcommand{\intobmk}{\@ifstar{\intobmkstar}{\intobmknostar}}% swap starred and non-starred versions
+%\newcommand{\rmlbk}[1]{\begingroup\def\\{\relax\ifhmode\unskip\fi\space\ignorespaces}#1\endgroup}% remove line breaks 
+
+
+
+
+
+%---------------------------------------------------------------------------%
+%->> Required packages
+%---------------------------------------------------------------------------%
+%-
+%-> Math packages      
+\RequirePackage{amsmath,amsthm,amssymb}% math structures, theorems, and extended symbols
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+
+%-
+% \newtheorem{name}[counter]{text}[section]
+%  -name：标识这个环境的关键字（用于编程）
+%  -text：真正在文档中打印出来的定理环境的名字
+%  -counter：计数器；一般新定义的定理环境会自己用一个新的计数器，但是可以在 counter 中传入其他的定理环境，表示和这个环境共用计数器。
+%  -section：定理编号依赖于某个章节层次（比如：定理1.1)  
+\theoremstyle{plain}% for theorems, lemmas, propositions, etc
+\providecommand{\theoremname}{Theorem}%
+\newtheorem{theorem}{\theoremname}[\cnbook@setup@maincnt]
+\providecommand{\axiomname}{Axiom}%
+\newtheorem{axiom}[theorem]{\axiomname}
+\providecommand{\lemmaname}{Lemma}%
+\newtheorem{lemma}[theorem]{\lemmaname}
+\providecommand{\corollaryname}{Corollary}%
+\newtheorem{corollary}[theorem]{\corollaryname}
+\providecommand{\assertionname}{Assertion}%
+\newtheorem{assertion}[theorem]{\assertionname}
+\providecommand{\propositionname}{Proposition}%
+\newtheorem{proposition}[theorem]{\propositionname}
+\providecommand{\conjecturename}{Conjecture}%
+\newtheorem{conjecture}[theorem]{\conjecturename}
+\theoremstyle{definition}% for definitions and examples
+\providecommand{\definitionname}{Definition}%
+\newtheorem{definition}{\definitionname}[\cnbook@setup@maincnt]
+\providecommand{\examplename}{Example}%
+\newtheorem{example}{\examplename}[\cnbook@setup@maincnt]
+\theoremstyle{remark}% for remarks and notes
+\providecommand{\remarkname}{Remark}%
+\newtheorem*{remark}{\remarkname}
+
+\ifcnbook@setup@math% extra math packages
+    \RequirePackage{mathtools}% extension to amsmath
+\fi
+%-
+%-> Add dots before equation number
+%-
+\newcommand{\adddotsbeforeeqnnum}{\def\maketag@##1{\hbox{\m@th\normalfont\dots\ ##1}}}%
+%-
+%-> Language settings
+%-
+%- Without path: i) if font specified by a string without extension, fontspec will
+%- treat the given string as font name and use system fontconfig to search the font name
+%- in system font library; ii) if font specified by a string with extension, fontspec will
+%- treat the given string as font filename and use kpathsea to search the font filename in
+%- LaTeX distribution
+%- With path: fontspec will treat the given string as font filename and use kpathsea to
+%- search the font filename in path, and extension is optional but recommended in this case
+\def\cnbook@setup@font@rootdir{./Font/}% extra font location
+% Windows 的
+\newcommand\cnbook@setup@setcjkfont@windows{%
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{SimSun}[AutoFakeBold=3,ItalicFont=KaiTi]%
+    \setCJKsansfont{SimHei}[AutoFakeBold=3]%
+    \setCJKmonofont{FangSong}[AutoFakeBold=3]%%
+    \setCJKfamilyfont{zhkai}{KaiTi}[AutoFakeBold = 3]% 楷书
+    \setCJKfamilyfont{zhsong}{SimSun}[AutoFakeBold =3, ItalicFont = KaiTi]%
+    \setCJKfamilyfont{zhhei}{SimHei}[AutoFakeBold = 3]% \sffamily 黑体
+    \setCJKfamilyfont{zhfs}{FangSong}[AutoFakeBold = 3]% \ttfamily 仿宋
+    \setCJKfamilyfont{zhli}{LiSu}[AutoFakeBold = 3]% 隶书
+    \setCJKfamilyfont{zhyou}{YouYuan}[AutoFakeBold = 3]% 隶书
+}
+\def\windowsfont{\cnbook@setup@setcjkfont@windows}
+
+%中易字体。
+\newcommand\cnbook@setup@setcjkfont@zhongyi{%
+    \def\cnbook@setup@font@cjksubdir{zhongyi/}
+    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{ZYSimSun}[% \rmfamily 宋体，默认字体
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        ItalicFont   = ZYKaiTi.ttf,
+    ]%
+    \setCJKsansfont{ZYSimHei}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]% \sffamily 黑体
+    \setCJKmonofont{ZYFangSong}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},    
+    ]% \ttfamily 仿宋
+    \setCJKfamilyfont{zhkai}{ZYKaiTi}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]% 楷书
+    \setCJKfamilyfont{zhsong}{ZYSimSun}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        ItalicFont   = ZYKaiTi.ttf,
+    ]%
+    \setCJKfamilyfont{zhhei}{ZYSimHei}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]% \sffamily 黑体
+    \setCJKfamilyfont{zhfs}{ZYFangSong}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},    
+    ]% \ttfamily 仿宋
+    \setCJKfamilyfont{zhli}{ZYLiSu}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},    
+    ]% 隶书
+    \setCJKfamilyfont{zhyou}{ZYYouYuan}[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},    
+    ]% 隶书
+}%
+\def\zhongyifont{\cnbook@setup@setcjkfont@zhongyi}
+%setCJKfamilyfont for chapter section subsection subsubsection
+%\newCJKfontfamily\secCJKfont{KaiTi}[AutoFakeBold = 3]%
+%\setCJKfamilyfont{zhyahei}{Microsoft~YaHei} [ BoldFont = *~Bold ]
+\newcommand\cnbook@setup@setcjkfont@founder{%
+    \def\cnbook@setup@font@cjksubdir{founder/}
+    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont {FZShuSong-Z01 }[% \rmfamily 宋体
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        BoldFont = FZXiaoBiaoSong-B05.ttf, 
+        ItalicFont = FZKai-Z03.ttf
+    ]
+    %\setCJKsansfont { FZXiHeiI-Z08 } [%
+    \setCJKsansfont { FZHei-B01 } [%\sffamily 黑体
+        AutoFakeBold=3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        %BoldFont = FZHei-B01.ttf
+        ]
+    \setCJKmonofont { FZFangSong-Z02 }[%\ttfamily 仿宋
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhsong } { FZShuSong-Z01 } [% 
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        BoldFont = FZXiaoBiaoSong-B05.ttf
+        ]
+    \setCJKfamilyfont { zhhei  } { FZHei-B01 }[%
+        AutoFakeBold=3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhkai  } { FZKai-Z03 }[%
+        %AutoFakeBold=3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        BoldFont = FZCuKaiS-R-GB.ttf,
+    ]
+    \setCJKfamilyfont { zhfs   } { FZFangSong-Z02 }[%
+        AutoFakeBold=3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhli   } { FZLiShu-S01 }[%
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhyou  } { FZXiYuan-M01 } [%
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        BoldFont = FZZhunYuan-M02.ttf
+    ]
+}
+\def\founderfont{\cnbook@setup@setcjkfont@founder}
+\newcommand\cnbook@setup@setcjkfont@sinotype{%
+    \def\cnbook@setup@font@cjksubdir{sinotype/}
+    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont { STZhongsong }[% \rmfamily 宋体
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        ItalicFont = STKaiti.ttf
+    ]
+    %\setCJKsansfont { FZXiHeiI-Z08 } [%
+    \setCJKsansfont { STHeiti } [%\sffamily 黑体
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        %BoldFont = FZHei-B01.ttf
+        ]
+    \setCJKmonofont { STFangsong }[%\ttfamily 仿宋
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhsong } { STZhongsong } [% 
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        ItalicFont = STKaiti.ttf
+    ]
+    \setCJKfamilyfont { zhhei  } { STHeiti } [%\sffamily 黑体
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+        %BoldFont = FZHei-B01.ttf
+    ]
+    \setCJKfamilyfont { zhkai  } { KaiTi }[%
+        AutoFakeBold = 3,
+        %Path = {\cnbook@setup@font@cjkdir},
+        %Extension = {.ttf},
+        %BoldFont = {STBoldKaiti}
+    ]
+    \setCJKfamilyfont { zhfs   } { STFangsong }[%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhli   } { STLiti }[%
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf},
+    ]
+    \setCJKfamilyfont { zhyou  } { YouYuan } [%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.ttf}
+    ]
+}
+\def\sinotypefont{\cnbook@setup@setcjkfont@sinotype}
+\newcommand\cnbook@setup@setcjkfont@mac{%
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{Songti SC}[
+        UprightFont    = * Light,
+        BoldFont       = * Bold,
+        ItalicFont     = Kaiti SC Regular,
+        BoldItalicFont = Kaiti SC Bold,
+    ]%
+    \setCJKsansfont{Heiti SC}[
+        UprightFont    = * Light,
+        BoldFont       = * Medium,
+    ]%
+    \setCJKmonofont{STFangsong}
+    \setCJKfamilyfont{zhsong}{Songti SC}[
+        UprightFont    = * Light,
+        BoldFont       = * Bold,
+    ]%
+    \setCJKfamilyfont{zhhei}{Heiti SC}[
+        UprightFont    = * Light,
+        BoldFont       = * Medium,
+    ]%
+    \setCJKfamilyfont{zhfs}{STFangsong}%
+    \setCJKfamilyfont{zhkai}{Kaiti SC}[
+        UprightFont    = * Regular,
+        BoldFont       = * Bold,
+    ]%
+    \setCJKfamilyfont{zhli}{Baoli SC}%
+    \setCJKfamilyfont{zhyuan}{Yuanyi SC}[
+        UprightFont    = * Light,
+        BoldFont       = * Bold,
+    ]%
+}
+\def\macfont{\cnbook@setup@setcjkfont@mac}
+% 思源字体。
+% 注意 Noto CJK 的 regular 字重名字不带“Regular”。
+\newcommand\cnbook@setup@setcjkfont@noto{%
+    \def\cnbook@setup@font@cjksubdir{Noto_Sans/static/}
+    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{NotoSerifCJKsc-Regular}[
+        UprightFont    = * Light,
+        BoldFont       = * Bold,
+        ItalicFont     = FandolKai-Regular,
+        ItalicFeatures = {Extension = .otf},
+        Script         = CJK,
+        Extension      = .otf,
+    ]%
+    \setCJKsansfont{Noto Sans CJK SC}[
+        BoldFont       = * Medium,
+        Script         = CJK,
+    ]%
+    \setCJKmonofont{Noto Sans Mono CJK SC}[
+        Script         = CJK,
+    ]%
+    \setCJKfamilyfont{zhsong}{Noto Serif CJK SC}[
+        UprightFont    = * Light,
+        UprightFont    = * Bold,
+        Script         = CJK,
+    ]%
+    \setCJKfamilyfont{zhhei}{Noto Sans CJK SC}[
+        BoldFont       = * Medium,
+        Script         = CJK,
+    ]%
+    \setCJKfamilyfont{zhfs}{FandolFang}[
+        AutoFakeBold   = 3,
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+    ]%
+    \setCJKfamilyfont{zhkai}{FandolKai}[
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+    ]%
+}
+\def\notofont{\cnbook@setup@setcjkfont@noto}
+% Fandol 字体。
+\newcommand\cnbook@setup@setcjkfont@fandol{%
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{FandolSong}[% \ttfaily 宋体
+        %cmap       = UniGB-UTF16-H,
+        Extension   = .otf,
+        UprightFont = *-Regular,
+        BoldFont    = *-Bold,
+        ItalicFont  = FandolKai-Regular,
+        ItalicFeatures = {Extension = .otf},
+    ]%
+    \setCJKsansfont{FandolHei}[% \sffamily 黑体
+        Extension   = .otf,
+        UprightFont = *-Regular,
+        BoldFont    = *-Bold,
+    ]%
+    \setCJKmonofont{FandolFang}[
+        AutoFakeBold = 3,
+        Extension   = .otf,
+        UprightFont = *-Regular,
+    ]%
+    \setCJKfamilyfont{zhsong}{FandolSong}[
+        Extension   = .otf,
+        UprightFont = *-Regular,
+        BoldFont    = *-Bold,
+    ]%
+    \setCJKfamilyfont{zhhei}{FandolHei}[
+        Extension   = .otf,
+        UprightFont = *-Regular,
+        BoldFont    = *-Bold,
+    ]%
+    \setCJKfamilyfont{zhfs}{FandolFang}[
+        AutoFakeBold = 3,
+        Extension   = .otf,
+        UprightFont = *-Regular,
+    ]%
+    \setCJKfamilyfont {zhkai}{FandolKai}[
+        AutoFakeBold = 3,
+        UprightFont = *-Regular,
+        Extension   = .otf
+      ]
+}
+\def\fandolfont{\cnbook@setup@setcjkfont@fandol}
+\newcommand\cnbook@setup@setcjkfont@adobe{
+    \def\cnbook@setup@font@cjksubdir{adobe/}
+    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+    \defaultCJKfontfeatures{}%
+    \setCJKmainfont{AdobeSongStd-Light}[%
+        cmap = UniGB-UTF16-H,
+        Path=\cnbook@setup@font@cjkdir,
+        Extension = {.otf},
+        AutoFakeBold=3,
+        ItalicFont=AdobeKaitiStd-Regular,
+    ]
+    \setCJKsansfont{AdobeHeitiStd-Regular}[%
+        cmap = UniGB-UTF16-H,
+        Path=\cnbook@setup@font@cjkdir,
+        Extension = {.otf},
+        AutoFakeBold = 3,
+    ]%
+    \setCJKmonofont{AdobeFangsongStd-Regular}[%
+        cmap = UniGB-UTF16-H,
+        Path=\cnbook@setup@font@cjkdir,
+        Extension =  {.otf},
+    ]
+    \setCJKfamilyfont { zhsong } { AdobeSongStd-Light } [% 
+        cmap = UniGB-UTF16-H,
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf},
+        ItalicFont = AdobeKaitiStd-Regular
+    ]
+    \setCJKfamilyfont { zhhei  } { AdobeHeitiStd-Regular } [%\sffamily 黑体
+        cmap = UniGB-UTF16-H,
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf},
+        %BoldFont = FZHei-B01.ttf
+    ]
+    \setCJKfamilyfont { zhkai  } { AdobeKaitiStd-Regular }[%
+        cmap = UniGB-UTF16-H,
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf}
+    ]
+    \setCJKfamilyfont { zhfs   } { AdobeFangsongStd-Regular }[%
+        cmap = UniGB-UTF16-H,
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf},
+    ]
+    \setCJKfamilyfont { zhli   } { STLiti }[%
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf},
+    ]
+    \setCJKfamilyfont { zhyou  } { YouYuan } [%
+        AutoFakeBold = 3,
+        Path = {\cnbook@setup@font@cjkdir},
+        Extension = {.otf}
+    ]
+}
+\def\adobefont{\cnbook@setup@setcjkfont@adobe}
+% xits math style
+\newcommand\cnbook@setup@setmathfont@xits{%
+    \defaultfontfeatures{}
+    \setmainfont[NFSSFamily=entextrm]{XITS}[
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Italic,
+        BoldItalicFont = *-BoldItalic,
+        Ligatures=TeX,
+    ]
+    \setsansfont[NFSSFamily=entextsf]{XITS}[
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Italic,
+        BoldItalicFont = *-BoldItalic,
+        Ligatures = TeX,
+    ]
+  \setmonofont[NFSSFamily=entexttt]{XITS}[
+        Extension      = .otf,
+        UprightFont    = *-Regular,
+        BoldFont       = *-Bold,
+        ItalicFont     = *-Italic,
+        BoldItalicFont = *-BoldItalic,
+        Ligatures=TeX,
+    ]
+  \setmathfont{XITSMath-Regular}[
+        Extension    = .otf,
+        BoldFont     = XITSMath-Bold,
+        Ligatures=TeX,
+        StylisticSet = 1,
+    ]
+  \setmathfont{XITSMath-Regular}[
+        Extension    = .otf,
+        range={cal,bfcal},
+        Ligatures=TeX,
+        StylisticSet = 1,
+    ]
+  \setmathfont{XITSMath-Regular}[
+        Extension    = .otf,
+        range={scr,bfscr},
+        Ligatures=TeX,
+        StylisticSet = 2,
+    ]
+  \setmathrm{XITSMath-Regular}[
+        Extension    = .otf,
+        BoldFont     = XITSMath-Bold,
+        Ligatures=TeX,
+        StylisticSet = 1,
+    ]
+  \setmathsf{XITSMath-Regular}[
+        Extension    = .otf,
+        BoldFont     = XITSMath-Bold,
+        Ligatures=TeX,
+        StylisticSet = 1,
+    ]
+  \setmathtt{XITSMath-Regular}[
+        Extension    = .otf,
+        BoldFont     = XITSMath-Bold,
+        Ligatures=TeX,
+        StylisticSet = 1,
+    ]
+}
+\def\xitsmathfont{\cnbook@setup@setmathfont@xits}
+\newcommand\cnbook@setup@setmathfont@lmm{%
+     \defaultfontfeatures{}
+    \setmathfont{latinmodern-math}[
+        Path = \cnbook@setup@font@rootdir/lm-math/opentype/,
+        Extension    = .otf
+        ]
+    \setmathfont{texgyrepagella-math}[
+        Path = \cnbook@setup@font@rootdir/tex-gyre-math/opentype/,
+        Extension    = .otf,
+        range={\mathbb}
+        ]
+}
+\def\lmmmathfont{\cnbook@setup@setmathfont@lmm}
+%
+%\setupifstreq{\@setwindowsfontname}{zhongyi}{\def\cnbook@setup@setwindowsfont{\zhongyifont}}{
+%\setupifstreq{\@setwindowsfontname}{founder}{\def\cnbook@setup@setwindowsfont{\founderfont}}{
+%\setupifstreq{\@setwindowsfontname}{fandol}{\def\cnbook@setup@setwindowsfont{\fandolfont}}{
+%\setupifstreq{\@setwindowsfontname}{sinotype}{\def\cnbook@setup@setwindowsfont{\sinotypefont}}{
+%\setupifstreq{\@setwindowsfontname}{notofont}{\def\cnbook@setup@setwindowsfont{\notofont}}{
+%\setupifstreq{\@setwindowsfontname}{adobe}{\def\cnbook@setup@setwindowsfont{\adobefont}}{
+%\setupifstreq{\@setwindowsfontname}{windows}{\def\cnbook@setup@setwindowsfont{\windowsfont}}{\def\cnbook@setup@setwindowsfont{\windowsfont}}
+%}}}}}}
+%\setupifstreq{\@setmacosfontname}{zhongyi}{\def\cnbook@setup@setmacosfont{\zhongyifont}}{
+%\setupifstreq{\@setmacosfontname}{founder}{\def\cnbook@setup@setmacosfont{\founderfont}}{
+%\setupifstreq{\@setmacosfontname}{fandol}{\def\cnbook@setup@setmacosfont{\fandolfont}}{
+%\setupifstreq{\@setmacosfontname}{sinotype}{\def\cnbook@setup@setmacosfont{\sinotypefont}}{
+%\setupifstreq{\@setmacosfontname}{notofont}{\def\cnbook@setup@setmacosfont{\notofont}}{
+%\setupifstreq{\@setmacosfontname}{adobe}{\def\cnbook@setup@setmacosfont{\adobefont}}{
+%\setupifstreq{\@setmacosfontname}{mac}{\def\cnbook@setup@setmacosfont{\macfont}}{\def\cnbook@setup@setmacosfont{\macfont}}
+%}}}}}}
+%\setupifstreq{\@setnonefontname}{zhongyi}{\def\cnbook@setup@setnonefont{\zhongyifont}}{
+%\setupifstreq{\@setnonefontname}{founder}{\def\cnbook@setup@setnonefont{\founderfont}}{
+%\setupifstreq{\@setnonefontname}{fandol}{\def\cnbook@setup@setnonefont{\fandolfont}}{
+%\setupifstreq{\@setnonefontname}{sinotype}{\def\cnbook@setup@setnonefont{\sinotypefont}}{
+%\setupifstreq{\@setnonefontname}{notofont}{\def\cnbook@setup@setnonefont{\notofont}}{
+%\setupifstreq{\@setnonefontname}{adobe}{\def\cnbook@setup@setnonefont{\adobefont}}{\def\cnbook@setup@setnonefont{\fandolfont}}
+%}}}}}
+\IfStrEqCase{\@setwindowsfontname}{
+    {zhongyi}{\def\cnbook@setup@setwindowsfont{\zhongyifont}}
+    {founder}{\def\cnbook@setup@setwindowsfont{\founderfont}}
+    {fandol}{\def\cnbook@setup@setwindowsfont{\fandolfont}}
+    {sinotype}{\def\cnbook@setup@setwindowsfont{\sinotypefont}}
+    {noto}{\def\cnbook@setup@setwindowsfont{\notofont}}
+    {adobe}{\def\cnbook@setup@setwindowsfont{\adobefont}}
+    {windows}{\def\cnbook@setup@setwindowsfont{\windowsfont}}
+}
+\IfStrEqCase{\@setmacosfontname}{
+    {zhongyi}{\def\cnbook@setup@setmacosfont{\zhongyifont}}
+    {founder}{\def\cnbook@setup@setmacosfont{\founderfont}}
+    {fandol}{\def\cnbook@setup@setmacosfont{\fandolfont}}
+    {sinotype}{\def\cnbook@setup@setmacosfont{\sinotypefont}}
+    {noto}{\def\cnbook@setup@setmacosfont{\notofont}}
+    {adobe}{\def\cnbook@setup@setmacosfont{\adobefont}}
+    {mac}{\def\cnbook@setup@setmacosfont{\macfont}}
+}
+\IfStrEqCase{\@setnonefontname}{
+    {zhongyi}{\def\cnbook@setup@setnonefont{\zhongyifont}}
+    {founder}{\def\cnbook@setup@setnonefont{\founderfont}}
+    {fandol}{\def\cnbook@setup@setnonefont{\fandolfont}}
+    {sinotype}{\def\cnbook@setup@setnonefont{\sinotypefont}}
+    {noto}{\def\cnbook@setup@setnonefont{\notofont}}
+    {adobe}{\def\cnbook@setup@setnonefont{\adobefont}}
+}
+\def\cnbook@setup@setadobefont{\setadobefont}
+%
+\IfStrEqCase{\@setmathfontname}{
+    {xits}{%
+            \def\cnbook@setup@mathfontfile{XITS-Regular.otf}%
+            \def\cnbook@setup@setmathfont{\xitsmathfont}%
+        }%
+    {latinmodern}{%
+            \def\cnbook@setup@mathfontfile{latinmodern-math.otf}
+            \def\cnbook@setup@setmathfont{\lmmmathfont}%
+        }%
+}
+
+
+%
+\ifcnbook@setup@pdftex% <pdflatex> call font packages
+    \RequirePackage[utf8]{inputenc}% set input encoding, document must use utf-8 encoding
+    \RequirePackage[T1]{fontenc}% set font encoding to enable modern font encoding
+    %- Text font: English <default: computer modern|others: font packages>
+    \RequirePackage{newtxtext}% main font, <times font: newtxtext|others: palatino>
+    %- Math font: <default: computer modern|others: font packages>
+    \RequirePackage[cmintegrals]{newtxmath}% times font, load after amsmath and newtxtext packages
+    \RequirePackage{mathrsfs}% enable \mathscr for script alphabet
+    \RequirePackage[cal=cm]{mathalfa}% map styles for calligraphic \mathcal and script \mathscr alphabet
+\else% <xelatex> or <lualatex> call system fonts
+    \RequirePackage{fontspec}% support calling system fonts
+        \@ifpackagelater{fontspec}{2016/12/27}{}{%
+            \PackageError{setcnbook}{fontspec >= 2016/12/27 is required ...}{}%
+    }
+    %- Font properties: <family:rm|sf|tt> + <weight:lf|md|bf> + <shape:up|it|sl|sc> + <size>
+    %- <\rmfamily,\textrm{}|\sffamily,\textsf{}|\ttfamily,\texttt{}>: family of font <Roman|Sans serif|Monospace>, default <\rmfamily>
+    %- <\lfseries,\textlf{}|\mdseries,\textmd{}|\bfseries,\textbf{}>: weight of font <light|medium|bold>, default <\mdseries>
+    %- <\upshape,\textup{}|\itshape,\textit{}|\scshape,\textsc{}|\slshape,\textsl{}>: shape of font <upright|italic|samll capital|slanted>, default <\upshape>
+    %- Specify the default TeX font families with properties: <main>, <sans>, <mono>
+    %- \setxxxxfont{<font>}[Path=<>,Extension=<>,UprightFont=<>,BoldFont=<>,ItalicFont=<>,BoldItalicFont=<>,SlantedFont=<>,BoldSlantedFont=<>,SmallCapsFont=<>]%
+    %- The default setup for font loading automatically adds the Ligatures=TeX feature for the \setmainfont and \setsansfont commands
+    %- Fonts known to LuaTEX or XETEX may be loaded by their standard names as you'd speak them out loud
+    %- Fonts in the search path can be loaded by file name instead, but must include bold and italic variants explicitly
+    %- When a font family has both slanted and italic shapes, these may be specified separately using the analogous features ItalicFont and SlantedFont
+    %- Without these, the font switches for slanted (\textsl{},\slshape) will default to the italic shape
+    %- Roman or Serif - typefaces with strokes - for main content
+    %- examples: Times New Roman, Adobe Garamond Pro
+    %\setmainfont{Adobe Garamond Pro}%
+    %- extra font switches: {\normalfont ...}, \textnormal{...} due to \renewcommand*{\familydefault}{\rmdefault}
+    %- Sans serif - typefaces without strokes - for headings demanding high readability
+    %- examples: Arial, Helvetica, Gill Sans MT, Futura
+    %\setsansfont{Gill Sans MT}%
+    %- Monospaced - typefaces with same width - for programming, etc
+    %- examples: Rockwell, Andale Mono, Courier
+    %\setmonofont{Rockwell}%geometry(like \rmfamily, \sffamily, \ttfamily)
+    %- without NFSSFamily option, a font family is defined only if adding a new font name
+    %\newfontfamily\<font-switch>{<font>}[<font features>]%
+    %\newcommand{\text<font-switch>}[1]{{\<font-switch> #1}}%
+    %------------------------------------------------------------------------------------------
+    %---------------------------------------------------------------
+    %-
+    %-->>  Text font English <default: computer modern|fontspec: system fonts|others: font packages>
+    %\RequirePackage{newtxtext}% main font
+    %- Math font: <default: computer modern|others: font packages <newtxmath|unicode-math>>
+    %\RequirePackage[cmintegrals]{newtxmath}% times font, load after amsmath and newtxtext packages
+    %\RequirePackage{mathrsfs}% enable \mathscr for script alphabet
+    %\RequirePackage[cal=cm]{mathalfa}% map styles for calligraphic \mathcal and script \mathscr alphabet
+    \IfFontExistsTF{\cnbook@setup@mathfontfile}{%
+        \RequirePackage{unicode-math}% unicode font configuration <XITS|STIX2>
+        %\def\boldsymbol#1{\symbfit{#1}}% treat obsoleteness
+        %\def\bm#1{\symbfit{#1}}% treat obsoleteness
+        \providecommand{\Vector}[1]{\symbfit{#1}}% general vectors in bold italic
+        \providecommand{\unitVector}[1]{\symbfup{#1}}% unit vectors in bold roman
+        \providecommand{\Matrix}[1]{\symbfup{#1}}% matrix in bold roman
+        \providecommand{\unitMatrix}[1]{\symbfup{#1}}% identity matrix in bold roman
+        \providecommand{\Tensor}[1]{\symbfsfup{#1}}% tensor in sans-serif bold italic
+        \providecommand{\unitTensor}[1]{\symbfsfup{#1}}% identity tensor in sans-serif bold
+        \cnbook@setup@setmathfont
+    }{%
+    \RequirePackage{newtxtext}% main font
+    \RequirePackage[cmintegrals]{newtxmath}% times font, load after amsmath and newtxtext packages
+    \RequirePackage{mathrsfs}% enable \mathscr for script alphabet
+    \RequirePackage[cal=cm]{mathalfa}% map styles for calligraphic \mathcal and script \mathscr alphabet
+    }%- end Text font English
+    %-------------------------------------------------------------------------------------
+    %-
+    %-->> Text font: Chinese
+    \let\songti\relax %
+    \let\heiti\relax %
+    \let\fangsong\relax %
+    \let\kaishu\relax %
+    \let\lishu\relax %
+    \let\youyuan\relax %
+    %
+    \ifcnbook@setup@windows%
+        \cnbook@setup@setwindowsfont
+    \else\ifcnbook@setup@mac%
+        \cnbook@setup@setmacosfont
+    \else\ifcnbook@setup@adobe% call font from system font library
+        \cnbook@setup@setadobefont%
+    \else\ifcnbook@setup@none% call font from local fontdir
+        \cnbook@setup@setnonefont
+    \fi\fi\fi\fi
+    %---------------------------------------------------------------%
+    % 字体命令，可用于文档中自由设置字体 
+    \NewDocumentCommand \songti   {} { \CJKfamily { zhsong  } }%
+    \NewDocumentCommand \heiti    {} { \CJKfamily { zhhei   } }%
+    \NewDocumentCommand \fangsong {} { \CJKfamily { zhfs    } }%
+    \NewDocumentCommand \kaishu   {} { \CJKfamily { zhkai   } }%
+    \NewDocumentCommand \lishu    {} { \CJKfamily { zhli    } }%
+    \NewDocumentCommand \youyuan  {} { \CJKfamily { zhyou   } }%
+    %\newcommand   \yahei     { \CJKfamily { zhyahei } }%
+    
+    %- end Text font: Chinese
+\fi% end pdftex or xelatex/lualatex
+%
+\newcommand{\textks}[1]{%        
+    {\CJKfamily{zhkai} #1}%
+}%
+\newcommand{\Emph}[2][blue]{
+    \textks{\textcolor{#1}{ #2}}
+}
+%-
+%-->> Font name and Fontsize with fixed \normalbaselineskip{#1} and fixed factor \linespread{1}
+%-
+\NewDocumentCommand{\setupzihao}{g}{%
+    \IfNoValueTF{#1}{%
+        \newcommand\chuhao{\zihao{0}}%
+        \newcommand\xiaochu{\zihao{-0}}%
+        \newcommand\yihao{\zihao{1}}%
+        \newcommand\xiaoyi{\zihao{-1}}%
+        \newcommand\erhao{\zihao{2}}%
+        \newcommand\xiaoer{\zihao{-2}}%
+        \newcommand\sanhao{\zihao{3}}%
+        \newcommand\xiaosan{\zihao{-3}}%
+        \newcommand\sihao{\zihao{4}}%
+        \newcommand\xiaosi{\zihao{-4}}%
+        \newcommand\wuhao{\zihao{5}}%
+        \newcommand\xiaowu{\zihao{-5}}%
+        \newcommand\liuhao{\zihao{6}}%
+        \newcommand\xiaoliu{\zihao{-6}}%
+        \newcommand\qihao{\zihao{7}}%
+        \newcommand\xiaoqi{\zihao{-7}}%
+    }{%
+        \newcommand\chuhao{\fontsize{42pt}{#1}\selectfont}%
+        \newcommand\xiaochu{\fontsize{36pt}{#1}\selectfont}%
+        \newcommand\yihao{\fontsize{26pt}{#1}\selectfont}%
+        \newcommand\xiaoyi{\fontsize{24pt}{#1}\selectfont}%
+        \newcommand\erhao{\fontsize{22pt}{#1}\selectfont}%
+        \newcommand\xiaoer{\fontsize{18pt}{#1}\selectfont}%
+        \newcommand\sanhao{\fontsize{16pt}{#1}\selectfont}%
+        \newcommand\xiaosan{\fontsize{15pt}{#1}\selectfont}%
+        \newcommand\sihao{\fontsize{14pt}{#1}\selectfont}%
+        \newcommand\xiaosi{\fontsize{12pt}{#1}\selectfont}%
+        \newcommand\wuhao{\fontsize{10.5pt}{#1}\selectfont}%
+        \newcommand\xiaowu{\fontsize{9pt}{#1}\selectfont}%
+        \newcommand\liuhao{\fontsize{7.5pt}{#1}\selectfont}%
+        \newcommand\xiaoliu{\fontsize{6.5pt}{#1}\selectfont}%
+        \newcommand\qihao{\fontsize{5.5pt}{#1}\selectfont}%
+        \newcommand\xiaoqi{\fontsize{5pt}{#1}\selectfont}%
+    }%
+}%
+%-
+%-->>字符水平间距
+%-
+%- \CJKsetecglue命令定义了CJK字符与其他字符之间的空白，不只限于数字字符，也适用于字母等其他非CJK字符。
+%- 如果你想要更精细的控制，可能需要借助其它工具或者宏包。
+%\ifcnbook@setup@xecjk%
+    % \hskip0.15em plus0.05em minus 0.05em表示基础间距为0.15em，可增加至0.2em，也可减少至0.1em以便满足排版需求。
+%    \CJKsetecglue{\hskip 0.3em plus 0.05em minus 0.1em} % 数字与CJK字符的间距
+%\fi
+%\renewcommand\CJKglue{\hskip 2pt plus 1.6pt}
+%
+\providecommand\emph{}
+\let\preemph\emph
+\renewcommand{\emph}[2][black]{
+    \textbf{\textcolor{#1}{#2}}
+}
+
+%-
+%-> Bibliography processor and package
+%-
+\def\cnbook@setup@bibref{ref}% bibliography reference file
+%\newcommand\bibfile[1]{\def\cnbook@setup@reference{#1}}
+\def\cnbook@setup@bibtexnum{style/gbt7714-numerical}% bibtex numbers bst
+\def\cnbook@setup@bibtexauy{style/gbt7714-author-year}% bibtex authoryear bst
+\def\cnbook@setup@bibtexalp{alpha}% bibtex alpha bst
+\def\cnbook@setup@bibernum{style/gb7714-2015}% biber numbers bst
+%\def\cnbook@setup@bibernsfc{style/nsfc-gb7714-2015}% biber numbers bst
+\def\cnbook@setup@biberauy{style/gb7714-2015ay}% biber authoryear bst
+\def\cnbook@setup@biberalp{alphabetic}% biber alpha bst
+%- Bibtex processor + natbib package
+\ifcnbook@setup@bibtex%
+    % Set punctuation and mode of citation style
+    \newcommand{\bibstyle@super}{\bibpunct{[}{]}{,}{s}{,}{\textsuperscript{,}}}%
+    \newcommand{\bibstyle@numbers}{\bibpunct{[}{]}{,}{n}{,}{,}}%
+    \newcommand{\bibstyle@authoryear}{\bibpunct{(}{)}{;}{a}{,}{,}}%
+    \newcommand{\bibstyle@alpha}{\bibpunct{[}{]}{,}{n}{,}{,}}%
+    \ifcnbook@setup@numbers% enable numbered citation style
+        \RequirePackage[sort&compress]{natbib}% numbered citation mode
+        \ifcnbook@setup@super% enable superscripted citation style
+            \citestyle{super}%
+        \else
+            \citestyle{numbers}%
+        \fi
+        \bibliographystyle{\cnbook@setup@bibtexnum}% numbered scheme
+    \fi
+    \ifcnbook@setup@authoryear% enable author year citation style
+        \RequirePackage{natbib}% author year citation mode
+        \citestyle{authoryear}%
+        \bibliographystyle{\cnbook@setup@bibtexauy}% author year scheme
+    \fi
+    \ifcnbook@setup@alpha% enable alpha citation style
+        \RequirePackage[square,comma,numbers]{natbib}% alpha citation mode
+        \bibliographystyle{\cnbook@setup@bibtexalp}% alpha scheme
+    \fi
+    \providecommand*{\citetns}[2][]{% text embedded \citet in superscripted mode
+        \begingroup\citestyle{numbers}\citet[#1]{#2}\endgroup%
+    }
+    \providecommand*{\citepns}[2][]{% text embedded \citep in superscripted mode
+        \begingroup\citestyle{numbers}\citep[#1]{#2}\endgroup%
+    }
+\fi
+%- Biber processor + biblatex package
+\ifcnbook@setup@biber%
+    \AtEndPreamble{\RequirePackage{hyperref}}% enable biblatex detection of hyperref
+    \ifcnbook@setup@numbers% enable numbered citation style
+        \ifcnbook@setup@super% enable superscripted citation style
+            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+        \else
+            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+            \renewrobustcmd*{\citet}{\textcite}%
+            \renewrobustcmd*{\citep}{\parencite}%
+        \fi
+    \fi
+    \ifcnbook@setup@nsfc% enable numbered citation style
+        \ifcnbook@setup@super% enable superscripted citation style
+            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%gbnamefmt=fullname,
+        \else
+            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%
+            \renewrobustcmd*{\citet}{\textcite}%
+            \renewrobustcmd*{\citep}{\parencite}%
+        \fi
+    \fi
+    \ifcnbook@setup@authoryear% enable author year citation style
+        \RequirePackage[backend=biber,style=\cnbook@setup@biberauy,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+            \renewrobustcmd*{\citet}{\textcite}%
+            \renewrobustcmd*{\citep}{\parencite}%
+    \fi
+    \ifcnbook@setup@alpha% enable alpha citation style
+        \RequirePackage[backend=biber,style=\cnbook@setup@biberalp,gbannote=true]{biblatex}%
+    \fi
+    %
+    \ifcnbook@setup@bibauto \addbibresource{\cnbook@setup@bibref.bib} \fi
+    \providecommand{\citep}[1]{\parencite{#1}}% compatibility
+    \providecommand{\citet}[1]{\textcite{#1}}% compatibility
+    \providecommand{\bibetal}{et al.}% compatibility
+    \providecommand{\biband}{and}% compatibility
+    \DefineBibliographyStrings{english}{%
+        andincite         = {\biband},
+        andothersincite   = {\bibetal{}},
+        andincitecn       = {\biband},
+        andothersincitecn = {\bibetal},
+    }
+    \providecommand{\addbibresource}{}% compatibility
+    \let\cnbook@setup@addbibresource \addbibresource
+    \renewcommand\addbibresource[1]{
+    	%\setupifstreq{\cnbookbib}{biber}{}{}
+   		\ifcnbook@setup@biber
+    		\cnbook@setup@addbibresource{#1}
+    	\else
+    		\ClassWarning{cnbooksetup}{Command 'addbibresource' requires 'biber' backen.}%
+    	\fi
+    }
+    % BOLD Specific author
+    \renewcommand*{\mkbibnamegiven}[1]{%通过作者注释(AUTHOR+an)局部调整作者的格式需与bib配合
+        \ifitemannotation{thesisauthor}{\ifbibliography{\textcolor{black}{\textbf{#1}}}{#1}}%
+            {#1}
+        \ifbibliography{\ifitemannotation{corresponding}{\textsuperscript{*}}{}}{}%
+    }
+    \renewcommand*{\mkbibnamefamily}[1]{%
+        \ifitemannotation{thesisauthor}{%
+            \ifbibliography{\textcolor{black}{\textbf{#1}}}{#1}
+        }{#1}
+    }
+\fi% end of \cnbook@setup@biber
+\NewDocumentCommand{\cnbookbibliography}{g}{
+    {\linespread{1.25}
+	\ifcnbook@setup@bibtex%
+		\IfNoValueTF{#1}{%
+			\bibliography{\cnbook@setup@bibref}%
+		}{\bibliography{#1}}%
+	\fi%
+	\ifcnbook@setup@biber%
+		\IfNoValueTF{#1}{%
+			\printbibliography\relax%
+		}{%
+            \ClassWarning{cnbooksetup}{'Argument '#1 is not supported by printbibliography with biber backen}%
+			\printbibliography\relax%
+		}%
+	\fi
+    }
+}
+
+
+%-
+%-> Figure environment support
+%-
+\RequirePackage{graphicx}% packages for including graphics
+\RequirePackage[format=plain,hangindent=2.0em,font={small,bf},skip=8pt,labelsep=space]{caption}% options: [margin=10pt,labelfont=bf]
+\RequirePackage{subcaption}% package for subfigures
+\RequirePackage[list=off]{bicaption}% package for binary captions
+\DeclareCaptionOption{bi-first}[]{}% 1st language
+\DeclareCaptionOption{bi-second}[]{% 2nd language
+    \def\tablename{Table}%
+    \def\figurename{Figure}%
+}
+\captionsetup[bi-first]{bi-first}%
+\captionsetup[bi-second]{bi-second}%
+%图的中英文标题
+\captionsetup[figure]{name=图, font={small,bf, stretch=1.25}}
+\captionsetup[figure][bi-first]{name=图, font={small,bf,stretch=1.25}}
+\captionsetup[figure][bi-second]{name=Figure, font={small,bf,stretch=1.25}}
+%表的中英文标题
+\captionsetup[table]{name=表, font={small,stretch=1.25}}
+\captionsetup[table][bi-first]{name=表, font={small,bf,stretch=1.25}}
+\captionsetup[table][bi-second]{name=Table, font={small,bf,stretch=1.25}}
+
+\RequirePackage[section]{placeins}% prevent floats from being moved over section
+\newcommand{\figurenote}[1]{
+    \begin{flushleft}
+        {
+            {\quad\quad}\linespread{1.25}\zihao{5}\sffamily \textbf{注:} \zihao{5}\sffamily{#1}
+        }
+    \end{flushleft}
+}
+
+%-
+%-> Page layout and spacing
+%-
+%\ifcnbook@setup@geometry% enable geometry to redefine page layout
+%    \RequirePackage{geometry}% page layout
+    %\RequirePackage{setspace}% line spacing
+%\fi
+\ifcnbook@setup@lscape% landscape layout
+    \RequirePackage{fancyhdr}% fancy headers and footers
+    %- usage: \begin{landscape} [\thispagestyle{lscape}] text... \end{landscape}
+    \RequirePackage{pdflscape}% landscape environment
+    \RequirePackage[absolute]{textpos}% rotated page number
+\fi
+\ifcnbook@setup@xhf% header and footer style
+    \RequirePackage{fancyhdr}% fancy headers and footers
+\fi
+%\RequirePackage{microtype}% improves general appearance of the text
+%-
+%-> Color
+%-
+\ifcnbook@setup@color% enable color package to use color
+    %\RequirePackage{color}%
+    \RequirePackage[usenames,dvipsnames,table]{xcolor}%
+\fi
+%-
+%-> Draw graphics directly with TeX commands
+%-
+\ifcnbook@setup@tikz%
+    \RequirePackage{tikz}% automatically load pgf package
+    \usetikzlibrary{% load libraries
+        positioning,
+        arrows,
+        calc,
+        trees
+    }%
+\fi
+%-
+%-> Complex tables
+%-
+\ifcnbook@setup@table%
+    \RequirePackage{ctable,multirow,longtable,makecell}% imports the array, tabularx, booktabs and multirow packages
+\fi
+%-
+%-> List structures
+%-
+\ifcnbook@setup@list% enable enhanced list and verbatim structures
+    \RequirePackage{verbatim}% improve verbatim environment
+    \RequirePackage{enumitem}% configure the enumerate environment
+    \setlist[enumerate]{wide=\parindent}% only indent the first line
+    \setlist[itemize]{wide=\parindent}% only indent the first line
+    \setlist{nosep}% default text spacing
+    \RequirePackage{listings}% source code
+    \RequirePackage{algpseudocode,algorithm,algorithmicx}% algorithm
+    \providecommand{\algname}{Algorithm}%
+    \def\ALG@name{\algname}% rename label
+\fi
+%-
+%-> Link support
+%-
+\AtEndPreamble{%
+    \RequirePackage{hyperref}% load at last
+    \hypersetup{% set hyperlinks
+        pdfencoding=auto,% allows non-Latin based languages in bookmarks
+        psdextra=true,% extra support for math symbols in bookmarks
+        %bookmarks=true,% show bookmarks bar
+        bookmarksnumbered=true,% put section numbers in bookmarks
+        pdftitle={\@title},% title
+        pdfauthor={\@author},% author
+        pdfsubject={\@title},% subject
+        %pdftoolbar=true,% show toolbar
+        %pdfmenubar=true,% show menu
+        pdffitwindow=false,% window fit to page when opened
+        pdfstartview={FitH},% fits the width of the page to the window
+        %pdfnewwindow=true,% links in new window
+        %backref=true,% do bibliographical back references
+        %pagebackref=true,% backreference by page number
+        colorlinks=true,% false: boxed links; true: colored links
+        linkcolor=black,% color of internal links
+        citecolor=blue,% color of links to bibliography
+        filecolor=blue,% color of file links
+        urlcolor=blue,% color of external links
+    }
+    \ifcnbook@setup@xlink% set link color to black
+        \hypersetup{% set hyperlinks
+            hidelinks,% remove link color and border
+        }
+    \fi
+}
+%---------------------------------------------------------------------------%
+%->> Configuration command
+%---------------------------------------------------------------------------%
+%-
+%-> Extensions and directories for graphics
+%-
+%- Declare graphic extensions for automatic selection when including graphics
+%- via avoiding supplying graphic extensions in \includegraphics command,
+%- the source file can be more general and adaptive
+\ifcnbook@setup@xetex%
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg,.eps,.tif,.bmp,.gif}%
+\else% <pdflatex> or <lualatex>
+    \DeclareGraphicsExtensions{.pdf,.png,.jpg}%
+\fi
+\graphicspath{{figures/}}% search path for figures
+%-
+%-> Layout, space, and style
+%-
+%\ifcnbook@setup@geometry% enable geometry to redefine page layout
+    %\geometry{paper=a4paper,left=31.7mm,right=31.7mm,top=25.4mm,bottom=25.4mm,headheight=12pt,headsep=17.5pt,footskip=10.4mm}%
+%    \geometry{paper=a4paper,bindingoffset=10mm,left=25mm,right=25mm,top=25mm,bottom=25mm,headheight=17.5pt,headsep=17.5pt,footskip=10.4mm}%
+%\fi
+%\linespread{1.25}% 1.5 for "one and a half" line spacing, and 2.0 for "double" line spacing
+%\setlength{\parskip}{0.5ex plus 0.25ex minus 0.25ex}% skip space a paragraph
+\setcounter{tocdepth}{2}% depth for the table of contents
+\setcounter{secnumdepth}{3}% depth for section numbering, default is 2(subsub)
+%- Set equation, figure, table numbering
+% \numberwithin{equation}{chapter}% set enumeration level
+% \renewcommand{\theequation}{\thechapter\arabic{equation}}% configure the label style
+% \numberwithin{figure}{section}% set enumeration level
+% \renewcommand{\thefigure}{\thesection\arabic{figure}}% configure the label style
+% \numberwithin{table}{section}% set enumeration level
+% \renewcommand{\thetable}{\thesection\arabic{table}}% configure the label style
+
+\numberwithin{equation}{\cnbook@setup@maincnt}% set equation enumeration level
+\renewcommand{\theequation}{\thechapter-\arabic{equation}}
+\numberwithin{figure}{\cnbook@setup@maincnt}% set figure enumeration level
+\renewcommand{\thefigure}{\thechapter-\arabic{figure}}
+\numberwithin{table}{\cnbook@setup@maincnt}% set table enumeration level
+\renewcommand{\thetable}{\thechapter-\arabic{table}}
+%\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
+\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
+\renewcommand{\thedefinition}{\thechapter-\arabic{definition}}
+\renewcommand{\thetheorem}{\thechapter-\arabic{theorem}}
+
+%- Set bibliography entry
+\ifcnbook@setup@bibtex%
+    \setlength{\bibsep}{0.0ex plus 0.2ex minus 0.2ex}% set distance between entries
+\fi
+\ifcnbook@setup@biber%
+    %\setlength\bibitemsep{0.5\baselineskip}% set distance between entries
+    \setlength\bibitemsep{0.0ex plus 0.2ex minus 0.2ex}% set distance between entrie
+\fi
+\renewcommand*{\bibfont}{\small}% set font size for bibliography
+
+%------------------------------------------------------------------------------------------------
+%-> Page header and footer Style
+%-
+%- Page styles in Latex refers to headers and footers of a document.
+%- These headers/footers typically contain document titles, chapter
+%- or section numbers/names, and page numbers.
+%- Configure fancy style
+\ifcnbook@setup@xhf% user defined header and footer style
+    \pagestyle{fancy}%
+    %- customizing headers and footers in LaTeX is a two-stage process
+    %- 1) \chapter|section call \chapter|sectionmark that call \markboth|right to define \left|rightmark
+    %-    but \chapter*|section* do not call \chapter|sectionmark, then manually call \markboth|right is needed to update \left|rightmark
+    %-    \markboth{here set \leftmark for chapter heading}{here set \rightmark for section heading}
+    %- 2) in header/footer definition, \left|rightmark represent the current chapter and section heading
+    %- original chaptermark and sectionmark for headings
+    %\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\chaptername\ \thechapter.\ #1}}{}}%
+    %\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}%
+    %- redefine to set mark to actual name
+    %\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{#1}}{}}%
+    %\renewcommand{\sectionmark}[1]{\markright{\MakeUppercase{#1}}{}}%
+    %- Deactivate uppercase effect
+    \renewcommand{\MakeUppercase}[1]{#1}%
+    %- Define different kinds of header and footer for different parts
+    \fancypagestyle{frontmatterstyle}{% style for frontmatter
+        \fancyhf{}% clear fields
+        \fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}% structure elements
+        \fancyfoot[C]{\footnotesize \thepage}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    \fancypagestyle{enfrontmatterstyle}{% style for frontmatter
+    \fancyhf{}% clear fields
+    \fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}% structure elements
+    \fancyfoot[C]{\footnotesize \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+
+    \fancypagestyle{mainmatterstyle}{% style for mainmatter
+        \fancyhf{}% clear fields
+        \fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}% structure elements
+        \fancyfoot[C]{\footnotesize \ifnumodd{\value{page}}{\hspace*{\fill}\thepage}{\thepage\hspace*{\fill}}}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0.8pt}% footer rule
+    }
+    \fancypagestyle{backmatterstyle}{% header and footer style for backmatter
+        \fancyhf{}% clear fields
+        \fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}% structure elements
+        \fancyfoot[C]{\footnotesize \ifnumodd{\value{page}}{\hspace*{\fill}\thepage}{\thepage\hspace*{\fill}}}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    \fancypagestyle{figurestyle}{
+        \fancyhf{}
+        \fancyhead[CO]{\footnotesize 图表目录}%此处填写中文标题
+        \fancyhead[CE]{\footnotesize \@title}%此处填写中文标题
+        \fancyfoot[C]{\footnotesize \thepage}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    \fancypagestyle{symbolstyle}{
+        \fancyhf{}
+        \fancyhead[CO]{\footnotesize 符号列表}%此处填写中文标题
+        \fancyhead[CE]{\footnotesize \@title}%此处填写中文标题
+        \fancyfoot[C]{\footnotesize \thepage}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    \fancypagestyle{appendixstyle}{
+        \fancyhf{}
+        \fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}%此处填写中文标题
+        \fancyfoot[C]{\footnotesize \thepage}% page number
+        \renewcommand{\headrulewidth}{0.8pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    %- Some Latex commands, like \chapter, use the \thispagestyle command
+    %- to automatically switch to the plain page style, thus ignoring the
+    %- page style currently in effect. To customize such pages you must
+    %- redefine the plain pagestyle. If you want the plain style inherits
+    %- the current style, comment all the lines in plain style definition.
+    \fancypagestyle{plain}{%
+        %\fancyhf{}% clear fields
+        %\renewcommand{\headrulewidth}{0pt}% header rule
+        %\renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    \fancypagestyle{noheaderstyle}{% header and footer style for no header
+        \fancyhf{}% clear fields
+        %\fancyhead[C]{\footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}}% structure elements
+        \fancyfoot[C]{\footnotesize \ifnumodd{\value{page}}{\hspace*{\fill}\thepage}{\thepage\hspace*{\fill}}}% page number
+        \renewcommand{\headrulewidth}{0pt}% header rule
+        \renewcommand{\footrulewidth}{0pt}% footer rule
+    }
+    %- Redefine \frontmatter to include the change
+    \providecommand{\frontmatter}{}% compatibility for non-book classes
+    \let\cnbook@setup@frontmatter\frontmatter%
+    \renewcommand{\frontmatter}{%
+        \cnbook@setup@frontmatter%
+        \pagestyle{frontmatterstyle}%
+    }
+    %- Redefine \mainmatter to include the change
+    \providecommand{\contentmatter}{}% compatibility for non-book classes
+    \let\cnbook@setup@contentmatter\contentmatter%
+    \renewcommand{\contentmatter}{%
+        \cnbook@setup@contentmatter%
+    }
+    %- Redefine \mainmatter to include the change
+    \providecommand{\mainmatter}{}% compatibility for non-book classes
+    \let\cnbook@setup@mainmatter\mainmatter%
+    \renewcommand{\mainmatter}{%
+        \cnbook@setup@mainmatter%
+        \pagestyle{mainmatterstyle}%
+    }
+    %- define \referencematter
+    \providecommand{\referencematter}{}% compatibility for non-book classes
+    \let\cnbook@setup@referencematter\referencematter%
+    \renewcommand{\referencematter}{%
+        \cnbook@setup@referencematter%
+        \pagestyle{mainmatterstyle}%
+    }
+    %- redefine \appendix
+    \providecommand{\appendix}{}% compatibility for non-book classes
+    \let\cnbook@setup@appendix\appendix%
+    \renewcommand{\appendix}{%
+        \cleardoublepage%
+        \cnbook@setup@appendix%
+        \pagestyle{appendixstyle}
+        %图的中英文编号前缀
+        \captionsetup[figure]{name=图, font={small,stretch=1.25}}
+        \captionsetup[figure][bi-first]{name=图, font={small,bf,stretch=1.25}}
+        \captionsetup[figure][bi-second]{name=Figure, font={small,bf,stretch=1.25}}
+        %表的中英文编号前缀
+        \captionsetup[table]{name=表, font={small,stretch=1.25}}
+        \captionsetup[table][bi-first]{name=表, font={small,bf,stretch=1.25}}
+        \captionsetup[table][bi-second]{name=Table, font={small,bf,stretch=1.25}}
+        
+        \renewcommand{\labelenumi}{(\arabic{enumi}) }
+        \renewcommand{\labelenumii}{(\arabic{enumi}).\arabic{enumii}}
+        \renewcommand{\labelenumiii}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}}
+        \renewcommand{\labelenumiv}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+                
+        \setcounter{equation}{0}
+        \setcounter{figure}{0}
+        \setcounter{table}{0}
+        \setcounter{theorem}{0}
+        \setcounter{example}{0}
+        \setcounter{definition}{0}
+        \setcounter{chapter}{0}
+        %\setcounter{section}{0}
+        %\renewcommand\chaptername{附录}
+        %\renewcommand\chaptername{Appendix} 
+        \renewcommand\thechapter{\Alph{chapter}} 
+        %\renewcommand\thechapter{附录\zhnum{app}} 
+        %\renewcommand\thechapter{附录\zhnumber{\value{chapter}}}
+        %\renewcommand\thesection{~附\arabic{chapter}.\arabic{section}}
+
+        %\setcounter{figure}{0}
+        %\renewcommand\theequation{附\arabic{chapter}-\arabic{equation}}
+        %\renewcommand\thefigure{附\arabic{chapter}-\arabic{figure}}
+        %\renewcommand\thetable{附\arabic{chapter}-\arabic{table}}
+        %\renewcommand\thetheorem{附\arabic{chapter}-\arabic{theorem}}
+        %\renewcommand\thedefinition{附\arabic{chapter}-\arabic{definition}}
+        %\renewcommand\theexample{附\arabic{chapter}-\arabic{example}}
+    }
+    %- Redefine \backmatter to include the change
+    \providecommand{\backmatter}{}% compatibility for non-book classes
+    \let\cnbook@setup@backmatter\backmatter%
+    \renewcommand{\backmatter}{%
+        \cnbook@setup@backmatter%
+        \pagestyle{backmatterstyle}%
+    }
+\fi
+
+
+\providecommand{\tableofcontents}{}
+\let\cnbook@setup@tableofcontents\tableofcontents
+\renewcommand\tableofcontents{
+    % content list region
+    \linespread{1.35}% local line space
+    \intobmk*{\cleardoublepage}{\contentsname}% add link to bookmark
+    \newpage
+
+    \cnbook@setup@tableofcontents% content catalog
+    \intobmk*{\cleardoublepage}{图表目录}
+    \pagestyle{figurestyle}
+    {
+        \cleardoublepage
+        {
+            \let\clearpage\relax  % Do nothing when a \clearpage command appears 
+            \let\cleardoublepage\relax
+            \renewcommand*{\addvspace}[1]{}
+            \let\oldnumberline\numberline%
+            \renewcommand{\numberline}{\figurename~\oldnumberline}%
+    
+            \listoffigures
+            \let\clearpage\relax  % Do nothing when a \clearpage command appears 
+            \let\cleardoublepage\relax
+            %\renewcommand{\numberline}{\appfigname~\oldnumberline}%
+            %\vspace{-30pt}
+            %\listofappfigs
+        }
+        {
+            \let\clearpage\relax  % Do nothing when a \clearpage command appears 
+            \let\cleardoublepage\relax
+            \renewcommand*{\addvspace}[1]{}
+            \let\oldnumberline\numberline%
+            \renewcommand{\numberline}{\tablename~\oldnumberline}%
+            \listoftables
+            %\renewcommand{\numberline}{\apptabname~\oldnumberline}%
+            %\vspace{-30pt}
+            %\listofapptabs
+        }
+    }
+}
+
+
+%-
+%-> Configure landscape environment
+%-
+\ifcnbook@setup@lscape%
+\fancypagestyle{lscape}{% landscape layout style
+    \fancyhf{}% clear fields
+    \fancyhead[C]{%
+        \begin{textblock}{1.0}[0.5,0.5](0.08,0.5)%
+            \rotatebox{90}{%
+                \footnotesize \ifnumodd{\value{page}}{\leftmark}{\@title}%
+            }%
+        \end{textblock}%
+        \begin{textblock}{1.0}[0.5,0.5](0.08,0.5)%
+            \rotatebox{90}{%
+                \rule[-14pt]{\textwidth}{0.8pt}%
+            }%
+        \end{textblock}%
+    }%
+    \fancyfoot[C]{%
+        \begin{textblock}{1.0}[0.5,0.5](0.92,0.5)
+            \rotatebox{90}{%
+                \footnotesize \ifnumodd{\value{page}}{\hspace*{\fill}\thepage}{\thepage\hspace*{\fill}}%
+            }%
+        \end{textblock}%
+    }%
+    %- textpos: \begin{textblock}{<blockwidth>}[<ho>,<vo>](<hpos>,<vpos>) text... \end{textblock}
+    %- origin of the absolute coordinate is the top-left corner of the page
+    %- text will be set in a box <blockwidth> modules wide and placed on the page
+    %- with the point [<ho>,<vo>] of the block at the position (<hpos>,<vpos>) of the page
+    %- [<ho>,<vo>] are fractions of the width and height of the text box and specify
+    %- the reference point of the text box, [0,0]: top left; [0.5,0.5]: middle; [0,1]: bottom left
+    %- [<hpos>,<vpos>] are fractions of the width and height of the page and specify
+    %- the position point on page, [0,0]: top left; [0.5,0.5]: middle; [0,1]: bottom left
+    %- set unit of <blockwidth>, <hpos> arguments via module 
+    \setlength{\TPHorizModule}{\paperwidth}%
+    %- set unit of <vpos> argument via module 
+    \setlength{\TPVertModule}{\paperheight}%
+    %- \rule[raise]{width}{thickness}
+    %- \rotatebox[origin=c]{angle}{text}
+    \renewcommand{\headrulewidth}{0pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fi
+%-
+%-> Configure list environment
+%-
+\ifcnbook@setup@list% enable enhanced list
+    \definecolor{cnbook@setup@green}{rgb}{0,0.6,0}
+    \definecolor{cnbook@setup@gray}{rgb}{0.5,0.5,0.5}
+    \definecolor{cnbook@setup@mauve}{rgb}{0.58,0,0.82}
+    \lstset{%
+        numberbychapter=false,% numbered sequentially or by chapter
+        backgroundcolor=\color{white},% background color;
+        basicstyle=\scriptsize,% font size for code
+        breakatwhitespace=false,% sets if automatic breaks should only happen at whitespace
+        breaklines=true,% sets automatic line breaking
+        captionpos=b,% caption-position to bottom
+        commentstyle=\color{cnbook@setup@green},% comment style
+        %deletekeywords={...},% delete keywords from the given language
+        frame=single,% adds a frame around the code
+        keepspaces=true,% keeps spaces in text for keeping indentation of code
+        keywordstyle=\color{blue},% keyword style
+        %otherkeywords={*,...},% add more keywords to the set
+        numbers=left,% where to put the line-numbers; possible values are (none, left, right)
+        numbersep=5pt,% how far the line-numbers are from the code
+        numberstyle=\tiny\color{cnbook@setup@gray},% the style that is used for the line-numbers
+        rulecolor=\color{black},% if not set, the frame-color may be changed on line-breaks
+        showspaces=false,% show spaces everywhere adding particular underscores;
+        showstringspaces=false,% underline spaces within strings only
+        showtabs=false,% show tabs within strings adding particular underscores
+        stepnumber=2,% the step between two line-numbers. If it's 1, each line will be numbered
+        stringstyle=\color{cnbook@setup@mauve},% string literal style
+        tabsize=2,% sets default tabsize to 2 spaces
+        title=\lstname% show the filename of files
+    }
+\fi
+%-
+%-> Page background
+%-
+\ifcnbook@setup@background%
+    \definecolor{backgroundcolor}{rgb}{0.85,0.85,0.85}%
+    \pagecolor{backgroundcolor}% background color
+\fi
+
+%---------------------------------------------------------------------------%
+\endinput
+

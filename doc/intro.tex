@@ -1,0 +1,78 @@
+\chapter{引言} \label{chap:intro}
+
+\section{版权声明}
+
+任何个人或组织均可基于此模版进行复制、传播、二次开发，但是必须遵守
+\href{https://www.latex-project.org/lppl/lppl-1-3c/}{\LaTeX{}项目公共许可证 v1.3c } 授权，任何违反该许可证使用 \projectname 的行为均不被允许。
+
+随本项目分发的 相关机构logo仅用于制作封面。这些图形从相关机构公布的下载站点获取，除裁剪周边空白外，项目维护者未进行任何其他修改。 请注意：相关图形与文字都属于原机构的注册商标，除此模板外，请勿用于其他用途。
+
+\projectname 模板基于中国科学院大学学位论文\href{https://github.com/mohuangrui/ucasthesis}{ucasthesis模板}进一步开发而来。
+
+\section{背景介绍}
+\projectname 模板是专门为应对中文书籍/学位论文/报告等排版设计的\LaTeX{}解决方案，其设计理念在于平衡专业排版需求与用户友好性。\projectname 将\LaTeX{}的复杂性高度封装，开放出简单的接口，以方便用户使用。针对中文排版常见痛点提供开箱即用的解决方案：
+\begin{enumerate}
+    \item 提供规范的格式一致的制图与排版方案，兼容\LaTeX{}中流行广泛的tikz绘图系统，尤其针对概率与机器学习绘图提供了自定义增强宏包。
+    \item 提供符合规范的数学公式排版方案，专门针对机器学习领域定义了符合一般数学规范的表达式宏包。
+    \item 参考文献基于github开源的国家推荐标准GB/T7714-2015文献引用规范宏包项目：\href{https://github.com/zepinglee/gbt7714-bibtex-style}{
+gbt7714-bibtex-style}和\href{https://github.com/hushidong/biblatex-gb7714-2015}{biblatex-gb7714-2015
+}，以兼容BibTeX和biblatex。\emph[red]{注意：涉及多段文献引用列表，建议使用biblatex实现}。
+    \item 本模板兼顾的操作系统包括Windows，Linux(推荐Ubuntu 及 Deepin)，MacOS，\LaTeX{}编译引擎推荐使用xelatex。支持中文书签、中文渲染、中文粗体显示、拷贝PDF中的文本到其他文本编辑器等特性。
+    \item 针对本套模板的使用方法及命令，本文档提供了详尽的说明。
+\end{enumerate}
+
+\projectname 的目标在于简化学位论文/书籍/报告的撰写，利用\LaTeX{}格式与内容分离的特征，模板将格式设计好后，作者可只需关注内容本身，在处理理工类论文、书籍、报告等排版时具有用户友好、高效美观的特点。相比于MS Office/WPS Office，\LaTeX{}可以解放你排版所浪费的宝贵时间。 同时，\projectname 有着整洁一致的代码结构和扼要的注解，对文档的仔细阅读可为初学者提供一个学习 \LaTeX{} 的窗口。
+
+\section{系统要求}\label{sec:system}
+
+支持的操作系统及 \TeX~Live版本详细说明如下：
+\begin{itemize}
+\item \textbf{Windows}:  \project 仅在 \projectwindows~+ \TeX~Live 2025 上进行了大部分功能测试。一般情况下，可在Windows 7 8 10和\TeX~Live 2021-2025组合平台上能够达到与\projectwindows~+ \TeX~Live 2025组合平台差不多的效果 \footnote{所有推测的Windows与\TeX~Live可能组合均没有进行任何测试，如有测试结果可到讨论区反馈。}。其他的潜在组合无法合理推测，不建议使用。
+
+\item \textbf{Linux}:  \project 仅在  \projectlinux~+ \TeX~Live 2024 上进行了大部分功能测试。一般情况下，可在Ubuntu 20.04-24.04和\TeX~Live 2021-2025组合平台上能够达到与\projectlinux~+ \TeX~Live 2024组合平台差不多的效果,可在Deepin V23-25和\TeX~Live 2021-2025组合平台上能够达到与\projectlinux~+ \TeX~Live 2024组合平台差不多的效果 \footnote{所有推测的Linux发行版与\TeX~Live可能组合均没有进行任何测试，如有测试结果可到讨论区反馈。}。其他的潜在组合无法合理推测，不建议使用。
+
+\item \textbf{MacOS X}:  由于没有 \projectmacos 的相关设备，所以没有在 \projectmacos 上对 \project 做任何测试，未来也不打算在 \projectmacos 上做任何适配性测试工作，有兴趣的可以尝试一下。 由于\LaTeX{}的跨平台特性，大部分功能在 \projectmacos 上应该是正常的，最有可能出问题的是中/英文字体族的配置。
+
+\item \textbf{HarmonyOS}:  未来视HarmonyOS与 \LaTeX{} 兼容情况，实时做出兼容性适配。
+\end{itemize}
+
+事实上，
+\href{https://github.com/changbozhu/\projectname}{\projectname} 模版可以在目前主流的 \href{https://en.wikibooks.org/wiki/LaTeX/Introduction}{\LaTeX{}} 编译系统中使用，如\TeX{}~Live和MiK\TeX{}。因C\TeX{}套装已停止维护，\emph{不再建议使用} （请勿混淆C\TeX{}套装与ctex宏包。C\TeX{}套装是集成了许多\LaTeX{}组件的\LaTeX{}编译系统。 \href{https://ctan.org/pkg/ctex?lang=en}{ctex} 宏包如同\projectname ，是\LaTeX{}命令集，其维护状态活跃，并被主流的\LaTeX{}编译系统默认集成，是几乎所有\LaTeX{}中文文档的核心架构）。表\ref{tab:os-latex-editor}给出了各个操作系统上推荐的 \href{https://en.wikibooks.org/wiki/LaTeX/Installation}{\LaTeX{}编译系统} 和 \href{https://en.wikibooks.org/wiki/LaTeX/Installation}{\LaTeX{}文本编辑器}。
+
+\begin{table}[!hptb]
+\caption{各操作系统上推荐的编译系统与编辑器}
+\label{tab:os-latex-editor}
+\begin{center}
+    %\footnotesize% fontsize
+    %\setlength{\tabcolsep}{4pt}% column separation
+    %\renewcommand{\arraystretch}{1.5}% row space 
+    \begin{tabular}{ccc}
+        \toprule
+        %\multicolumn{num_of_cols_to_merge}{alignment}{contents} \\
+        %\cline{i-j}% partial hline from column i to column j
+        操作系统 & \LaTeX{}编译系统 & \LaTeX{}文本编辑器\\
+        \midrule
+        Linux & \href{https://www.tug.org/texlive/acquire-netinstall.html}{\TeX{}Live Full} & \href{http://www.xm1math.net/texmaker/}{Texmaker} 或 \href{https://www.texstudio.org/}{TeXstudio} 或 \href{https://code.visualstudio.com/}{Visual Studio Code}\\
+        Windows & \href{https://www.tug.org/texlive/acquire-netinstall.html}{\TeX{}Live Full} & \href{http://www.xm1math.net/texmaker/}{Texmaker} 或\href{https://www.texstudio.org/}{TeXstudio} 或 \href{https://code.visualstudio.com/}{Visual Studio Code}\\
+        MacOS & \href{https://www.tug.org/mactex/}{Mac\TeX{} Full} & \href{http://www.xm1math.net/texmaker/}{Texmaker} 或 Texshop\\
+        \bottomrule
+    \end{tabular}
+\end{center}
+\end{table}
+
+\LaTeX{}编译系统，如\TeX{}Live（Mac\TeX{}为针对MacOS的\TeX{}Live)，用于提供编译环境，\LaTeX{}文本编辑器 (如Texmaker) 用于编辑\TeX{}源文件。请从各软件官网下载安装程序，勿使用不明程序源。\emph{\LaTeX{}编译系统和\LaTeX{}编辑器分别安装成功后，即完成了\LaTeX{}的系统配置}，无需其他手动干预和配置。若系统原带有旧版的\LaTeX{}编译系统并想安装新版，请\emph{先卸载干净旧版再安装新版}。
+
+\section{问题反馈}
+
+请见 \href{https://github.com/changbozhu/\projectname /issues/}{问题反馈} 
+
+欢迎大家有效地反馈模板不足之处，一起不断改进模板。希望大家向同事积极推广\LaTeX{}，一起更高效地写论文、书籍、报告等。
+
+\section{模板下载}
+
+\begin{center}
+    \href{https://github.com/changbozhu/\projectname}{Github/\projectname}: \url{https://github.com/changbozhu/\projectname}
+    
+    \href{https://gofile.me/77KDf/jFhXkred0}{字体下载}：\url{https://gofile.me/77KDf/jFhXkred0}
+\end{center}
+

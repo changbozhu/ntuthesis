@@ -1,0 +1,238 @@
+{
+    // LaTeX
+    "latex-workshop.intellisense.package.enabled": true, //根据加载的包，自动完成命令或包  
+    "latex-workshop.view.pdf.viewer": "tab", //tab:使用VSCode自带的pdf阅读器
+    "latex-workshop.latex.autoClean.run": "onFailed", //何时应删除LaTeX辅助文件,要清理的文件夹在latex-workshop.latex.outDir中定义,onFailed:在编译失败时清除项目,onBuild:不论编译成功与否都在编译终止时清除项目
+    "latex-workshop.latex.autoBuild.run": "never", //onFileChange:在检测到任何文件中的更改（甚至被其他应用程序修改）时编译（默认）,never:当你命令编译时才编译
+    "[latex]": {
+        "editor.formatOnSave": false, //true:在保存时格式化文件。格式化程序必须可用,延迟后文件不能保存,并且编辑器不能关闭
+    },
+    "latex-workshop.latex.tools": [
+        {
+            // 编译工具latex命令
+            "name": "latex",
+            "command": "latex",
+            "args": [
+                "-src",
+                "-interaction=nonstopmode",
+                "--shell-escape",
+                "-file-line-error",
+                "-pdf",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            // 编译工具xelatex命令
+            "name": "xelatex",
+            "command": "xelatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            // 编译工具pdflatex命令
+            "name": "pdflatex",
+            "command": "pdflatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "--shell-escape",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            // 编译工具latexmk命令
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-pdf",
+                "-silent",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "--shell-escape",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            // 编译工具latexmkxe命令
+            "name": "latexmkxe",
+            "command": "latexmk",
+            "args": [
+                "-xelatex",
+                "-silent",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "--shell-escape",
+                "-file-line-error",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtexbu1",
+            "command": "bibtex",
+            "args": [
+                "bu1"
+            ]
+        },
+        {
+            "name": "bibtexbu2",
+            "command": "bibtex",
+            "args": [
+                "bu2"
+            ]
+        },
+        {
+            "name": "bibtex",
+            "command": "bibtex",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "bibtexbu1",
+            "command": "bibtex",
+            "args": [
+                "bu1"
+            ]
+        },
+        {
+            "name": "bibtexbu2",
+            "command": "bibtex",
+            "args": [
+                "bu2"
+            ]
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "%DOCFILE%"
+            ]
+        },
+        {
+            "name": "ps2pdf",
+            "command": "ps2pdf",
+            "args": [
+                "-dEmbedAllFonts=true",
+                "-dSubsetFonts=true",
+                "-dEPSCrop=true",
+                "-dPDFSETTINGS=/prepress",
+                "%DOCFILE%"
+            ]
+        },
+        {
+            // 未能成功运行
+            "name": "XeLaTeX+MakeIndex+BibTeX",
+            "command": "texify",
+            "args": [
+                "--synctex=1",
+                "--pdf",
+                "--clean",
+                "--quiet",
+                "--tex-option=\"-interaction=nonstopmode\"",
+                "--tex-option=\"-c-style-errors\"",
+                "--engine=xetex",
+                "%DOC%.tex"
+            ]
+        },
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "xelatex->bibtex->xelatex->xelatex",
+            "tools": [
+                "xelatex",
+                "bibtex",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+        {
+            "name": "xelatex->biber->xelatex->xelatex",
+            "tools": [
+                "xelatex",
+                "biber",
+                "xelatex",
+                "xelatex"
+            ]
+        },
+        {
+            "name": "pdflatex->bibtex->pdflatex->pdflatex",
+            "tools": [
+                "pdflatex",
+                "bibtex",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+	{
+            "name": "pdflatex->biber->pdflatex->pdflatex",
+            "tools": [
+                "pdflatex",
+                "biber",
+                "pdflatex",
+                "pdflatex"
+            ]
+        },
+        {
+            "name": "latexmk(pdflatex)",
+            "tools": [
+                "latexmk",
+            ]
+        },
+        {
+            "name": "latexmk(xelatex)",
+            "tools": [
+                "latexmkxe",
+            ]
+        },
+        {
+            "name": "XeLaTeX+MakeIndex+BibTeX",
+            "tools": [
+                "XeLaTeX+MakeIndex+BibTeX"
+            ]
+        },
+    ],
+    "latex-workshop.latex.clean.fileTypes": [ //设定清理文件的类型  
+        "*.aux",  
+        "*.bbl",
+        "*.blg",
+        "*.idx",
+        "*.ind",
+        "*.lof",
+        "*.lot",
+        "*.out",  
+        "*.toc",
+        "*.acn",
+        "*.acr",
+        "*.alg",
+        "*.glg",
+        "*.glo",
+        "*.gls",
+        "*.ist",
+        "*.fls",
+        "*.log",
+        "*.fdb_latexmk",
+        "*.nav",
+        "*.snm",
+        "*.synctex.gz",
+        "*.pyc"
+    ],
+    "latex-workshop.view.pdf.internal.synctex.keybinding": "ctrl-click",
+    "latex-workshop.message.error.show": true,
+    "latex-workshop.message.warning.show": false,
+    "json.schemas": [
+    
+    ],
+}

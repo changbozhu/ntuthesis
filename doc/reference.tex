@@ -1,0 +1,28 @@
+\chapter{参考文献}\label{cha：referenceformat}
+
+参考文献引用过程以实例进行介绍，假设需要引用名为"Document Preparation System"的文献，步骤如下：
+\begin{enumerate} \small
+\item 使用Google Scholar搜索Document Preparation System，在目标条目下点击Cite，展开后选择Import into BibTeX打开此文章的BibTeX索引信息，将它们copy添加到ref.bib文件中。这种方法比较快速，但是会存在不准确的问题。最安全的做法是直接到论文在线网页找到其官方提供的BibTeX索引信息。
+
+\item 索引第一行 \verb|@article{daunizeau2010observingB},|中 \verb|daunizeau2010observingB| 即为此文献的标签（label） (\textbf{中文文献标签也必须使用英文label}，一般遵照：姓氏拼音+年份+标题第一字拼音的格式)，想要在论文中索引此文献，有两种索引类型：(1)\emph{文本类型引用格式}：使用命令\verb|\citet{daunizeau2010observingB}|引用文献\verb|daunizeau2010observingB|，显示格式如此处所示 \citet{daunizeau2010observingB}; (2)\emph{括号类型引用格式}：使用命令\verb|\citep{daunizeau2010observingB}|引用文献\verb|daunizeau2010observingB|，显示格式如此处所示 \citep{daunizeau2010observingB}。\emph{推荐采用括号类型引用格式}。
+\end{enumerate}
+
+
+\parwords{多文献索引用英文逗号隔开} 命令 \verb|\cite|、\verb|\citep|、\verb|\citet| 均支持同时引用多个参考文献。我们以 \verb|\cite| 为例，展示同时引用多个文献的方法，即命令 \verb|\cite{daunizeau2010observingB, Mathys2011HGF}|引用文献，显示格式如此处所示 \cite{daunizeau2010observingB, Mathys2011HGF}。
+
+更多例子如：
+
+\citet{Mathys2011HGF} 根据 \citet{daunizeau2010observingA,daunizeau2010observingB} 的研究，首次提出...。其中关于... \citep{adolphs2003cognitive, YAU2023107799}，是当前认知...得到迅速发展的研究领域 \citep{NIPS2012_c399862d, goodfellow2016book}。引用同一著者在同一年份出版的多篇文献时，在出版年份之后用
+英文小写字母区别，如：\citep{daunizeau2010observingA, daunizeau2010observingB} 和 \citet{daunizeau2010observingA, daunizeau2010observingB}。同一处引用多篇文献时，按出版年份由近及远依次标注。例如 \citep{beal2003VB,Friston_freeEnergy_2010, Mathys2011HGF, sutton2018reinforcement}。
+
+使用著者-出版年制（authoryear）式参考文献样式时，中文文献必须在BibTeX索引信息的 \textbf{key} 域（请参考ref.bib文件）填写作者姓名的拼音，才能使得文献列表按照拼音排序。参考文献表中的条目（不排序号），先按语种分类排列，语种顺 序是：中文、日文、英文、俄文、其他文种。然后，中文按汉语拼音字母顺序排列，日文按第一著者的姓氏笔画排序，西文和 俄文按第一著者姓氏首字母顺序排列。如中 \citep{wei2021_bayesian,matThm_zhang2013}、英 \citep{AMARI1993185,mirza2018human}、俄 \citep{Dubrovin1906}。
+
+如此，即完成了文献的索引，请查看下本文档的参考文献一章，看看是不是就是这么简单呢？是的，就是这么简单！
+
+不同文献样式和引用样式，如著者-出版年制（authoryear）、顺序编码制（numbers）、上标顺序编码制（super）可在 \projectname.tex中对 cnbooksetup.sty 调用实现，参考文献处理器、引用风格的选择请参见章节\ref{ssec:cnbooksetup}。
+
+若在上标顺序编码制（super）模式下，希望在特定位置将上标改为嵌入式标，可使用 \verb|\citetns|命令（如此处显示 \citetns{beal2003VB,Friston_freeEnergy_2010, Mathys2011HGF, sutton2018reinforcement}） 和 \verb|\citepns|命令（如此处显示 \citepns{AMARI1993185,mirza2018human}）。
+
+
+
+默认情况下，只有被实际引用的参考文献库（如ref.bib）中的文献会列在pdf文件参考文献列表内。命令 \verb|\nocite{*}| 可以显示参考文献库（ref.bib）中的所有参考文献（包括未引用文献）。

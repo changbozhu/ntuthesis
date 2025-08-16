@@ -1,0 +1,309 @@
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{mlstyle/bayesianagent}[2025/04/02 v1.0 LaTeX macros package for Bayesian agent]
+\RequirePackage{xparse}
+\RequirePackage{tikz}
+\RequirePackage{xcolor}
+\RequirePackage{xstring}
+\RequirePackage{pgfplots}
+%\RequirePackage[normalem]{ulem}
+\RequirePackage{ulem}
+\usetikzlibrary{%
+	positioning,
+    arrows,
+    calc,
+    trees
+}
+\usepgfplotslibrary{groupplots}
+
+
+% define color
+\definecolor{light-gray}{gray}{0.92}
+\definecolor{dark-gray}{gray}{0.20}
+\definecolor{ghostwhite}{rgb}{0.97, 0.97, 1.0}
+\definecolor{mygray}{gray}{0.3}
+\definecolor{mycolor}{rgb}{1 0.75 0.80}
+\definecolor{background}{rgb}{0.97, 0.97, 1.0}
+\definecolor{color0}{rgb}{0.12156863,0.46666667,0.70588235}
+\definecolor{color1}{rgb}{1,0.49803922,0.054901961}
+\definecolor{green1}{RGB}{77,195,85}
+\definecolor{green2}{RGB}{70,241,151}
+\definecolor{green3}{RGB}{34,112,17}
+\definecolor{coffe}{RGB}{148,93,44}
+
+\definecolor{mybackground}{rgb}{1.0120    0.9800    0.9200}
+
+\tikzstyle{probcondition}= [draw, very thick,-latex]
+\tikzstyle{thickprobcondition}= [draw, thick,-latex]
+\tikzstyle{thickline}= [draw, very thick]
+\tikzstyle{dashedlinearrow}= [draw, very thick,-latex,dashed, inner sep = 0pt]
+\tikzstyle{chnode} = [circle, minimum size=0.7cm, ball color=gray!20 , inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{cpnode} = [circle, minimum size=0.7cm, ball color=green!20, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{cinput} = [circle, minimum size=0.7cm, ball color=blue!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{coutput}= [circle, minimum size=0.7cm, draw, ball color=yellow!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{rfnode} = [rectangle, minimum size=0.5cm, ball color=green!30, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{point}  = [circle, fill=black, inner sep=0pt, minimum width=3pt]
+\tikzstyle{neuron} = [circle, draw, minimum size=4ex, thick]
+\tikzstyle{legend} = [font=\small\bfseries]
+
+
+\newcommand\maxnumnodes{5}%
+\pgfmathsetmacro{\maxplotnodes}{int(\maxnumnodes-1)}%
+
+\newcommand\drawSparseCircleNodes[2]{%
+	% #1 (str): namespace
+	% #2 (list[list[str]]): list of labels to print in the node of each neuron
+	\pgfmathsetmacro{\sepstheta}{int(\maxnumnodes-1)}
+	\foreach \neurons [count=\lyrIdx] in #2 {
+		\newcommand\lycoord{2.5*\lyrIdx}
+		% neurons: list[str] labels of the current layer
+		\StrCount{\neurons}{,}[\lyrLength] % use xstring package to save each layer size into \lyrLength macro
+		% \lyrLength: current layer size
+		\pgfmathsetmacro{\totalnodes}{int(\lyrLength+1)}
+		\ifnum\lyrLength =0
+			\node[neuron,chnode] (#1-\lyrIdx-1) at (-1, \lycoord) {\neurons};
+		\else
+			\ifnum\lyrLength > \sepstheta
+				\foreach \n [count=\nIdx] in \neurons {
+					\ifnum \nIdx < \maxplotnodes
+						\node[neuron,chnode] (#1-\lyrIdx-\nIdx) at (\sepstheta/2-\nIdx, \lycoord) {\n};
+					\else
+						\ifnum \nIdx = \totalnodes
+							\node[neuron,chnode] (#1-\lyrIdx-\maxnumnodes)  at (\sepstheta/2-\maxnumnodes, \lycoord) {\n};
+						\fi
+						\ifnum \nIdx = \lyrLength
+							\node (#1-\lyrIdx-\maxplotnodes) at (\sepstheta/2-\sepstheta, \lycoord) {$\cdots$};
+						\fi
+						\relax;
+					\fi
+				 }
+			\else
+				\foreach \n [count=\nIdx] in \neurons {
+					\node[neuron,chnode] (#1-\lyrIdx-\nIdx) at (\lyrLength/2-\nIdx, \lycoord) {\n};
+			     }
+			\fi
+		\fi
+	}
+}
+\newcommand\SparselyConnectNodes[2]{%
+	% #1 (str): namespace
+	% #2 (list[int]): number of nodes in each layer
+	\pgfmathsetmacro{\preplotnodes}{int(\maxplotnodes-1)}%
+	\foreach \numnodes [count=\lyrIdx, remember=\lyrIdx as \previdx, remember=\numnodes as \prevnumnodes] in #2 {%
+		\ifnum \numnodes > \maxnumnodes  
+			\def\nodeslist{1,...,\preplotnodes,\maxnumnodes}
+		\else
+			\def\nodeslist{1,...,\numnodes} 
+		\fi
+		\foreach \y in \nodeslist {
+			\ifnum \lyrIdx > 1
+				\ifnum \prevnumnodes > \maxnumnodes  
+					\def\prevnodeslist{1,...,\preplotnodes,\maxnumnodes}
+				\else
+					\def\prevnodeslist{1,...,\prevnumnodes}
+				\fi
+				\foreach \x in \prevnodeslist {
+					\x;\y;
+					\draw[probcondition,thin] (#1-\lyrIdx-\y) --  (#1-\previdx-\x);
+				}
+			\fi
+		}
+	}
+}
+
+
+\newcommand\drawDenseCircleNodes[2]{
+	% #1 (str): namespace
+	% #2 (list[list[str]]): list of labels to print in the node of each neuron
+	\pgfmathsetmacro{\sepstheta}{int(\maxnumnodes-1)}
+	\foreach \neurons [count=\lyrIdx] in #2 {
+		\newcommand\lycoord{2.5*\lyrIdx}
+		% neurons: list[str] labels of the current layer
+		\StrCount{\neurons}{,}[\lyrLength] % use xstring package to save each layer size into \lyrLength macro
+		% \lyrLength: current layer size
+		\ifnum\lyrLength =0
+		\node[neuron,chnode] (#1-\lyrIdx-1) at (-0.5, \lycoord) {\neurons};
+		\else
+		\foreach \n [count=\nIdx] in \neurons {
+			\node[neuron,chnode] (#1-\lyrIdx-\nIdx) at (\lyrLength/2-\nIdx, \lycoord) {\n};
+		}
+		\fi
+	}
+}
+
+\newcommand\DenselyConnectNodes[2]{
+	% #1 (str): namespace
+	% #2 (list[int]): number of nodes in each layer
+	\foreach \numnodes [count=\lyrIdx, remember=\lyrIdx as \previdx, remember=\numnodes as \prevnumnodes] in #2 {
+		\foreach \y in {1,...,\numnodes} {
+			\ifnum \lyrIdx > 1
+				\foreach \x in {1,...,\prevnumnodes}
+					\draw[probcondition,thin] (#1-\lyrIdx-\y) --  (#1-\previdx-\x);
+			\fi
+		}
+	}
+}
+
+\newcommand\connectSomeNodes[2]{
+	% #1 (str): namespace
+	% #2 (list[list[list[int]]]): for each node in each layer, list all connected nodes in the next layer
+	\foreach \layer [count=\lyrIdx, evaluate=\lyrIdx as \nextLyr using int(\lyrIdx+1)] in #2
+		\foreach \neuron [count=\nIdx] in \layer
+			\foreach \edge in \neuron
+				\draw[->]  (#1-\nextLyr-\edge) --  (#1-\lyrIdx-\nIdx);
+}
+\NewDocumentCommand{\vhgnn}{mmg}{
+	% m#1 (str): namespace
+	% m#2 (number): the number of nodes in the chain 
+	% g#3 (list[str]): list of labels to print in each node {,,}
+	\IfNoValueTF{#3} {\def\vnodeslist{1,...,#2}} {\def\vnodeslist{#3}}
+	\foreach \nlabel [count=\lyrIdx, remember=\lyrIdx as \previdx] in \vnodeslist {
+		\ifnum \lyrIdx >1
+			\IfNoValueTF{#3}
+				{\node[neuron,chnode] (#1-\previdx) at (0, 1.5*\lyrIdx) {}; }
+				{\node[neuron,chnode] (#1-\previdx) at (0, 1.5*\lyrIdx) {\nlabel}; }
+		\else
+			\IfNoValueTF{#3}
+				{\node[neuron,cinput] (#1-0) at (0, 1.5*\lyrIdx) {};} 
+				{\node[neuron,cinput] (#1-0) at (0, 1.5*\lyrIdx) {\nlabel};}
+		\fi
+		
+		\ifnum \lyrIdx > 1
+			\pgfmathsetmacro{\prevprevidx}{int(\previdx-1)}
+			\draw[probcondition,very thick] (#1-\previdx) --  (#1-\prevprevidx);
+		\fi
+	}
+}
+
+\NewDocumentCommand{\hhgnn}{mmg}{
+	% m#1 (str): namespace
+	% m#2 (number): the number of nodes in the chain 
+	% g#3 (list[str]): list of labels to print in each node {,,}
+	\IfNoValueTF{#3} {\def\vnodeslist{1,...,#2}} {\def\vnodeslist{#3}}
+	\foreach \nlabel [count=\lyrIdx, remember=\lyrIdx as \previdx] in \vnodeslist {
+		\ifnum \lyrIdx >1
+		\IfNoValueTF{#3}
+			{\node[chnode] (#1-\previdx) at (1.5*\lyrIdx, 0) {}; }
+			{\node[chnode] (#1-\previdx) at (1.5*\lyrIdx, 0) {\nlabel}; }
+		\else
+		\IfNoValueTF{#3}
+			{\node[cinput] (#1-0) at (1.5*\lyrIdx, 0) {};} 
+			{\node[cinput] (#1-0) at (1.5*\lyrIdx, 0) {\nlabel};}
+		\fi
+		
+		\ifnum \lyrIdx > 1
+		\pgfmathsetmacro{\prevprevidx}{int(\previdx-1)}
+		\draw[probcondition,very thick] (#1-\previdx) --  (#1-\prevprevidx);
+		\fi
+	}
+}
+
+\NewDocumentCommand{\hhhm}{mgg}{
+	% m#1 (str): namespace
+	% g#2 (number): the number of nodes in the chain
+	% g#3 (list[str]): list of labels to print in each node {,,}
+	\IfNoValueTF{#2} {\def\numnodes{3}} {\def\numnodes{#2}}
+	\ifnum \numnodes <3 \def\numnodes{3} \fi
+	\IfNoValueTF{#3} {\def\vnodeslist{1,...,\numnodes}} {\def\vnodeslist{#3}}
+	\foreach \nlabel [count=\lyrIdx, remember=\lyrIdx as \previdx] in \vnodeslist {
+		\ifnum \lyrIdx >1
+		\IfNoValueTF{#3}
+			{\node[chnode] (#1-\previdx) at (1.8*\lyrIdx, 0) {}; }
+			{\node[chnode] (#1-\previdx) at (1.8*\lyrIdx, 0) {\nlabel}; }
+		\else
+		\IfNoValueTF{#3}
+			{\node[cpnode] (#1-0) at (1.8*\lyrIdx, 0) {};} 
+			{\node[cpnode] (#1-0) at (1.8*\lyrIdx, 0) {\nlabel};}
+		\fi
+		
+		\ifnum \lyrIdx > 1
+		\pgfmathsetmacro{\prevprevidx}{int(\previdx-1)}
+		\draw[probcondition,very thick] (#1-\prevprevidx) --  (#1-\previdx);
+		\fi
+	}
+}
+\NewDocumentCommand{\vhhm}{mgg}{
+	% m#1 (str): namespace
+	% g#2 (number): the number of nodes in the chain
+	% g#3 (list[str]): list of labels to print in each node {,,}
+	\IfNoValueTF{#2} {\def\numnodes{3}} {\def\numnodes{#2}}
+	\ifnum \numnodes <3 \def\numnodes{3} \fi
+	\IfNoValueTF{#3} {\def\hnodeslist{1,...,\numnodes}} {\def\hnodeslist{#3}}
+	\foreach \nlabel [count=\lyrIdx, remember=\lyrIdx as \previdx] in \hnodeslist {
+		\pgfmathsetmacro{\reverseidx}{int(\numnodes-\lyrIdx+1)}
+		\ifnum \lyrIdx >1
+		\IfNoValueTF{#3}
+		{\node[chnode] (#1-\previdx) at (0, 1.8*\reverseidx) {}; }
+		{\node[chnode] (#1-\previdx) at (0, 1.8*\reverseidx) {\nlabel}; }
+		\else
+		\IfNoValueTF{#3}
+		{\node[cpnode] (#1-0) at (0, 1.8*\reverseidx) {};} 
+		{\node[cpnode] (#1-0) at (0, 1.8*\reverseidx) {\nlabel};}
+		\fi
+		
+		\ifnum \lyrIdx > 1
+		\pgfmathsetmacro{\prevprevidx}{int(\previdx-1)}
+		\draw[probcondition,very thick] (#1-\prevprevidx) --  (#1-\previdx);
+		\fi
+	}
+}
+
+\NewDocumentCommand{\xhhm}{mmgg}{
+	% m#1 (str): namespace
+	% m#2 (number): the number of levels (or the number of HHMs)
+	% g#3 (number): the number of nodes in each HHM chain
+	% g#4 (list[list[str]]): list of labels to print in each node { {,,},{,,},{,,}}
+	\def\numhhms{#2}
+	\IfNoValueTF{#3} {\def\eachnumnodes{3}} {\def\eachnumnodes{#3}}
+	\ifnum \eachnumnodes <3 \def\eachnumnodes{3} \fi
+	\IfNoValueTF{#4} {\def\xhhmslist{1,...,\numhhms}} {\def\xhhmslist{#4}}
+	\foreach \chhm [count=\lyrIdx, remember=\lyrIdx as \previdx] in \xhhmslist {
+		\IfNoValueT{#4} {\def\chhm{1,...,\eachnumnodes}}
+		\StrCount{\chhm}{,}[\nnodes] % use xstring package to save each layer size into \lyrLength macro
+		\foreach \nodelabel [count=\xIdx, remember=\xIdx as \prevxidx] in \chhm {
+			\ifnum \xIdx >1
+			\IfNoValueTF{#4}
+			{\node[chnode] (#1-\lyrIdx-\prevxidx) at (2*\xIdx, 2*\lyrIdx) {}; }
+			{\node[chnode] (#1-\lyrIdx-\prevxidx) at (2*\xIdx, 2*\lyrIdx) {\nodelabel}; }
+			\pgfmathsetmacro{\prevprevxidx}{int(\prevxidx-1)}
+			\draw[probcondition,very thick] (#1-\lyrIdx-\prevprevxidx) --  (#1-\lyrIdx-\prevxidx);
+			\else
+			\IfNoValueTF{#4}
+			{\node[cpnode] (#1-\lyrIdx-0) at (2*\xIdx, 2*\lyrIdx) {};} 
+			{\node[cpnode] (#1-\lyrIdx-0) at (2*\xIdx, 2*\lyrIdx) {\nodelabel};}
+			\fi
+			\ifnum \lyrIdx > 1
+			\ifnum \xIdx > 1
+			\draw[probcondition,very thick] (#1-\lyrIdx-\prevxidx) --  (#1-\previdx-\prevxidx);
+			\fi
+			\fi
+		}
+	}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  pdf cdf and some functions
+% \gauss(var, mean, std)
+\pgfmathdeclarefunction{sgaussianpdf}{3}{%
+	% #1 variable_domain
+	% #2 mean
+	% #3 standard variance
+	\pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+}
+\pgfmathdeclarefunction{cdf}{3}{%
+	\pgfmathparse{1/(1+exp(-0.07056*((#1-#2)/#3)^3 - 1.5976*(#1-#2)/#3))}%
+}
+\pgfmathdeclarefunction{fq}{3}{%
+	\pgfmathparse{1/(sqrt(2*pi*#1))*exp(-(sqrt(#1)-#2/#3)^2/2)}%
+}
+\pgfmathdeclarefunction{fq0}{1}{%
+	\pgfmathparse{1/(sqrt(2*pi*#1))*exp(-#1/2))}%
+}
+\pgfmathdeclarefunction{sigmoid}{1}{%
+	% #1 variable_domain
+	\pgfmathparse{1/(1+exp(-#1))}%
+}
+\pgfmathdeclarefunction{logit}{1}{%
+	% #1 variable_domain
+	\pgfmathparse{ln(#1/(1-#1))}%
+}

@@ -1,0 +1,83 @@
+\chapter{附录功能测试}\label{appendix:testappfunc}
+
+\section{数学环境测试}
+
+\begin{axiom}
+   这是一个公理。 
+\end{axiom}
+\begin{theorem}
+   这是一个定理。 
+\end{theorem}
+\begin{lemma}
+   这是一个引理。 
+\end{lemma}
+\begin{corollary}
+   这是一个推论。 
+\end{corollary}
+\begin{assertion}
+   这是一个断言。 
+\end{assertion}
+\begin{proposition}
+   这是一个命题。 
+\end{proposition}
+\begin{proof}
+    这是一个证明。
+\end{proof}
+\begin{definition}
+    这是一个定义。
+\end{definition}
+\begin{example}
+    这是一个例子。
+\end{example}
+\begin{remark}
+    这是一个注。
+\end{remark}
+
+\section{数学公式测试}
+\begin{equation} \label{eq:appedns-number}
+    %\adddotsbeforeeqnnum%
+    \begin{cases}
+        \frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\Vector{V}) = 0\\
+        \frac{\partial (\rho\Vector{V})}{\partial t} + \nabla\cdot(\rho\Vector{V}\Vector{V}) = \nabla\cdot\Tensor{\sigma}\\
+        \frac{\partial (\rho E)}{\partial t} + \nabla\cdot(\rho E\Vector{V}) = \nabla\cdot(k\nabla T) + \nabla\cdot(\Tensor{\sigma}\cdot\Vector{V})
+    \end{cases}
+    \nonumber
+\end{equation}
+\begin{equation}
+    \adddotsbeforeeqnnum%
+    \frac{\partial }{\partial t}\int\limits_{\Omega} u \, \mathrm{d}\Omega + \int\limits_{S} \unitVector{n}\cdot(u\Vector{V}) \, \mathrm{d}S = \dot{\phi}
+    \nonumber
+\end{equation}
+\[
+    \begin{split}
+        \mathcal{L} \{f\}(s) &= \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t, \ 
+        \mathscr{L} \{f\}(s) = \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t\\
+        \mathcal{F} {\bigl (} f(x+x_{0}) {\bigr )} &= \mathcal{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}, \ 
+        \mathscr{F} {\bigl (} f(x+x_{0}) {\bigr )} = \mathscr{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}
+    \end{split}
+\]
+
+\section{测试公式编号 \texorpdfstring{$\Lambda,\lambda,\theta,\bar{\Lambda},\sqrt{S_{NN}}$}{$\textLambda,\textlambda,\texttheta,\bar{\textLambda},\sqrt{S_{NN}}$}} \label{sec:testmath}
+
+\begin{equation} \label{eq:appedns}
+    %\adddotsbeforeeqnnum%
+    \begin{cases}
+        \frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\Vector{V}) = 0\\
+        \frac{\partial (\rho\Vector{V})}{\partial t} + \nabla\cdot(\rho\Vector{V}\Vector{V}) = \nabla\cdot\Tensor{\sigma}\\
+        \frac{\partial (\rho E)}{\partial t} + \nabla\cdot(\rho E\Vector{V}) = \nabla\cdot(k\nabla T) + \nabla\cdot(\Tensor{\sigma}\cdot\Vector{V})
+    \end{cases}
+\end{equation}
+\begin{equation}
+    %\adddotsbeforeeqnnum%
+    \frac{\partial }{\partial t}\int\limits_{\Omega} u \, \mathrm{d}\Omega + \int\limits_{S} \unitVector{n}\cdot(u\Vector{V}) \, \mathrm{d}S = \dot{\phi}
+\end{equation}
+\[
+    \begin{split}
+        \mathcal{L} \{f\}(s) &= \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t, \ 
+        \mathscr{L} \{f\}(s) = \int _{0^{-}}^{\infty} f(t) e^{-st} \, \mathrm{d}t\\
+        \mathcal{F} {\bigl (} f(x+x_{0}) {\bigr )} &= \mathcal{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}, \ 
+        \mathscr{F} {\bigl (} f(x+x_{0}) {\bigr )} = \mathscr{F} {\bigl (} f(x) {\bigr )} e^{2\pi i\xi x_{0}}
+    \end{split}
+\]
+
+

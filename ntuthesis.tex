@@ -1,0 +1,93 @@
+\documentclass[doctor,academic]{style/ntuthesis}
+%\documentclass[twoside,doctor,academic]{style/ntuthesis}
+%- Multiple optional arguments:
+%- [<oneside|twoside>]% oneside print, twoside print, or without print
+%- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
+%- [scheme=plain]% thesis writing of international students
+%- [draft]% show draft version information
+%- [standard options for ctex book class: draft|paper size|font size|...]%
+%---------------------------------------------------------------------------%
+%->> Document settings
+%---------------------------------------------------------------------------%
+
+\usepackage[super,color,math,tikz,list,table]{style/cnbasesetup}% document settings
+%\usepackage[authoryear,list]{style/cnbasesetup}% document settings
+%- usage: \usepackage[option1,option2,...,optionN]{setcnbook}
+%- Multiple optional arguments:
+%- [bibauto|bibtex|biber]% set bibliography processor and package
+%- [<numbers|super|authoryear>]% set citation and reference style
+%   - <numbers>: textual: Jones [1]; parenthetical: [1]
+%   - <super>: textual: Jones superscript [1]; parenthetical: superscript [1]
+%   - <authoryear>: textual: Jones (1995); parenthetical: (Jones, 1995)
+%
+%- [lscape]% provide landscape layout environment
+%- [color]% provide color support via xcolor package
+%- [tikz]% provide complex diagrams via tikz package
+%- [table]% provide complex tables via ctable package
+%- [list]% provide enhanced list environments for algorithm and coding
+%- [math]% enable some extra math packages
+%- [xlink]% disable link colors
+
+
+\usepackage{style/ntuthesissetup}% document settings
+\usepackage{mlstyle/mlmath}% extension to amsmath
+\usepackage{mlstyle/bayesianagent}
+% user defined commands
+\usepackage{usercustom}
+%\addbibresource{ref.bib} % only for biber
+
+
+
+%设置固定\normalbaselineskip行距的字体
+% 包括 \chuhao \xiaochu \yihao \xiaoyi \erhao \sanhao \sihao \wuhao \liuhao
+\xiaosi
+%\baselineskip = \linespread * \normalbaselineskip
+%
+%
+
+
+%-> Titlepage information
+%-
+\input{ntuthesis/Frontinfo}%
+\begin{document}
+%---------------------------------------------------------------------------%
+%-
+%-> 生成封面、原创性声明、授权声明、标题页中英文摘要
+%-
+\maketitle% cover and titlepage,
+%-> Frontmatter:  abstract, content list, symbol list, preface
+\tableofcontents
+\frontmatter% initialize the environment
+\input{ntuthesis/Frontmatter}% title page, abstract
+
+
+%--> Main matter: 
+\mainmatter
+\input{ntuthesis/Mainmatter}
+%----------------------------------------------------------------------
+%-> Bibliography, glossary, index
+%-
+%\referencematter
+{
+\intotoc*{\cleardoublepage}{\bibname}% add link to toc
+\linespread{1.25}
+\ntuthesisbibliography%{ref}
+}
+\input{ntuthesis/Abbrvmatter}
+%------------------------------------------------------------------
+%- 不需要综述的，请注释下面一行代码
+\input{ntuthesis/Reviewmatter}
+%-
+%-> 附录
+%-
+\appendix
+\input{ntuthesis/Appendix} % appendix content
+
+%--------------------------------------------------------------------
+%-> Backmatter: cv, thanks
+%-
+%\thispagestyle{appendixheader}
+\backmatter% initialize the environment
+\input{ntuthesis/Backmatter}% other information
+\cleardoublepage[plain]% 让文档总是结束于偶数页，可根据需要设定页眉页脚样式，如 [noheaderstyle]
+\end{document}

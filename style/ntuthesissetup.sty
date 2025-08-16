@@ -1,0 +1,372 @@
+%---------------------------------------------------------------------------%
+%-                    Nantong University Thesis Template                   -%
+%-                          Setup Document Style                           -%
+%-                                                                         -%
+%---------------------------------------------------------------------------%
+%
+% Copyright (C) 2005-2025 by Changbo Zhu <1207146285@qq.com>
+%
+%- This is free software: you can redistribute it and/or modify it
+%- under the terms of the GNU General Public License as published by
+%- the Free Software Foundation, either version 3 of the License, or
+%- (at your option) any later version.
+%
+%---------------------------------------------------------------------------%
+%->> Identification
+%---------------------------------------------------------------------------%
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{style/ntuthesissetup}[2025/05/01 v1.0 Nantong University Thesis Template]%
+%---------------------------------------------------------------------------%
+%->> Declare options
+%---------------------------------------------------------------------------%
+%-
+%-->>字符水平间距
+%-
+%- \CJKsetecglue命令定义了CJK字符与其他字符之间的空白，不只限于数字字符，也适用于字母等其他非CJK字符。
+%- 如果你想要更精细的控制，可能需要借助其它工具或者宏包。
+\ifcnbook@setup@xecjk%
+    % \hskip0.15em plus0.05em minus 0.05em表示基础间距为0.15em，可增加至0.2em，也可减少至0.1em以便满足排版需求。
+    %\ctexset{linestretch=\maxdimen} % <<< added
+    \xeCJKsetup{%
+        %CJK字符的间距%
+        %CJKglue={\hskip 0pt plus 0.08\baselineskip},%
+        %CJKglue={\hskip 1.75pt plus 0.08\baselineskip},%CJK字符的间距
+        CJKecglue={\hskip 0.3em plus 0.05em minus 0.1em},%数字与CJK字符的间距
+    }
+\else
+    \RequirePackage{xeCJK}
+    \xeCJKsetup{%
+        %CJK字符的间距
+        %CJKglue={\hskip 0pt plus 0.08\baselineskip},
+        %CJKglue={\hskip 1.75pt plus 0.08\baselineskip},%CJK字符的间距
+        CJKecglue={\hskip 0.3em plus 0.05em minus 0.1em},%数字与CJK字符的间距
+    }
+\fi
+\def\kaishu{\CJKfamily{zhkai}}%重新定义kaishu命令
+\setupzihao{20pt}
+\ifntuthesis@bachelor
+    {}
+\else
+    \ziju{0.15}
+\fi
+
+
+\renewcommand*{\bibfont}{\zihao{5}}% set font size for bibliography
+\def\ntuthesisbibliography{\cnbookbibliography}
+
+\captionsetup[figure]{name=图, font={normalsize,bf,stretch=1.25}}
+%\captionsetup[figure][bi-first]{name=图, font={small,stretch=1.25}}
+%\captionsetup[figure][bi-second]{name=Figure, font={small,stretch=1.25}}
+%表的中英文编号前缀
+\captionsetup[table]{name=表, font={normalsize,bf,stretch=1.25}}
+%\captionsetup[table][bi-first]{name=表, font={small,bf,stretch=1.25}}
+%\captionsetup[table][bi-second]{name=Table, font={small,stretch=1.25}}
+
+\ifcnbook@setup@xhf% header and footer style
+    {}
+\else
+    \RequirePackage{fancyhdr}% fancy headers and footers
+    \pagestyle{fancy}
+\fi
+\fancypagestyle{ntumainmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubachelormainmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{-5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{-5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntucontentmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    %\fancyhead[L]{\zihao{5} \@title}% structure elements
+    %\fancyfoot[C]{\zihao{5} }% page number
+    \renewcommand{\headrulewidth}{0pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubachelorcontentmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{-5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{-5} }% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntufrontmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubachelorfrontmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{-5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{-5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntuappendixmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubachelorappendixmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{-5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{-5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubackmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+\fancypagestyle{ntubachelorbackmatterstyle}{% style for ntumainmatter
+    \fancyhf{}% clear fields
+    \fancyhead[L]{\zihao{-5} \@title}% structure elements
+    \fancyfoot[C]{\zihao{-5} \thepage}% page number
+    \renewcommand{\headrulewidth}{0.8pt}% header rule
+    \renewcommand{\footrulewidth}{0pt}% footer rule
+}
+%- Redefine \frontmatter to include the change
+\providecommand{\frontmatter}{}% compatibility for non-book classes
+\let\ntuthesis@setup@frontmatter\cnbook@setup@frontmatter%+
+\renewcommand{\frontmatter}{%
+    \ntuthesis@setup@frontmatter%
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelorfrontmatterstyle}%
+        \setcounter{page}{1}% 开始页码
+        \pagenumbering{Roman}% 页码符号
+    \else
+        \pagestyle{ntufrontmatterstyle}%
+        \setcounter{page}{1}% 开始页码
+        \pagenumbering{roman}% 页码符号
+    \fi
+}
+%- Redefine \mainmatter to include the change
+\providecommand{\contentmatter}{}% compatibility for non-book classes
+\let\ntuthesis@setup@contentmatter\contentmatter%
+\renewcommand{\contentmatter}{%
+    %\ntuthesis@setup@contentmatter%
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelorfrontmatterstyle}
+    \else
+        \pagestyle{ntucontentmatterstyle}%
+    \fi
+    %\pagestyle{empty}%
+}
+%- Redefine \mainmatter to include the change
+\providecommand{\mainmatter}{}% compatibility for non-book classes
+\let\ntuthesis@setup@mainmatter\cnbook@setup@mainmatter%
+\renewcommand{\mainmatter}{%
+    \ntuthesis@setup@mainmatter%
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelormainmatterstyle}%
+    \else
+        \pagestyle{ntumainmatterstyle}%
+    \fi
+}
+%- define \referencematter
+\providecommand{\referencematter}{}% compatibility for non-book classes
+\let\ntuthesis@setup@referencematter\referencematter%
+\renewcommand{\referencematter}{%
+    %\ntuthesis@setup@referencematter%
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelormainmatterstyle}%
+    \else
+        \pagestyle{ntumainmatterstyle}%
+    \fi
+}
+%- define \appendixmatter 
+\providecommand{\appendix}{}% compatibility for non-book classes
+\let\ntuthesis@setup@appendix\cnbook@setup@appendix%
+\renewcommand{\appendix}{%
+    %\ntuthesis@setup@appendixmatter%
+    \cleardoublepage%
+    \ntuthesis@setup@appendix% using the original \appendix to initialize the environment
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelorappendixmatterstyle}%
+    \else
+        \pagestyle{ntuappendixmatterstyle}%
+    \fi
+    
+    \renewcommand{\labelenumi}{(\arabic{enumi}) }
+    \renewcommand{\labelenumii}{(\arabic{enumi}).\arabic{enumii}}
+    \renewcommand{\labelenumiii}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}}
+    \renewcommand{\labelenumiv}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+            
+    \setcounter{equation}{0}
+    \setcounter{figure}{0}
+    \setcounter{table}{0}
+    \setcounter{theorem}{0}
+    \setcounter{example}{0}
+    \setcounter{definition}{0}
+    \setcounter{chapter}{0}
+    %\setcounter{section}{0}
+    %\renewcommand\chaptername{附录}
+    %\renewcommand\chaptername{Appendix} 
+    \renewcommand\thechapter{\Alph{chapter}} 
+    %\renewcommand\thechapter{附录\zhnumber{\value{chapter}}}
+    \renewcommand\thesection{\Alph{chapter}.\arabic{section}}
+
+    %\setcounter{figure}{0}
+    %\renewcommand\theequation{附\arabic{chapter}-\arabic{equation}}
+    %\renewcommand\thefigure{附\arabic{chapter}-\arabic{figure}}
+    %\renewcommand\thetable{附\arabic{chapter}-\arabic{table}}
+    %\renewcommand\thetheorem{附\arabic{chapter}-\arabic{theorem}}
+    %\renewcommand\thedefinition{附\arabic{chapter}-\arabic{definition}}
+    %\renewcommand\theexample{附\arabic{chapter}-\arabic{example}}
+}
+%- Redefine \backmatter to include the change
+\providecommand{\backmatter}{}% compatibility for non-book classes
+\let\ntuthesis@setup@backmatter\backmatter%
+\renewcommand{\backmatter}{%
+    \cnbook@setup@backmatter%
+    %\pagestyle{backmatterstyle}%
+    \ifntuthesis@bachelor
+        \pagestyle{ntubachelorbackmatterstyle}%
+    \else
+        \pagestyle{ntubackmatterstyle}%
+    \fi
+}
+%---------------------------------------------------------------------------%
+
+
+
+\providecommand{\tableofcontents}{}
+\let\ntuthesis@setup@tableofcontents\cnbook@setup@tableofcontents
+\renewcommand\tableofcontents{
+    \contentmatter
+    % content list region
+    {\linespread{1.25}\zihao{-4}
+        \intobmk*{\cleardoublepage}{\contentsname}% add link to bookmark
+        \newpage
+        \ntuthesis@setup@tableofcontents% content catalog
+    }
+}
+
+\newcommand\zhcnfrontabstract{
+    \begin{center}
+        {\zihao{3} \setlength{\baselineskip}{22pt} \sffamily
+
+        \vspace*{1ex}
+
+        \ntuthesis@value@zhcn@title
+
+        \vspace*{2.5ex}
+        }
+
+        {
+            研究生： \ntuthesis@value@zhcn@author
+            \quad 
+            专业： \ntuthesis@value@zhcn@major ( \ntuthesis@value@zhcn@researchfield 方向)
+
+            指导教师：\ntuthesis@value@zhcn@advisor
+        }
+
+    \end{center}
+}
+\newcommand\enfrontabstract{
+    \begin{center}
+        {   \fontsize{18pt}{22pt}\selectfont \bfseries \rmfamily 
+            \setlength{\baselineskip}{22pt}
+            %\linespread{1.0}\selectfont
+
+            \vspace*{1ex}
+
+            \ntuthesis@value@en@title
+
+            \vspace*{2.5ex}
+        }
+
+        { \linespread{1.0}\zihao{5}\selectfont
+            POSTGRADUATE: \ntuthesis@value@en@author
+            
+            SPECIALIZATION: \ntuthesis@value@en@major
+
+            Directed by \ntuthesis@value@en@advisor
+        }
+    \end{center}
+}
+\newcommand{\frontabstract}{\@ifstar{\enfrontabstract}{\zhcnfrontabstract}}%
+
+
+\newcommand\zhcnabstracttitle[3]{
+    {\linespread{1.0}\zihao{-3}\bfseries\sffamily
+    
+        \vspace*{#2}
+        
+        \centering{#1} 
+        
+        \vspace*{#2}    
+    }
+    \phantomsection% create bookmark link
+    \addcontentsline{toc}{chapter}{#1}% add content #3 to toc as #1
+    %{}%
+    %{#1}%
+    %{\@currentHref}%
+    %{0}%
+    %{toc}%
+    \setupifstreq{0}{0}{%
+        \markboth{\MakeUppercase{#1}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#1}}% set right mark
+    }
+}% 显示在书签但不显示在目录
+\newcommand\enabstracttitle[3]{
+    {\fontsize{16pt}{20pt}\selectfont \bfseries\rmfamily \linespread{1.0}
+    
+        \vspace*{#2}
+        
+        \centering{#1} 
+        
+        \vspace*{#3}    
+    }
+    \phantomsection% create bookmark link
+    \addcontentsline{toc}{chapter}{#1}% add content #3 to toc as #1
+    %{}%
+    %{#1}%
+    %{\@currentHref}%
+    %{0}%
+    %{toc}%
+    \setupifstreq{0}{0}{%
+        \markboth{\MakeUppercase{#1}}{}% set left mark
+    }{%
+        \markright{\MakeUppercase{#1}}% set right mark
+    }
+}% 
+\newcommand{\abstracttitle}{\@ifstar{\enabstracttitle}{\zhcnabstracttitle}}
+
+\newcommand\zhcnparwords[1]{%
+    {\zihao{-4}\sffamily \par #1}\quad%
+}%
+\newcommand\enparwords[1]{%
+    {\fontsize{14pt}{20pt}\selectfont \bfseries \rmfamily \par #1}\quad%
+}%
+\newcommand{\parwords}{\@ifstar{\enparwords}{\zhcnparwords}}%
+
+%- define chinese keywords
+\newcommand{\zhcnkeywords}[1]{%
+    \vspace{\baselineskip}
+    \par\noindent {\sffamily \ntuthesis@config@zhcn@keywords} #1%
+}%
+%- define engish keywords
+\newcommand{\enkeywords}[1]{%
+    \vspace{\baselineskip}
+    \par\noindent {\bfseries \ntuthesis@config@en@keywords} #1%
+}%
+\newcommand{\keywords}{\@ifstar{\enkeywords}{\zhcnkeywords}}%
+
+
+\endinput
+

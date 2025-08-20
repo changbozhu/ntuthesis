@@ -192,9 +192,133 @@
 \subsection{chapters文件夹}
 文件夹内为论文的所有实体内容，正常情况下，这也是\textbf{使用 \projectname 撰写论文/书籍/报告时，主要关注和修改的一个位置，注：所有文件都必须采用UTF-8编码，否则编译后将出现乱码文本}，\textbf{添加新章时，可拷贝一个已有的章文件再重命名，以继承文档的 UTF8 编码}。
 
-\section{引入 \projectname 文档类}
-在文档开始，通过下列命令引入 \projectname.cls文档类
+\section{导言区配置 \projectname 文档}
+在文档导言区，通过下列命令引入 \projectname.cls文档类、配置几个重要的设置宏包，具体配置的详细信息请参见第\ref{cha:clscfg}章。
 \begin{lstlisting}[language=tex]
-    \documentclass[doctor,academic]{style/ntuthesis}%
+\documentclass[doctor,academic]{style/ntuthesis}
+%\documentclass[twoside,doctor,academic]{style/ntuthesis}
+%- Multiple optional arguments:
+%- [<oneside|twoside|null>]% oneside print, twoside print, or without print
+%- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
+%- [scheme=plain]% thesis writing of international students
+%- [draft]% show draft version information
+%- [standard options for ctex book class: draft|paper size|font size|...]%
+%---------------------------------------------------------------------------%
+%->> Document settings
+%---------------------------------------------------------------------------%
+
+\usepackage[super,color,math,tikz,list,table]{style/cnbasesetup}% document settings
+%\usepackage[authoryear,list]{style/cnbasesetup}% document settings
+%- usage: \usepackage[option1,option2,...,optionN]{setcnbook}
+%- Multiple optional arguments:
+%- [bibauto|bibtex|biber]% set bibliography processor and package
+%- [<numbers|super|authoryear>]% set citation and reference style
+%   - <numbers>: textual: Jones [1]; parenthetical: [1]
+%   - <super>: textual: Jones superscript [1]; parenthetical: superscript [1]
+%   - <authoryear>: textual: Jones (1995); parenthetical: (Jones, 1995)
+%
+%- [lscape]% provide landscape layout environment
+%- [color]% provide color support via xcolor package
+%- [tikz]% provide complex diagrams via tikz package
+%- [table]% provide complex tables via ctable package
+%- [list]% provide enhanced list environments for algorithm and coding
+%- [math]% enable some extra math packages
+%- [xlink]% disable link colors
+
+
+\usepackage{style/ntuthesissetup}% document settings
+\usepackage{mlstyle/mlmath}% extension to amsmath
+\usepackage{mlstyle/bayesianagent}
+% user defined commands
+\usepackage{usercustom}
+%\addbibresource{ref.bib} % only for biber
+
+
+
+%设置固定\normalbaselineskip行距的字体
+% 包括 \chuhao \xiaochu \yihao \xiaoyi \erhao \sanhao \sihao \wuhao \liuhao
+\xiaosi
+%\baselineskip = \linespread * \normalbaselineskip
+%
+%
+
+
+%-> Titlepage information
+%-
+\input{ntuthesis/Frontinfo}%
 \end{lstlisting}
 
+如果用户有自定义命令，可以写入样式宏包usercustom.sty内。默认的参考文献处理器为 `bibauto` 模式，实际后台默认调用biber(biblatex)，文献库文件默认为“ref.bib”。 命令 \verb|\xiaosi| 设置默认字号为行固定间距的小四号字体。文件“ntuthesis/Frontinfo.tex”配置了学位论文相关信息。
+
+\section{文档主体内容}
+位于 \verb|\begin{document}|和 \verb|\end{document}| 之间的内容均是文档主体内容。
+\begin{lstlisting}[language=tex]
+\begin{document}
+%-> 生成扉页、原创性声明、授权声明、标题页中英文摘要
+\maketitle% cover and titlepage,
+\tableofcontents
+
+%-> Frontmatter:  abstract, content list, symbol list, preface
+\frontmatter% initialize the environment
+\input{ntuthesis/Frontmatter}% title page, abstract
+
+%--> Main matter: 
+\mainmatter
+\input{ntuthesis/Mainmatter}
+
+%-> Bibliography, glossary, index
+%-
+%reference matter
+{
+\intotoc*{\cleardoublepage}{\bibname}% add link to toc
+\linespread{1.25}
+\ntuthesisbibliography%{ref}
+}
+\input{ntuthesis/Abbrvmatter}
+%------------------------------------------------------------------
+%- 不需要综述的，请注释下面一行代码
+\input{ntuthesis/Reviewmatter}
+
+%-> 附录
+\appendix
+\input{ntuthesis/Appendix} % appendix content
+
+%--------------------------------------------------------------------
+%-> Backmatter: cv, thanks
+\backmatter% initialize the environment
+\input{ntuthesis/Backmatter}% other information
+\cleardoublepage[plain]% 让文档总是结束于偶数页，可根据需要设定页眉页脚样式，如 [noheaderstyle]
+\end{document}
+\end{lstlisting}
+%
+\begin{enumerate}
+\item \emph{制作标题} ~~ 命令 \verb|\maketitle| 定义了学位论文的扉页、学位论文原创性声明、学位论文使用授权声明和标题页。
+\item \emph{目录}~~ 命令 \verb|\tableofcontents|自动生成学位论文的目录。
+\item \emph{学位论文正文前事务处理}~~ 命令 \verb|\frontmatter| 格式化文档前的页面，覆盖中文摘要和英文摘要。文件"ntuthesis/Frontmatter.tex"中定义了学位论文的中文摘要和英文摘要。中文摘要由环境 \verb|\begin{abstract} ... ... \end{abstract}| 定义，中文关键词由命令 \verb|\keywords{}| 定义；英文摘要由环境 \verb|\begin{abstract*} ... ... \end{abstract*}| 定义，英文关键词由命令 \verb|\keywords*{}| 定义。 命令 \verb|\parwords{}| 定义中文段落关键词，相应地，命令 \verb|\parwords*{}| 定义英文段落关键词。
+\item \emph{学位论文主体}~~ 命令 \verb|\mainmatter| 格式化文档主体页面，覆盖学位论正文各个章节、参考文献、缩略词表、综述、综述参考文献及附录各章节。
+    \begin{itemize}
+    \item 文件“ntuthesis/Mainmatter.tex”中定义了学位论文正文各个章节。
+    \item 下列代码可以打印参考文献列表
+        %\begin{lstlisting}[language=tex]
+        \begin{verbatim}
+        %reference matter
+        {
+            \intotoc*{\cleardoublepage}{\bibname}% add link to toc
+            \linespread{1.25}
+            \ntuthesisbibliography%{ref}
+        }
+        \end{verbatim}
+        %\end{lstlisting}
+    \item 缩略词表可以在文件"ntuthesis/Abbrvmatter.tex"中定义，缩略词表需要定义在环境 \verb|\begin{abbreviation} ... ... \end{abbreviation}|中，并且每个缩略词条目需要用命令 \verb|\addabbrvitem{<缩略词>}{<英文全称>}{中文}| 定义。
+    \item 综述及综述文献写在文件"ntuthesis/Reviewmatter.tex"中。对于不需要综述及综述参考文献的，不包含该文件即可。该文件中，综述全文写在环境\verb|\begin{review} ... ... \end{review}|内，引用的参考文献bibtex索引信息写在正文的参考文献库即可。
+    \item 命令 \verb|\appendix| 重定义附录章节计数格式，并初始化各个计数器。附录各个章节内容可以定义在文件"ntuthesis/Appendix.tex"中。
+    \end{itemize}
+    \item \emph{学位论文结尾事务处理}~~ 命令 \verb|\backmatter| 格式化学位论文尾部页面，覆盖在读期间的科研成果及致谢。这部分内容可以在文件"ntuthesis/Backmatter.tex"中定义。
+        \begin{itemize}
+        \item  在读期间学术成果写在环境 \verb|\begin{achievement} ... ... \end{achievement}| 中。在 \verb|achievement| 环境中，可以使用命令 \verb|\section*| 按学术成果类别分节列出，例如 \verb|\section*{A：在国内外刊物上发表的论文}| 、 \verb|\section*{B：在国际学术会议上发表的论文}| 、 \verb|\section*{C：申请及授权专利}| 、 \verb|\section*{D：参加的项目}| 等。在每个分节中需要添加一个环境 \verb|\begin{backitem} ... ... \end{backitem}|，并且使用命令 \verb|\item| 逐条添加。 每个条目的格式需要满足文献引用格式要求。可以随意添加新的条目或是分节结构。\emph{此部分仅适用于研究生，本科毕业设计不需要此部分！}
+        \item 致谢写在环境 \verb|\begin{acknowledgment} ... ... \end{acknowledgment}| 中。不需要写签名，会自动生成结尾签名。
+        \emph{本科毕业设计的致谢部分归入} \verb|\mainmatter| \emph{命令范围内，正常使用即可！}
+        \end{itemize}
+        
+    \item 命令 \verb|\cleardoublepage[plain]| 通过添加空白页方式强制学位论文以偶数页结束。 
+\end{enumerate}

@@ -16,7 +16,7 @@
     \item \emph{指定文档类型}：在引入文档类时，可以从两选项"[<academic|professional>]"中选一个来指定学位论文的类型，即“学术型academic与“专业型professional”。对于本科毕业设计和博士后报告均选择设置"academic"即可。进一步地，需要通过选项"[<bachelor|master|doctor|postdoctoral>]"指定学位论文的申请学位级别，依次对应“本科、硕士、博士、博士后”。这两组选项配合可完全确定学位论文类型与学位级别，也就完全确定了学位论文文档。
     \item \emph{打印模式}: 在引入文档类时，可以从三选项“[<oneside|twoside|null>]”中选一个来指定文档的打印模式，null为默认的缺省选项，不需要填写。oneside和twoside依次对应单面打印和双面打印。oneside和twoside均没有给出时，采用等边距空白。
     \item \emph{平台字体族选项}：模板默认自动检测操作系统平台，根据操作系统平台选择字体族，在引入文档类时，不需要指定“fontset”选项。当然，也可以通过选项“[<fontset=<windows|mac|adobe|none|>]”强制指定操作系统平台类型以手动确定操作系统平台字体族。详见章节\ref{sec:fontset}。
-    \item \emph{启用手稿模式}：在引入文档类时，填入选项“[<draft>]”，模版会启用draft模式编译文档，并在文档第二页打印“Draft Version(日期)”。
+    \item \emph{启用手稿模式}：在引入文档类时，填入选项“[<draft>]”，模板会启用draft模式编译文档，并在文档第二页打印“Draft Version(日期)”。
     \item \emph{其它选项}: 其它受ctex book class支持的选项，包括: "[<draft|paper size|font size|...>]"。
 \end{enumerate}
 
@@ -42,20 +42,20 @@
     %- [xlink]% disable link colors
 \end{lstlisting}%
 \begin{enumerate}
-    \item \emph{指定参考文献处理器}：在引入cnbooksetup宏包时，我们可以通过从三个选项"[bibauto|bibtex|biber]"中选一个来指定学位论文参考文献处理器。
+    \item \emph{指定参考文献处理器}：在引入cnbasesetup宏包时，我们可以通过从三个选项"[bibauto|bibtex|biber]"中选一个来指定学位论文参考文献处理器。
         \begin{enumerate}
             \footnotesize
             \item "bibtex"选项指定参考文献处理器为bibtex。当参考文献处理器选择为“bibtex”时，在需要的位置直接使用带参考文献库名参数的命令“\backslash \projectname bibliography\{bibname\}”打印参考文献列表，这里没有文献库扩展名“.bib”。
             \item “biber”选项指定参考文献处理器为“biblatex”。当参考文献处理器选择为“biber”时，可以在导言区添加命令"\backslash addbibresource\{bibname.bib\}"以指定参考文献库为"bibname.bib"，这个命令需要带上扩展名“.bib”，然后在需要的位置直接使用不带参数的命令“\backslash \projectname bibliography”打印参考文献列表。
-            \item “biberauto”为文档自定义的选项，参考文献处理器由 \projectname.cls文档类指定。这也是缺省默认的处理器模式， \projectname.cls默认配置为biblatex。
+            \item “bibauto”为文档自定义的选项，参考文献处理器由 \projectname.cls文档类指定。这也是缺省默认的处理器模式， \projectname.cls默认配置为biblatex。
         \end{enumerate}
     没有明确指定参考文献库名的情况下，模板默认配置参考文献库名为“ref.bib”。
     对于需要打印多段参考文献列表的，只能选择“biber”或“bibauto”作为参考文献处理器，比如引入“综述”及“综述参考文献”。
     %
-    \item \emph{配置参考文献引用风格}: 在引入cnbooksetup宏包时，可通过三个选项“[<numbers|super|authoryear>]”中选一个来指定参考文献引用风格。(1).number：按出现顺序排序，以数字方式索引引用；(2).super：按出现顺序排序，以数字方式索引引用，并且引用处采用上角标小数字引用；(3).authoryear： 以“作者 年份”方式索引引用。
+    \item \emph{配置参考文献引用风格}: 在引入cnbasesetup宏包时，可通过三个选项“[<numbers|super|authoryear>]”中选一个来指定参考文献引用风格。(1).number：按出现顺序排序，以数字方式索引引用；(2).super：按出现顺序排序，以数字方式索引引用，并且引用处采用上角标小数字引用；(3).authoryear： 以“作者 年份”方式索引引用。
     \item \emph{局部转置版面宏包}： 参数"[<lscap>]"指定文档引入宏包fancyhdr、pdflscape、textpos，提供了landscape环境。
     \item \emph{颜色宏包}： 参数"[<color>]"指定文档引入宏包xcolor，提供丰富的颜色支持。
-    \item \emph{tikz绘图宏包}： 参数"[<tikz>]"指定文档引入额外扩展的绘图宏包tikz及自定义贝叶斯智能体绘图宏包“mlstyle/bayesianagent.sty”，提供绘图支持。
+    \item \emph{tikz绘图宏包}： 参数"[<tikz>]"指定文档引入额外扩展的绘图宏包tikz ，提供绘图支持。
     \item \emph{table类宏包}： 参数"[<table>]"指定文档引入宏包ctable、multirow、longtable、makecell，提供绘图支持。
     \item \emph{list类宏包}： 参数"[<list>]"指定文档引入宏包:
         \begin{lstlisting}[language=tex]
@@ -69,14 +69,14 @@
             \providecommand{\algname}{Algorithm}%
             \def\ALG@name{\algname}% rename label
         \end{lstlisting}%
-    \item \emph{math宏包}： 参数"[<math>]"指定文档引入额外数学宏包“mathtools.sty”及自定义宏包“mlstyle/mlmath.sty”。
+    \item \emph{math宏包}： 参数"[<math>]"指定文档引入额外数学宏包“mathtools”。
     \item \emph{禁用链接颜色}： 参数"[<xlink>]"指定文档禁用链接的颜色。
 \end{enumerate}
 
 
 
 
-\subsection{导入模版配置宏包ntuthesissetup.sty}
+\subsection{导入模板配置宏包ntuthesissetup.sty}
 \begin{lstlisting}[language=tex]
         \usepackage{style/ntuthesissetup}% document settings
  \end{lstlisting}%
@@ -85,15 +85,15 @@
 
  
  \section{\projectname 学位论文信息配置命令}
- 学位论文信息配置命令建议写入文件“\projectname /Frontinfo.tex”文件内。下面详细列出各个配置命令。
+ 建议把学位论文信息配置命令写入文件“\projectname /Frontinfo.tex”文件内。下面详细列出各个配置命令。
  \begin{enumerate}
     \item \emph{\backslash schoollogo\{\}}：配置学校logo。例如：\newline \backslash schoollogo[width=8.16cm,height=2.34cm]\{official/ntu/ntu-logo\}。
     \item \emph{\backslash schoolbadge\{\}}：配置学校校徽。例如：\newline \backslash schoolbadge[width=3.78cm,height=3.78cm]\{official/ntu/ntu-badge\}。
-    \item \emph{\backslash degree\{\}}：指定学位类别，限填医学博士、工学博士、文学硕士、理学硕士、医学硕士、临床医学专业硕士等，例如：\backslash degree\{工学博士\}。
+    \item \emph{\backslash degree\{\}}：指定学位类别，限填医学博士、工学博士、文学硕士、理学硕士、医学硕士、临床医学专业硕士、工学学士、理学学士等，例如：\backslash degree\{工学博士\}。
     \item \emph{\backslash classid\{\}}：中图分类号，例如：\backslash classid\{TP391.4\}。
-    \item \emph{\backslash confidential\{yes|no\}\{period\}}：指定学位论文是否涉密yes|no。如果涉密，给出解密周期。对于不涉密论文，可以不进行配置，文档模版默认执行不涉密配置。如果涉密可按样例配置：\backslash confidential\{yes\}\{2\}，其中解密周期为2年。
-    \item \emph{\backslash title\{\}}：给定学位论文中文标题，例如：\backslash title\{南通大学研究生学位论文\}。
-    \item \emph{\backslash title*\{\}}：给定学位论文中文标题，例如：\backslash title*\{Nantong University Graduate Thesis\}。
+    \item \emph{\backslash confidential\{yes|no\}\{period\}}：指定学位论文是否涉密yes|no。如果涉密，给出解密周期。对于不涉密论文，可以不进行配置，文档模板默认执行不涉密配置。如果涉密可按样例配置：\backslash confidential\{yes\}\{2\}，其中解密周期为2年。
+    \item \emph{\backslash title\{\}}：给定学位论文中文标题，例如：\backslash title\{脉冲神经网络\}。
+    \item \emph{\backslash title*\{\}}：给定学位论文中文标题，例如：\backslash title*\{Spiking Neural Network\}。
     \item \emph{\backslash author\{\}}：给定学位论文作者中文名，例如：\backslash author\{朱昌波\}。
     \item \emph{\backslash author*\{\}}：给定学位论文作者英文名，例如：\backslash author*\{Changbo Zhu\}。
     \item \emph{\backslash studentid\{\}}：学位论文作者学号，例如：\backslash studentid\{202100111002\}。

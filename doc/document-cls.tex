@@ -5,22 +5,22 @@
 
 \section{字体}\label{sec:fontset}
 \subsection{中文字体族配置}
-为了确保字体兼容的稳定性，可以下载已经打包好的\href{https://gofile.me/77KDf/jFhXkred0}{字体包}:\url{https://gofile.me/77KDf/jFhXkred0}，该字体包提供了本模版兼容的全部字体。下载后，如果是在windows、Linux、MacOS图形界面操作，那么可以把‘Font.zip’文件以“解压到当前文件夹”的方式解压，如果是在Linux、MacOS命令行窗口操作，用下述命令操作：
+为了确保字体兼容的稳定性，可以下载已经打包好的\href{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}{字体包}:\url{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}，该字体包提供了本模板兼容的全部字体。下载后，如果是在windows、Linux、MacOS图形界面操作，那么可以把‘Font.zip’文件以“解压到当前文件夹”的方式解压，如果是在Linux、MacOS命令行窗口操作，用下述命令操作：
 \begin{lstlisting}
 unzip  Font.zip
 \end{lstlisting}
-解压完成后，把得到的Font文件移动到模版根目录。
+解压完成后，把得到的Font文件移动到模板根目录。
 
 
 \parwords{基于操作系统平台的字体族选择} 一般情况下，不需要特殊配置，采用默认设置即可。
 \projectname 默认自动根据操作系统或平台调用和配置中英文字体族：
 \begin{itemize}
-    \item Windows（fontset=windows）\footnote{此版本的模版( \project )各个功能均基于 \projectwindows 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为中易字体；
-    \item MacOS （fontset=mac）\footnote{本模版( \project )各个功能均没有在 \projectmacos 上测试，也不保证能够通过测试，如用户在该平台遇到任何问题最好自行解决，也鼓励反馈至讨论区。}： 默认中文为SC 类字体；
-    \item Linux （fontset=none）\footnote{此版本的模版( \project )各个功能均基于 \projectlinux 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为Adobe 中文字体；
+    \item Windows（fontset=windows）\footnote{此版本的模板( \project )各个功能均基于 \projectwindows 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为中易字体；
+    \item MacOS （fontset=mac）\footnote{本模板( \project )各个功能均没有在 \projectmacos 上测试，也不保证能够通过测试，如用户在该平台遇到任何问题最好自行解决，也鼓励反馈至讨论区。}： 默认中文为SC 类字体；
+    \item Linux （fontset=none）\footnote{此版本的模板( \project )各个功能均基于 \projectlinux 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为 Fandol 中文字体；
     \item Adobe （fontset=adobe）：默认中文为Adobe 中文字体。
 \end{itemize}
-如果想手动调用特定字体族，只须在引入 \projectname.cls文档类时，通过给定 ‘fontset’ 选项指定相应的值即可 （需确保当前操作系统或Font文件夹已安装 \texttt{fontset=选项} 所需要的相应字体）。\texttt{fontset=选项}只能够调用ntuthesis.cls中为不同操作系统平台配置好的默认字体族。事实上，本模版中\texttt{fontset=选项}参数只能够强制使字体族选择不受操作系统平台影响。也就是说，一般在操作系统平台识别错误时，使用此方法能达到预期的目标。
+如果想手动调用特定字体族，只须在引入 \projectname.cls文档类时，通过给定 ‘fontset’ 选项指定相应的值即可 （需确保当前操作系统或Font文件夹已安装 \texttt{fontset=选项} 所需要的相应字体）。\texttt{fontset=选项}只能够调用 \projectname.cls中为不同操作系统平台配置好的默认字体族。事实上，本模板中\texttt{fontset=选项}参数只能够强制使字体族选择不受操作系统平台影响。也就是说，一般在操作系统平台识别错误时，使用此方法能达到预期的目标。
 
 \begin{table}[!htbp]
     \caption{中文字体列表}
@@ -31,7 +31,7 @@ unzip  Font.zip
     \renewcommand{\arraystretch}{1.2}%row space 
     \begin{tabular}{lll}
         \toprule
-         模版中字体名称 & 描述 &支持的fontset选项 \\
+         模板中字体名称 & 描述 &支持的fontset选项 \\
         \midrule
         \texttt{windows} & Windows系统默认Sim类字体 & windows  \\
         \texttt{zhongyi} & 中易字体 & windows、none \\
@@ -52,7 +52,7 @@ unzip  Font.zip
 \item "\texttt{\backslash def\backslash \projectname @value@zhcn@mainfontfamily@none\{fandol\}}"把“fandol”配置为选项"fontset=none"的字体族。
 \end{itemize}
 
-本模版支持的中文字体如表\ref{tab:zhcnfont}所列。
+本模板支持的中文字体如表\ref{tab:zhcnfont}所列。
 
 
 
@@ -105,9 +105,9 @@ unzip  Font.zip
 
 \subsection{英文与数学符号字体配置}
 
-\href{https://github.com/aliftype/xits}{XITS} 是一款专为数学与科学出版设计的Times风格字体，基于STIX字体开发。其主要使命是通过增强OpenType数学表格功能，提供STIX字体的优化版本，使其能完美兼容支持数学公式的OpenType排版系统（如Microsoft Office 2007以上版本、XeTeX及LuaTeX），实现高质量的数学公式排版。这是模版推荐和默认配置使用的字体。
+\href{https://github.com/aliftype/xits}{XITS} 是一款专为数学与科学出版设计的Times风格字体，基于STIX字体开发。其主要使命是通过增强OpenType数学表格功能，提供STIX字体的优化版本，使其能完美兼容支持数学公式的OpenType排版系统（如Microsoft Office 2007以上版本、XeTeX及LuaTeX），实现高质量的数学公式排版。这是模板推荐和默认配置使用的字体。
 
-模版也尝试内置 latin modern 字体，但是本模版对该字体支持还不完善，不推荐使用。
+模板也尝试内置 latin modern 字体，但是本模板对该字体支持还不完善，不推荐使用。
 
 英文与数学字体族的选择与中文字体族配置类似，可以通过  \projectname.cls的配置文件  \projectname.cfg指定英文与数学字体族。打开\projectname.cfg，搜索并定位到代码
 “\texttt{\backslash def\backslash \projectname @value@zhcn@mathfontfamily\{xits\}}”，把xits改成需要的字体族即可，例如latinmodern。
@@ -121,7 +121,7 @@ unzip  Font.zip
     \renewcommand{\arraystretch}{1.2}%row space 
     \begin{tabular}{ll}
         \toprule
-         模版中字体名称 & 描述  \\
+         模板中字体名称 & 描述  \\
         \midrule
         \texttt{xits} &  \href{https://github.com/aliftype/xits}{XITS} 字体族\\
         \texttt{latinmodern} & latin modern 字体  \\

@@ -1,7 +1,7 @@
 \documentclass[doctor,academic]{style/ntuthesis}
 %\documentclass[twoside,doctor,academic]{style/ntuthesis}
 %- Multiple optional arguments:
-%- [<oneside|twoside>]% oneside print, twoside print, or without print
+%- [<oneside|twoside|null>]% oneside print, twoside print, or without print
 %- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
 %- [scheme=plain]% thesis writing of international students
 %- [draft]% show draft version information
@@ -52,11 +52,12 @@
 \begin{document}
 %---------------------------------------------------------------------------%
 %-
-%-> 生成封面、原创性声明、授权声明、标题页中英文摘要
+%-> 生成扉页、原创性声明、授权声明、标题页中英文摘要
 %-
 \maketitle% cover and titlepage,
-%-> Frontmatter:  abstract, content list, symbol list, preface
 \tableofcontents
+
+%-> Frontmatter:  abstract, content list, symbol list, preface
 \frontmatter% initialize the environment
 \input{ntuthesis/Frontmatter}% title page, abstract
 
@@ -86,7 +87,6 @@
 %--------------------------------------------------------------------
 %-> Backmatter: cv, thanks
 %-
-%\thispagestyle{appendixheader}
 \backmatter% initialize the environment
 \input{ntuthesis/Backmatter}% other information
 \cleardoublepage[plain]% 让文档总是结束于偶数页，可根据需要设定页眉页脚样式，如 [noheaderstyle]

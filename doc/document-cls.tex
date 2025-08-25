@@ -5,7 +5,7 @@
 
 \section{字体}\label{sec:fontset}
 \subsection{中文字体族配置}
-为了确保字体兼容的稳定性，可以下载已经打包好的\href{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}{字体包}:\url{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}，该字体包提供了本模板兼容的全部字体。下载后，如果是在windows、Linux、MacOS图形界面操作，那么可以把‘Font.zip’文件以“解压到当前文件夹”的方式解压，如果是在Linux、MacOS命令行窗口操作，用下述命令操作：
+为了确保字体兼容的稳定性，可以下载已经打包好的\href{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}{字体包}:\url{https://pan.baidu.com/s/165JK0NOTiQ7Izh1WWvGIgw?pwd=7w1h}，该字体包提供了本模板兼容的全部字体\footnote{采用默认字体配置时，不需要下载此字体包。}。下载后，如果是在windows、Linux、MacOS图形界面操作，那么可以把‘Font.zip’文件以“解压到当前文件夹”的方式解压，如果是在Linux、MacOS命令行窗口操作，用下述命令操作：
 \begin{lstlisting}
 unzip  Font.zip
 \end{lstlisting}
@@ -15,7 +15,7 @@ unzip  Font.zip
 \parwords{基于操作系统平台的字体族选择} 一般情况下，不需要特殊配置，采用默认设置即可。
 \projectname 默认自动根据操作系统或平台调用和配置中英文字体族：
 \begin{itemize}
-    \item Windows（fontset=windows）\footnote{此版本的模板( \project )各个功能均基于 \projectwindows 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为中易字体；
+    \item Windows（fontset=windows）\footnote{此版本的模板( \project )各个功能均基于 \projectwindows 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为windows-sim类字体；
     \item MacOS （fontset=mac）\footnote{本模板( \project )各个功能均没有在 \projectmacos 上测试，也不保证能够通过测试，如用户在该平台遇到任何问题最好自行解决，也鼓励反馈至讨论区。}： 默认中文为SC 类字体；
     \item Linux （fontset=none）\footnote{此版本的模板( \project )各个功能均基于 \projectlinux 上测试，如有任何问题可反馈至讨论区或 \href{mailto:\projectemail }{发邮件} 。}： 默认中文为 Fandol 中文字体；
     \item Adobe （fontset=adobe）：默认中文为Adobe 中文字体。

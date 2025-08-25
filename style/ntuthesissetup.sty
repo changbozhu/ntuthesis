@@ -248,7 +248,7 @@
 \renewcommand\tableofcontents{
     \contentmatter
     % content list region
-    {\linespread{1.25}\zihao{-4}
+    {\linespread{1.0}\zihao{-4}
         \intobmk*{\cleardoublepage}{\contentsname}% add link to bookmark
         \newpage
         \ntuthesis@setup@tableofcontents% content catalog
@@ -367,6 +367,9 @@
 }%
 \newcommand{\keywords}{\@ifstar{\enkeywords}{\zhcnkeywords}}%
 
-
+\renewcommand{\labelenumi}{(\arabic{enumi}) }
+\renewcommand{\labelenumii}{(\arabic{enumi}).\arabic{enumii}}
+\renewcommand{\labelenumiii}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}}
+\renewcommand{\labelenumiv}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
 \endinput
 

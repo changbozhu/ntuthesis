@@ -781,9 +781,9 @@
         \vspace*{\stretch{5.75}}
 
         {\zihao{-3}\bfseries \ntuthesis@config@zhcn@cover@completedate}
-        {\ulenhance[0.75pt]{\ulextend[60pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@year}}}年
-        {\ulenhance[0.75pt]{\ulextend[35pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@month}}}月
-        {\ulenhance[0.75pt]{\ulextend[45pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@day}}}日
+        {\ulenhance[0.75pt]{\ulextend[65pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@year}}}年
+        {\ulenhance[0.75pt]{\ulextend[37pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@month}}}月
+        {\ulenhance[0.75pt]{\ulextend[48pt]{\hspace*{-\ulhshift}\zihao{-3}\ntuthesis@value@zhcn@completedate@day}}}日
 
         \vspace*{\stretch{3.9}}
     }

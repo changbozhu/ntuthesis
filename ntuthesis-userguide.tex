@@ -1,0 +1,182 @@
+\documentclass[doctor,academic]{style/ntuthesis}
+%\documentclass[twoside,doctor,academic]{style/ntuthesis}
+%- Multiple optional arguments:
+%- [<oneside|twoside|null>]% oneside print, twoside print, or without print
+%- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
+%- [scheme=plain]% thesis writing of international students
+%- [draft]% show draft version information
+%- [standard options for ctex book class: draft|paper size|font size|...]%
+%---------------------------------------------------------------------------%
+%->> Document settings
+%---------------------------------------------------------------------------%
+
+\usepackage[super,color,math,tikz,list,table]{style/cnbasesetup}% document settings
+%\usepackage[authoryear,list]{style/cnbasesetup}% document settings
+%- usage: \usepackage[option1,option2,...,optionN]{setcnbook}
+%- Multiple optional arguments:
+%- [bibauto|bibtex|biber]% set bibliography processor and package
+%- [<numbers|super|authoryear>]% set citation and reference style
+%   - <numbers>: textual: Jones [1]; parenthetical: [1]
+%   - <super>: textual: Jones superscript [1]; parenthetical: superscript [1]
+%   - <authoryear>: textual: Jones (1995); parenthetical: (Jones, 1995)
+%
+%- [lscape]% provide landscape layout environment
+%- [color]% provide color support via xcolor package
+%- [tikz]% provide complex diagrams via tikz package
+%- [table]% provide complex tables via ctable package
+%- [list]% provide enhanced list environments for algorithm and coding
+%- [math]% enable some extra math packages
+%- [xlink]% disable link colors
+
+
+\usepackage{style/ntuthesissetup}% document settings
+\usepackage{mlstyle/mlmath}% extension to amsmath
+\usepackage{mlstyle/bayesianagent}
+% user defined commands
+\usepackage{usercustom}
+%\addbibresource{ref.bib} % only for biber
+
+
+
+%设置固定\normalbaselineskip行距的字体
+% 包括 \chuhao \xiaochu \yihao \xiaoyi \erhao \sanhao \sihao \wuhao \liuhao
+\xiaosi
+%\baselineskip = \linespread * \normalbaselineskip
+%
+%
+
+
+%-> Titlepage information
+%-
+%---------------------------------------------------------------------------%
+%->> School information
+%-  不建议用户修改此处
+\schoollogo[width=8.16cm,height=2.34cm]{official/ntu/ntu-logo}% 校名logo  不要修改
+\schoolbadge[width=3.78cm,height=3.78cm]{official/ntu/ntu-badge}% 校徽    不要修改
+
+%---------------------------------------------------------------------------%
+%->> Tehsis Structure information
+% 
+%-->> 学位类别
+%-限填医学博士、工学博士、文学硕士、理学硕士、医学硕士、临床医学专业硕士等
+\degree{工学博士}% 
+
+\classid{TP391.4}
+
+%-->>是否涉密
+%-
+% 学位论文是否涉密，不涉密不要启用此命令，已做默认不涉密配置
+% 对于涉密的学位论文，第一个参数指定为'yes',第二个参数为阿拉伯数字，指定保密年限，
+% \confidential{yes|no}{period}
+% 例如保密2年的学位论文：
+%\confidential{yes}{2}
+
+
+%---------------------------------------------------------------------------%
+%->> Titlepage information
+%---------------------------------------------------------------------------%
+%-
+%-> 个人中英文信息
+%-
+% 标题
+  %   可使用“\\”命令手动控制换行
+  %   如：\title{脉冲神经网\\高效学习理论研究}
+\title{南通大学学位论文 \LaTeX{}模板 V\projectversion}% 论文中文题目
+\title*{Nantong University Thesis \LaTeX{} Template V\projectversion}% English title
+
+% 作者
+%   作者姓名需要与学籍信息一致
+\author{朱昌波}% 论文作者
+\author*{Changbo Zhu}%English
+% 学号
+%   学号需要与学籍信息一致
+\studentid{202100111002}% 学生学号
+
+% 指导教师
+%   指导教师需要与学籍信息一致
+\advisor{X**~教授}% 指导教师：姓名 专业技术职务 工作单位
+\advisor*{Prof.~** X}% 指导教师：姓名 专业技术职务 工作单位
+
+%联合指导教师，如果没有，请清空内容或注释命令
+\coadvisor{Y**~副教授}
+\coadvisor*{Assoc. Prof.~** Y}
+
+
+% 专业
+%   填写学籍信息中专业的全名及代码
+\major{模式识别与智能系统}% 一级/二级学科专业名称，专业名称需要与学籍信息一致
+\major*{Pattern Recognition and Intelligent Systems}
+\majorcode{081104}% 一级/二级学科专业代码，专业名称需要与学籍信息一致
+
+\researchfield{认知神经计算}
+%
+% 培养单位
+%   填写所属院系的全名
+\department{XXXXXX学院}% 院系名称
+%\department{电气工程与自动化学院\\神经网络与智能机器人研究所}% 多行院系名称示例
+
+% 论文完成日期
+% \completedate{<year>}{<month>}{<date>}
+\completedate{二〇二五}{十}{一}% 
+
+\foundation{××科学基金(30000000)\\××科学研究基金（WKJ2008-0-000）}
+
+
+\begin{document}
+%---------------------------------------------------------------------------%
+%-
+%-> 生成扉页、原创性声明、授权声明、标题页中英文摘要
+%-
+\maketitle% cover and titlepage,
+\tableofcontents
+
+%-> Frontmatter:  abstract, content list, symbol list, preface
+\frontmatter% initialize the environment
+\begin{abstract}    
+ntuthesis 是制作南通大学本科生毕业论文、研究生学位论文、博士后出站报告的 \LaTeX{}文档类。本模板基于研究生生院与教务处的论文撰写规范制作，同时参考研究生院提供的硕士、博士学位材料包，用于生成符合南通大学排版要求和相应的国家标准的学位论文，力求通过\LaTeX{}2e 语法实现清晰的实现逻辑、较高的可定制性以及友好的用户接口。
+
+\keywords{南通大学，本科毕业设计，硕士论文，博士论文，学位论文 \LaTeX{} 模板}
+\end{abstract}
+
+\begin{abstract*}
+ntuthesis is a \LaTeX{} document class designed for producing undergraduate dissertations, graduate degree theses, and postdoctoral research reports at Nantong University. This template is developed based on the thesis writing specifications provided by the Graduate School and the Academic Affairs Office. It also references the master's and doctoral degree material packages supplied by the Graduate School, aiming to generate theses that comply with Nantong University's formatting requirements and relevant national standards. The template strives to achieve clear implementation logic, high customizability, and a user-friendly interface through.
+
+\keywords*{Nantong University, Bachelor's thesis, Master's thesis, Ph.D dissertation, Thesis \LaTeX{} template}
+\end{abstract*}
+
+%--> Main matter: 
+\mainmatter
+\input{doc/intro}
+\input{doc/quickstart}
+\input{doc/document-cls}
+\input{doc/math}
+\input{doc/plotting}
+\input{doc/table}
+\input{doc/alg}
+\input{doc/reference}
+\input{doc/question}
+%----------------------------------------------------------------------
+%-> Bibliography, glossary, index
+%-
+%\referencematter
+{
+\intotoc*{\cleardoublepage}{\bibname}% add link to toc
+\linespread{1.25}
+\ntuthesisbibliography%{ref}
+}
+
+%-> 附录
+%-
+\appendix
+\input{doc/nturules}
+\input{doc/ntubachelorrule}
+\input{doc/checkingthesis}
+\input{doc/testfunc}
+
+%--------------------------------------------------------------------
+%-> Backmatter: cv, thanks
+%-
+%\backmatter% initialize the environment
+%\input{ntuthesis/Backmatter}% other information
+\cleardoublepage[plain]% 让文档总是结束于偶数页，可根据需要设定页眉页脚样式，如 [noheaderstyle]
+\end{document}

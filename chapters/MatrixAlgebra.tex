@@ -1,0 +1,62 @@
+\chapter{矩阵分析}\label{appendix:matAlg}
+本附录章节概括了一些本文所用到的矩阵代数论，其中所有定理和定义的更详细信息均可参见文献~\cite{matThm_zhang2013}。
+\section{向量变元的梯度}
+向量变元$\vec{x}$的标量值函数$f:\mathbb{R}^{d}  \mapsto \mathbb{R}$就是把任意向量变元 $\vec{x} \in \mathbb{R}^{d}$ 映射到实数轴上唯一的点$y$，即 $y = f(\vec{x})$。接着，可以定义实值函数相对于（列）向量变元的梯度。
+\begin{definition}[实值函数相对于列向量的梯度] \label{def:matAlg-scarlar-columnVectorGradient}
+	实值函数$f(\vec{x})$相对于列向量$\vec{x} \in \bbR^{d}$的梯度是一个列向量，其第$i$个分量是函数$f$相对于列向量$\vec{x}$的第$i$个分量元素的偏导数，即
+	$$
+	\nabla_{\vec{x}} f(\vec{x}) = \frac{\partial f(\vec{x})}{ \partial \vec{x} } = \left[ \frac{\partial f}{\partial x_1}, \frac{\partial f}{\partial x_2}, \cdots, \frac{\partial f}{\partial x_d} \right]^{\top}
+	$$
+\end{definition}
+然后，实值函数相对于行向量的梯度可如下定义，
+\begin{definition}[实值函数相对于行向量的梯度]  \label{def:matAlg-scarlar-rowVectorGradient}
+	实值函数$f(\vec{x})$相对于行向量$\vec{x}^{\top} \in \bbR^{d}$的梯度是一个行向量，其第$i$个分量是函数$f$相对于行向量$\vec{x}^{\top}$的第$i$个分量元素的偏导数，即
+	$$
+	\nabla_{\vec{x}^{\top}} f(\vec{x}) = \frac{\partial f(\vec{x})}{ \partial \vec{x}^{\top} } = \left[ \frac{\partial f}{\partial x_{1}}, \frac{\partial f}{\partial x_{2}}, \cdots, \frac{\partial f}{\partial x_{d}} \right]
+	$$
+\end{definition}
+向量变元$\vec{x} \in \mathbb{R}^d$的梯度负向称为\emph{梯度流}，记为$ \dot{\vec{x}} = -  \frac{\partial f(\vec{x})}{ \partial \vec{x} }$。若函数$f_i(\vec{x}), 1 \le i \le m$是向量变元$\vec{x} \in \mathbb{R}^d$的实值函数，那么函数$\vec{f}(\vec{x})=[f_1(\vec{x}), f_2(\vec{x}), \ldots, f_m(\vec{x})]^{\top}$是向量变元$\vec{x}$的向量值函数。进一步地，基于定义\ref{def:matAlg-scarlar-columnVectorGradient}及定义\ref{def:matAlg-scarlar-rowVectorGradient}，向量值函数$\vec{f}(\vec{x})$相对于向量变元$\vec{x}$的梯度可由下式定义
+\begin{equation*}
+\begin{split}
+\frac{\partial \vec{f}^{\top} (\vec{x}) }{ \partial \vec{x} }
+=& \nabla_{\vec{x}} \vec{f}(\vec{x})=  \left[ \frac{\partial f^{(1)}}{\partial  \vec{x}}, \frac{\partial  f^{(2)}}{\partial  \vec{x}}, \ldots, \frac{\partial f^{(m)}}{\partial \vec{x}} \right] \\
+=&\begin{bmatrix}
+	&\frac{\partial f_1}{\partial x_1}  &\frac{\partial f_2}{\partial x_1}  &\cdots  &\frac{\partial f_n}{\partial x_1} \\
+	&\frac{\partial f_1}{\partial x_2}  &\frac{\partial f_2}{\partial x_2}  &\cdots  &\frac{\partial f_n}{\partial x_2} \\
+	&\vdots 							&\vdots								&		 &\vdots							\\
+	&\frac{\partial f_1}{\partial x_m}  &\frac{\partial f_2}{\partial x_m}  &\cdots  &\frac{\partial f_n}{\partial x_m}
+\end{bmatrix}
+\in \mathbb{R}^{m \times n}
+\end{split}
+\end{equation*}
+全微分为
+$ \mathrm{d} \vec{f} = (\frac{\partial \vec{f}^{\top}}{\partial \vec{x}})^{\top}   \mathrm{d}\vec{x} $。
+
+实值函数$f(\vec{x})$相对于向量$\vec{x}$的梯度满足下列性质，
+\begin{enumerate}	
+	\item 若$f(\vec{x}) = c$为常数，那么$\nabla_{\vec{x}} f(\vec{x}) = \vec{0}$。
+	\item 线性法则：若$f(\vec{x})$和$g(\vec{x})$均是$\vec{x}$的实值函数，$c_1, c_2$为常数，那么
+	      $$\frac{\partial [ c_1 f(\vec{x}) + c_2 g(\vec{x}) ] }{\partial \vec{x}} = c_1 \frac{ \partial f(\vec{x})}{\partial \vec{x}}  + c_2 \frac{ \partial g(\vec{x})}{\partial \vec{x}} $$
+	\item 乘法规则：若$f(\vec{x})$和$g(\vec{x})$均是$\vec{x}$的实值函数，那么
+	      $$\frac{\partial [ f(\vec{x}) g(\vec{x}) ] }{\partial \vec{x}} = f(\vec{x}) \frac{ \partial g(\vec{x})}{\partial \vec{x}}  + g(\vec{x}) \frac{ \partial f(\vec{x})}{\partial \vec{x}} $$
+	\item 商式法则：若$f(\vec{x})$和$g(\vec{x}) \neq 0 $均是$\vec{x}$的实值函数，那么
+	      $$\frac{\partial [ \frac{f(\vec{x})}{g(\vec{x})} ] }{\partial \vec{x}} = \frac{ g(\vec{x}) \frac{ \partial f(\vec{x})}{\partial \vec{x}}  - f(\vec{x}) \frac{ \partial g(\vec{x})}{\partial \vec{x}} }{g(\vec{x})^2} $$
+	\item 链式法则：若$f(\vec{y})$是向量$\vec{y}$的实值函数, 并且$\vec{y}$是向量变元$\vec{x}$的向量值函数，那么
+	      $$\frac{\partial f }{\partial \vec{x}} = \frac{\partial \vec{y}^{\top} }{\partial \vec{x}}  \frac{\partial f(\vec{y}) }{\partial \vec{y}}  $$
+	\item 若向量$\vec{a}$与$\vec{x}$是无关的向量，那么
+	      $$\frac{\partial \vec{a}^{\top} \vec{x}}{\partial \vec{x}} = \frac{\partial \vec{x}^{\top} \vec{a}}{\partial \vec{x}} = \vec{a} $$
+	\item $\frac{\partial \vec{x}^{\top}}{ \partial \vec{x}} = \mat{I}$是单位矩阵。
+	\item 线性映射的梯度：若$\mat{W},\vec{b}$分别是矩阵和常向量，$\vec{x}$是向量变元，
+		  则线性映射$\vec{y} = \mat{W} \vec{x} + \vec{b}$的梯度矩阵为
+		  $$\frac{\partial \vec{y}^{\top}}{\partial \vec{x}} = \mat{W}$$
+	\item 若向量$\vec{a}$与$\vec{x}$是相关的向量，且$\vec{y}$是向量$\vec{x}$的向量值函数，那么
+	      $$\frac{\partial \vec{a}^{\top} \vec{y}}{\partial \vec{x}} = \frac{\partial \vec{y}^{\top} \vec{a}}{\partial \vec{x}} = \frac{\partial \vec{y}^{\top}}{\partial \vec{x}} \vec{a} $$
+	\item 若矩阵$\mat{A}$和向量$\vec{y}$均与向量$\vec{x}$是无关的，那么
+	      $$\frac{\partial \vec{x}^{\top} \mat{A} \vec{y} }{\partial \vec{x}} = \mat{A} \vec{y}, \frac{\partial \vec{y}^{\top} \mat{A} \vec{x} }{\partial \vec{x}} = \mat{A}^{\top} \vec{y} $$
+	\item 若矩阵$\mat{A}$与向量$\vec{x}$是无关的，那么
+	      $$\frac{\partial \vec{x}^{\top} \mat{A} \vec{x} }{\partial \vec{x}} = (\mat{A} + \mat{A}^{\top}) \vec{x}$$
+	\item 若矩阵$\mat{A}$与向量$\vec{x}$是无关的，而向量$\vec{y}$是向量$\vec{x}$的向量值函数，那么
+	      $$\frac{\partial \vec{y}^{\top} \mat{A} \vec{y} }{\partial \vec{x}} = \frac{\partial \vec{y}^{\top}}{\partial \vec{x}}(\mat{A} + \mat{A}^{\top}) \vec{y}$$
+	\item 若矩阵$\mat{A}$与向量$\vec{x}$是无关的，而向量$\vec{y},\vec{z}$均是向量$\vec{x}$的向量值函数，那么
+	      $$\frac{\partial \vec{y}^{\top} \mat{A} \vec{z} }{\partial \vec{x}} = \frac{\partial \vec{y}^{\top}}{\partial \vec{x}}\mat{A} \vec{y}  +  \frac{\partial \vec{z}^{\top}}{\partial \vec{x}}\mat{A}^{\top} \vec{z}$$
+\end{enumerate}

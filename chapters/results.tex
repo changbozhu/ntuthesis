@@ -1,4 +1,50 @@
 \chapter{结果} \label{chap:results}
+\section{软件分析}\label{sec:results:software}
+现在主流的CAM软件（如Catia，Pro/Engineer），由于…
+…
+\section{数据获取}\label{sec:results:getdata}
+什么组:自2006年9月至2007年2月，入院的什么脑损伤什么38例。入选标准:经病史、体检和CT扫描确诊，除外肝肾血液疾病史以及伴有多脏器损伤什么。按GCS格拉斯哥评分，进行分类:重症按GCS格拉斯哥评分，进行分类:重症按GCS格拉斯哥评分，进行分类:重症按GCS格拉斯哥评分，，进行分类:重症什么20例(GCS3-8分)，男17例、女3例，男16例、女2例，年龄16-78岁。性别、年龄无显著性差异。损伤类型，重症组20例中:硬膜外血肿4例、硬膜下血肿7例、多发性什么内血肿4例、脑内血肿2例、脑挫裂伤3例;轻症组18例中:硬膜外血肿5例、硬膜下血肿5例、脑挫裂伤8例。什么方式，常规脱水止血抗炎什么。需手术的行手术什么。重症组施行什么内血肿清除术13例，保守什么7例;轻症组施行什么内血肿清除术6例、保守什么12例。(表~\ref{tab:mice-As})
 
+\begin{table}[!htbp]
+    \begin{center}
+	\begin{minipage}{0.6\textwidth}
+    \caption[正常组小鼠各主要组织的砷分布]{\enspace 正常组小鼠各主要组织的砷分布}
+    \label{tab:mice-As}
+    \normalsize% \zihao{5}
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{100pt}<{\raggedright}m{110pt}<{\raggedright}}
+    \toprule
+    脏器 & 砷含量 （$\bar{X} \pm S, \mu g/g$）\\
+    \midrule
+    大脑 &  BDL\\
+    肺 &  $0.1023 \pm 0.0659$\\
+    心脏 &  BDL\\
+    \bottomrule
+    \end{tabular}
+    {\newline BDL：低于检出限}
+\end{minipage}
+\end{center}
+\end{table}
 
+目前HCCI数值模拟研究主要集中在单区、多区和多维模型上~\cite{jiang1998woods}。本节将从这三方面分别予以介绍：
+\begin{enumerate}
+\item 单区模型
 
+    公式应另起一行，正文中的公式、算式或方程式等应编排序号，公式的编号用圆括号括起，序号标注于该式所在行(当有续行时，应标注于最后一行)的行末。公式可按章节顺序编号或按全文统一编号。公式序号必须连续，不得重复或跳缺。重复引用的公式不得另编新序号，本例共识采用按章编号。
+    \begin{equation} \label{eqn:signle-line-eq}
+        m = \sum_{k=1}^{K} m_k
+    \end{equation}
+
+    较长的公式，如必须转行时，最好在等号处转行,如做不到这一点,要在$+,-,×,÷$等数学符号处转行。数学符号应写在转行处的行首。上下式尽可能在等号“$=$”处对齐。
+    \begin{equation} \label{eqn:multi-line-eq}
+    \begin{split}
+        f(x,y) = & f(0,0) + \frac{1}{1!} (x\frac{\partial}{\partial x} + y\frac{\partial}{\partial y}) f(0,0) \\ 
+        &+  \frac{1}{2!} (x\frac{\partial}{\partial x} + y\frac{\partial}{\partial y})^2 f(0,0) + K \\
+        &+ \cdots \\
+        &+  \frac{1}{n!} (x\frac{\partial}{\partial x} + y\frac{\partial}{\partial y})^n f(0,0) + K 
+    \end{split}
+    \end{equation}
+\item 多区模型
+
+    小鼠脑组织中的砷含量如图1所示，染$As$组小鼠脑组织中的砷含量高于对照组高于对照组高于对照组高于对照组高于对照组高于对照组高于对照组（$p<0.05$）；染$Hg+As$和染$Gly+As$组小鼠脑组织中的砷含量低于染As组（$p<0.05$）。
+\end{enumerate}

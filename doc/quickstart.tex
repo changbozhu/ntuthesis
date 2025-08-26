@@ -180,7 +180,7 @@
 文件夹位默认图片存放与搜索位置，用户可将图片存放于此位置，支持格式有：.jpg, .png, .pdf。不建议为各章节图片建子目录，即使图片众多，若命名规则合理，图片查询亦是十分方便。
 
 \subsection{ \projectname 文件夹}
-文档几个模块的基本信息，如论文信息、主内容信息、附录信息等 \footnote{对于研究生学位论文，此文件夹为 \projectname；对于本科生学位论文，此文件夹为 ntudesign 文件夹。}。
+文档几个模块的基本信息，如论文信息、主内容信息、附录信息等 \footnote{对于研究生学位论文，此文件夹为 \projectname；对于本科生学位论文，此文件夹为 ntubachelor 文件夹。}。
 \begin{itemize}
     \item FrontBookinfo.tex：为论文信息。
     \item Frontmatter.tex：为论文前序内容。
@@ -310,7 +310,7 @@
         \end{verbatim}
         %\end{lstlisting}
     \item 缩略词表可以在文件"ntuthesis/Abbrvmatter.tex"中定义，缩略词表需要定义在环境 \verb|\begin{abbreviation} ... ... \end{abbreviation}|中，并且每个缩略词条目需要用命令 \verb|\addabbrvitem{<缩略词>}{<英文全称>}{中文}| 定义。
-    \item 综述及综述文献写在文件"ntuthesis/Reviewmatter.tex"中。对于不需要综述及综述参考文献的，不包含该文件即可。该文件中，综述全文写在环境\verb|\begin{review} ... ... \end{review}|内，引用的参考文献bibtex索引信息写在正文的参考文献库即可。
+    \item 综述及综述文献写在文件"ntuthesis/Reviewmatter.tex"中。对于不需要综述及综述参考文献的，不包含该文件即可。该文件中，综述全文只需要按正常格式写在环境\verb|\begin{review} ... ... \end{review}|内即可，引用的参考文献bibtex索引信息需要写入正文的参考文献库。
     \item 命令 \verb|\appendix| 重定义附录章节计数格式，并初始化各个计数器。附录各个章节内容可以定义在文件"ntuthesis/Appendix.tex"中。
     \end{itemize}
     \item \emph{学位论文结尾事务处理}~~ 命令 \verb|\backmatter| 格式化学位论文尾部页面，覆盖在读期间的科研成果及致谢。这部分内容可以在文件"ntuthesis/Backmatter.tex"中定义。

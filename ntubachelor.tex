@@ -42,7 +42,7 @@
 
 %-> Titlepage information
 %-
-\input{ntudesign/Frontinfo}%
+\input{ntubachelor/Frontinfo}%
 \begin{document}
 %---------------------------------------------------------------------------%
 %-
@@ -51,12 +51,12 @@
 \maketitle% cover and titlepage,
 %-> Frontmatter:  abstract, content list, symbol list, preface
 \frontmatter% initialize the environment
-\input{ntudesign/Frontmatter}% title page, abstract
+\input{ntubachelor/Frontmatter}% title page, abstract
 \tableofcontents
 
 %--> Main matter: 
 \mainmatter
-\input{ntudesign/Mainmatter}
+\input{ntubachelor/Mainmatter}
 %----------------------------------------------------------------------
 %-> Bibliography, glossary, index
 %-
@@ -65,11 +65,11 @@
 \linespread{1.25}
 \ntuthesisbibliography%{ref}
 }
-\input{ntudesign/Backmatter}% other information
+\input{ntubachelor/Backmatter}% other information
 %-
 %-> 附录
 %-
 \appendix
-\input{ntudesign/Appendix} % appendix content
+\input{ntubachelor/Appendix} % appendix content
 \cleardoublepage[plain]% 让文档总是结束于偶数页，可根据需要设定页眉页脚样式，如 [noheaderstyle]
 \end{document}

@@ -79,14 +79,18 @@
     \begin{verbatim} \multirow[⟨vpos⟩]{⟨nrows⟩}[⟨bigstruts⟩]{⟨width⟩}[⟨vmove⟩]{⟨text⟩} \end{verbatim}
     
     其中参数意义如下：
-    \begin{itemize}
+    \begin{enumerate}
         \item \verb|⟨vpos⟩|~ 定义了合并后单元格内文本竖直位置的对齐方式，参数 \verb|t| 表示顶部对齐， \verb|b| 表底部部对齐，\verb|c|表示居中对齐，缺省默认值为 \verb|b|；
         \item \verb|⟨nrows⟩|~ 定义了合并后单元格纵向跨越的行数。该列的其他行必须留空，否则 \verb|\multirow| 创建的内容会覆盖已有数据。当 \verb|⟨nrows⟩| 为正值时，纵向范围涵盖当前行及下方 \verb|(⟨nrows⟩-1)| 行；为负值时则涵盖当前行及上方 \verb|(-⟨nrows⟩-1)| 行；\verb|⟨nrows⟩| 允许使用分数值，便于进行精细调整；
         \item \verb|⟨bigstruts⟩|~  参数主要在使用 bigstrut 宏包时生效。其数值表示跨行区域内所有 \verb|\bigstrut| 命令的使用次数总和。具体计数规则为：(1)无参数版本 \verb|\bigstrut| 计为 2 次,(2)带位置参数的 \verb|\bigstrut[⟨x⟩]|（\verb|⟨x⟩|为 \verb|t| 或 \verb|b|）计为 1 次，默认值为 0；\verb|⟨bigstruts⟩| 参数可添加字母前缀（\verb|t|、\verb|b| 或 \verb|tb|）实现精细控制（详细内容参见 \href{https://texdoc.org/serve/multirow.pdf/0}{multirow宏包文档}）；字母与数值间可保留空格，格式为 \verb|t 3| 或 \verb|tb 2|；
-        \item \verb|⟨width⟩|~ 参数指定文本排版宽度，特殊取值包括：（1） \verb|*| 表示采用文本的自然宽度，（2） \verb|=| 表示采用当前列（即 \verb|\multirow| 条目所在列）的预设宽度；
+        \item \verb|⟨width⟩|~ 参数指定文本排版宽度，特殊取值包括：
+        \begin{itemize}
+            \item \verb|*| 表示采用文本的自然宽度，
+            \item \verb|=| 表示采用当前列（即 \verb|\multirow| 条目所在列）的预设宽度；
+        \end{itemize}
         \item \verb|⟨vmove⟩|~ 是用于微调的长度值：文本将在原始位置基础上，根据该长度值上移（若 \verb|⟨vmove⟩| 为负值则下移）；
         \item \verb|⟨text⟩|~ 为实际文本内容。根据宽度设定方式不同，排版规则如下：(1)如果显式指定宽度时，文本将置于指定宽度的 \verb|\parbox| 中，可通过 \\ 强制换行；(2)如果宽度设为 \verb|*| 时，文本以行内模式 (LR mode) 排版，需多行显示时，应在 ⟨text⟩ 内嵌套 tabular 或 array 环境；(3)如果宽度设为 \verb|=| 时，仅当 \verb|\multirow| 条目位于预定义宽度的列中生效（如：\verb|p{}| 列、tabularx 的 X 列、tabulary 的 \verb|L/C/R/J| 列），文本将置于该列预设宽度的 \verb|\parbox| 中，非适用场景使用 \verb|=| 将导致异常（通常表现为列宽过大）。
-    \end{itemize}
+    \end{enumerate}
     \item \emph{ at表达式命令}~~ \verb|@{}|表达式为每行的某两个相邻的列之间插入文本，同时自动去掉原来在这两列之间插入的空白。
     \begin{figure}[!hpbt]
         \begin{minipage}{0.5\textwidth}
@@ -109,7 +113,7 @@
     \end{figure}
 
     对于\verb|@{}|，有下面几点需要说明：
-    \begin{itemize}
+    \begin{enumerate}
         \item 如果我们需要继续使用空白，必须在 \verb|@{}| 表达式的文本参数中必须包含 \verb|\hspace{<wsep>}| 命令，或者使用 \verb|!{}| 替换；\verb|<wsep>| 为空白长度，可以是指定的长度（例如 \verb|4pt| ）或者弹性长度 \verb|\fill|；
         \begin{figure}[!hpbt]
         \begin{minipage}{0.5\textwidth}
@@ -153,7 +157,7 @@
         \item \verb|@{}| 表达式中可以使用 \verb|\extracolsep{<wsep>}| 控制，使后面所有列间间隔在原来标准间隔的基础上增加\verb|<wsep>|大小；
         \item 在 \verb|tabular*| 环境中。必须使用 \verb|@{\extracolsep\fill}| 命令，使得后面所有列间距可以伸展到预定义的表格宽度；
         \item 一个表格即使左右边界没有竖线或其他表征符号，相应的位置与后面 (前面) 的列之间也会插入等于标准列间隔一半的空白；如果不希望有这些空白，可以在行参数开始或结束处使用 \verb|@{}| 表达式。
-    \end{itemize}
+    \end{enumerate}
 \end{enumerate}
 
 
@@ -266,6 +270,23 @@
 
 %以下示例对比了 booktabs 的使用和两种等效的正常 LaTeX 实现（第二个示例需要在序言中使用 \verb|\usepackage{array}| 或 \verb|\usepackage{dcolumn}|，第三个示例需要在序言中使用 \verb|\usepackage{booktabs}|）。
 
+\begin{table}[!hbtp]
+    \caption[峰谷电价]{\enspace 峰谷电价}
+    \label{tab:elec-price}
+    \centering
+    \normalsize% fontsize 
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{tabular}{m{40pt}<{\raggedright}m{120pt}<{\raggedright}m{80pt}<{\raggedright}}
+    \toprule
+    周期 & 时段 & 电价 (CNY/kWh) \\
+    \midrule
+    Peak & 12:00--15:00, 18:00--21:00 & 1.3782\\
+    Flat & 9:00--10:00, 15:00--18:00, 21:00--23:00 & 0.8595\\
+    Valley & 1:00--7:00, 23:00--0:00 & 0.3658\\
+    \bottomrule
+    \end{tabular}
+\end{table}
+
 \begin{example}三线表是科技期刊与论文常用的表格，本例给出了一种简单的三线表格绘制样例。
 \begin{lstlisting}[language=tex]
 \begin{table}[!hbtp]
@@ -287,27 +308,12 @@
 \end{lstlisting}
 其显示效果如表\ref{tab:elec-price}。
 \end{example}
-\begin{table}[!hbtp]
-    \caption[峰谷电价]{\enspace 峰谷电价}
-    \label{tab:elec-price}
-    \centering
-    \normalsize% fontsize 
-    \setlength{\tabcolsep}{4pt}% column separation
-    \begin{tabular}{m{40pt}<{\raggedright}m{120pt}<{\raggedright}m{80pt}<{\raggedright}}
-    \toprule
-    周期 & 时段 & 电价 (CNY/kWh) \\
-    \midrule
-    Peak & 12:00--15:00, 18:00--21:00 & 1.3782\\
-    Flat & 9:00--10:00, 15:00--18:00, 21:00--23:00 & 0.8595\\
-    Valley & 1:00--7:00, 23:00--0:00 & 0.3658\\
-    \bottomrule
-    \end{tabular}
-\end{table}
+
 
 
 \begin{example}在绘制表格时，常常需要对表格进行注释，然而 \verb|tabular|环境不支持脚注。这里给出一种基于 \verb|minipage| 环境的 \verb|tabular| 表格脚注解决方案，供读者参考。
 \begin{lstlisting}[language=tex]
-\begin{table}[tb]
+\begin{table}[!htbp]
     \begin{center}
 	\begin{minipage}{0.6\textwidth}%这里需要根据实际表格做合适调整。
     \caption[正常组小鼠各主要组织的砷分布]{\enspace 正常组小鼠各主要组织的砷分布}
@@ -330,7 +336,8 @@
 \end{lstlisting}
 其显示效果如表\ref{tab:mice-As}。
 \end{example}
-\begin{table}[tb]
+
+\begin{table}[!htbp]
     \begin{center}
 	\begin{minipage}{0.6\textwidth}
     \caption[正常组小鼠各主要组织的砷分布]{\enspace 正常组小鼠各主要组织的砷分布}
@@ -350,4 +357,5 @@
 \end{minipage}
 \end{center}
 \end{table}
+
 制作\LaTeX{}表格的的更多范例，请参见 \href{https://wikibooks.cn/wiki/LaTeX/Tables}{WiKibook Tables}。

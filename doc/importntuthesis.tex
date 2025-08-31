@@ -44,15 +44,22 @@
 \begin{enumerate}
     \item \emph{指定参考文献处理器}：在引入cnbasesetup宏包时，我们可以通过从三个选项"[bibauto|bibtex|biber]"中选一个来指定学位论文参考文献处理器。
         \begin{enumerate}
-            \footnotesize
-            \item "bibtex"选项指定参考文献处理器为bibtex。当参考文献处理器选择为“bibtex”时，在需要的位置直接使用带参考文献库名参数的命令“\backslash \projectname bibliography\{bibname\}”打印参考文献列表，这里没有文献库扩展名“.bib”。
-            \item “biber”选项指定参考文献处理器为“biblatex”。当参考文献处理器选择为“biber”时，可以在导言区添加命令"\backslash addbibresource\{bibname.bib\}"以指定参考文献库为"bibname.bib"，这个命令需要带上扩展名“.bib”，然后在需要的位置直接使用不带参数的命令“\backslash \projectname bibliography”打印参考文献列表。
-            \item “bibauto”为文档自定义的选项，参考文献处理器由 \projectname.cls文档类指定。这也是缺省默认的处理器模式， \projectname.cls默认配置为biblatex。
+            %\footnotesize
+            \item "bibtex"选项指定参考文献处理器为bibtex。当参考文献处理器选择为“bibtex”时，在需要的位置直接使用带参考文献库名参数的命令 \verb|\ntuthesisbibliography{<bibname>}| 打印参考文献列表，这里没有文献库扩展名“.bib”。
+            \item “biber”选项指定参考文献处理器为“biblatex”。当参考文献处理器选择为“biber”时，需要在导言区添加命令 \verb|\addbibresource{<bibname.bib>}| 以指定参考文献库为"bibname.bib"，并且这个命令需要带上扩展名“.bib”，然后在需要的位置直接使用不带参数的命令“\backslash \projectname bibliography”打印参考文献列表。
+            \item “bibauto”为文档自定义的选项，参考文献处理器由 \projectname.cls文档类指定。这也是缺省默认的处理器模式， \projectname.cls默认配置为biblatex。 \emph{该模式下，不可自定义参考文献库文件，仅可采用默认参考文献库文件“ref.bib”}。
         \end{enumerate}
-    没有明确指定参考文献库名的情况下，模板默认配置参考文献库名为“ref.bib”。
+    没有明确指定参考文献库名的情况下，模板默认配置参考文献库名为“ref.bib”。样例文档中文献处理器采用默认配置“bibauto”，参考文献库只能使用默认文件“ref.bib”。
     对于需要打印多段参考文献列表的，只能选择“biber”或“bibauto”作为参考文献处理器，比如引入“综述”及“综述参考文献”。
     %
-    \item \emph{配置参考文献引用风格}: 在引入cnbasesetup宏包时，可通过三个选项“[<numbers|super|authoryear>]”中选一个来指定参考文献引用风格。(1).number：按出现顺序排序，以数字方式索引引用；(2).super：按出现顺序排序，以数字方式索引引用，并且引用处采用上角标小数字引用；(3).authoryear： 以“作者 年份”方式索引引用。
+    \item \emph{配置参考文献引用风格}: 在引入cnbasesetup宏包时，可通过三个选项“[<numbers|super|authoryear>]”中选一个来指定参考文献引用风格。
+        \begin{enumerate}
+        %\footnotesize
+        \item \verb|number|：按出现顺序排序，以数字方式索引引用；
+        \item \verb|super|：按出现顺序排序，以数字方式索引引用，并且引用处采用上角标小数字引用；
+        \item \verb|authoryear|： 以“作者 年份”方式索引引用；
+        \item \verb|nsfc|：指定国家自然基金委模板中提到的引用格式，以小括号格式标注文献顺序。
+        \end{enumerate}
     \item \emph{局部转置版面宏包}： 参数"[<lscap>]"指定文档引入宏包fancyhdr、pdflscape、textpos，提供了landscape环境。
     \item \emph{颜色宏包}： 参数"[<color>]"指定文档引入宏包xcolor，提供丰富的颜色支持。
     \item \emph{tikz绘图宏包}： 参数"[<tikz>]"指定文档引入额外扩展的绘图宏包tikz ，提供绘图支持。

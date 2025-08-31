@@ -149,21 +149,25 @@ figure环境的作用是在文档中将图片展示为浮动元素。这意味�
 这个命令仅对有标签的图片有效。重要提示：你必须编译 \LaTeX{} 文档两次来使交叉引用等功能正常显示。
 
 \subsection{不同分辨率图片}
-我们在 \backslash includegraphics 命令中输入图片的文件名的时候，会忽略了片文件的扩展名。事实上，添加扩展名并不是强制的，尽管很多时候添加扩展名是很有用的。如果没有给出文件扩展名，那么 \LaTeX{} 会在当前文件夹中自动搜索所有支持的文件格式，并且会用默认的顺序来搜索各种扩展名（这个顺序可以自定义）。
+我们在 \verb|\includegraphics| 命令中输入图片文件名时，忽略了图片文件的扩展名。事实上，添加扩展名并不是强制的，尽管很多时候添加扩展名是很有用的。如果没有给出文件扩展名，那么 \LaTeX{} 会在当前文件夹中自动搜索所有支持的文件格式，并且会用默认的顺序来搜索各种扩展名（这个顺序可以自定义）。
 
 如果你需要经常在开发模式和生产模式之间切换，那么这个功能会很有用。在开发模式中（当文档还没有完成的时候），你可能想去使用低分辨率的图片（一般来说是png格式的）来加速编译。在生产模式中（生成文档的最终版本），你可能想要使用高分辨率的图片。
 
-你可以这样做：(1)不要在 \backslash includegraphics 命令中输入文件的扩展名,(2)在文档的导言区设定你想要的扩展名。这样，我们可以在图片的两种格式之间灵活切换，例如 venndiagram.pdf（高分辨率）和 venndiagram.png（低分辨率）。然后我们可以在导言区使用下面的命令：
+你可以这样做：(1)不要在 \verb|\includegraphics| 命令中输入文件的扩展名, (2)在文档的导言区设定你想要的扩展名。下面给出设置扩展名的样例：
 \begin{verbatim}
 \DeclareGraphicsExtensions{.png,.pdf}
 \end{verbatim}
 上面的命令的作用是：如果在同一位置中，两个具有相同文件名而扩展名不同的文件（例如venndiagram.pdf和venndiagram.png）同时存在，那么扩展名位置在前的文件将会被优先使用（这个例子中的png）；如果没有png文件，那么pdf文件会被使用。
-
 当文档完成之后，为了使用高分辨率的pdf图片，我们可以更换后缀的顺序：
 \begin{verbatim}
 \DeclareGraphicsExtensions{.pdf,.png}
 \end{verbatim}
-如果pdf图片还没有转换为png格式，我们可以在 \LaTeX{} 中直接生成低分辨率的png图片。我们首先在导言区 \backslash usepackage\{graphicx\}（本模版不需要用户额外再引入宏包）命令之后添加下面的命令：
+
+如果我们按需要设置不同图片扩展名的顺序，便可以在图片的两种格式之间灵活切换，例如 venndiagram.pdf（高分辨率）和 venndiagram.png（低分辨率）。
+
+
+
+如果pdf图片还没有转换为png格式，我们可以在 \LaTeX{} 中直接生成低分辨率的png图片。我们首先在导言区 \verb|\usepackage{graphicx}|（本模版不需要用户额外再引入宏包）命令之后添加下面的命令：
 \begin{verbatim}
 \usepackage{epstopdf}
 \epstopdfDeclareGraphicsRule{.pdf}{png}{.png}{convert #1 \OutputFile}
@@ -172,7 +176,7 @@ figure环境的作用是在文档中将图片展示为浮动元素。这意味�
 如果venndiagram2.pdf存在，但是venndiagram2.png不存在，那么编译器会自动生成低分辨率的图像文件venndiagram2-pdf-converted-to.png。命令 \texttt{convert \#1} 用来执行转换操作，你也可以对它添加额外的参数，例如 \texttt{convert \-density 100 \#1} 。
 
 这里需要注意：我们在执行pdflatex 命令的时候，需要添加 \texttt{--shell-escape} 参数，以确保能够自动转换出低分辨率的图片。
-对于最终的正式版，我们必须把 \backslash epstopdfDeclareGraphicsRule 命令注释掉，以确保高分辨率的图片会被加载。同时，我们还需要改变加载扩展名优先级的顺序。
+对于最终的正式版，我们必须把 \verb|\epstopdfDeclareGraphicsRule| 命令注释掉，以确保高分辨率的图片会被加载。同时，我们还需要改变加载扩展名优先级的顺序。
 
 
 \section{绘图}

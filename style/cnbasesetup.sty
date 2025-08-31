@@ -20,7 +20,7 @@
 \def\info{}
 \def\info@zhauthor{朱昌波}
 \def\info@enauthor{Changbo Zhu}
-\def\info@cnbooksetup@version{1.0}
+\def\info@cnbasesetup@version{1.0}
 %---------------------------------------------------------------------------%
 %->> Declare options
 %---------------------------------------------------------------------------%
@@ -32,195 +32,195 @@
 \def\setupifstreq{\expandafter\ifstrequal\expandafter}% expansion control
 
 
-%\newcommand\cnbook@setup@fontsetval{\csname g__ctex_fontset_tl\endcsname}
+%\newcommand\cnbase@setup@fontsetval{\csname g__ctex_fontset_tl\endcsname}
 %-
 %-> Platform fontset <windows>, <mac>, <adobe>, <none>, <times>
 %-0
 %- Fetch the fontset value as user specified or automatically set based on os type
 \ExplSyntaxOn%
 \providecommand{\g__ctex_fontset_tl}{}% platform fontset state variable
-\edef\cnbook@setup@fontset{\g__ctex_fontset_tl}% expanded platform fontset state variable
+\edef\cnbase@setup@fontset{\g__ctex_fontset_tl}% expanded platform fontset state variable
 \ExplSyntaxOff%
 
 %- Specify font set according to the value of fontset
 
-\newif\ifcnbook@setup@windows \cnbook@setup@windowsfalse
-\newif\ifcnbook@setup@mac \cnbook@setup@macfalse
-\newif\ifcnbook@setup@adobe \cnbook@setup@adobefalse
-\newif\ifcnbook@setup@none \cnbook@setup@nonefalse
-\newif\ifcnbook@setup@times \cnbook@setup@timesfalse
-\newif\ifcnbook@setup@others \cnbook@setup@othersfalse
+\newif\ifcnbase@setup@windows \cnbase@setup@windowsfalse
+\newif\ifcnbase@setup@mac \cnbase@setup@macfalse
+\newif\ifcnbase@setup@adobe \cnbase@setup@adobefalse
+\newif\ifcnbase@setup@none \cnbase@setup@nonefalse
+\newif\ifcnbase@setup@times \cnbase@setup@timesfalse
+\newif\ifcnbase@setup@others \cnbase@setup@othersfalse
 %\DeclareOption{fontset}{%
-    %\def\cnbook@setup@fontset{fontset}
-    %\setupifstreq{\cnbook@setup@fontset}{zhongyi}{\cnbook@setup@zhongyitrue\cnbook@setup@timestrue}{%
-    %\setupifstreq{\cnbook@setup@fontset}{founder}{\cnbook@setup@foundertrue\cnbook@setup@timestrue}{%
-    %\setupifstreq{\cnbook@setup@fontset}{sinotype}{\cnbook@setup@sinotypetrue\cnbook@setup@timestrue}{%
-    %\setupifstreq{\cnbook@setup@fontset}{fandol}{\cnbook@setup@fandoltrue\cnbook@setup@timestrue}{%
-    %\setupifstreq{\cnbook@setup@fontset}{adobe}{\cnbook@setup@adobetrue\cnbook@setup@timestrue}{%
-    %\setupifstreq{\cnbook@setup@fontset}{noto}{\cnbook@setup@nototrue\cnbook@setup@timestrue}{%
-    %\cnbook@setup@otherstrue\cnbook@setup@timesfalse}}}}}}
+    %\def\cnbase@setup@fontset{fontset}
+    %\setupifstreq{\cnbase@setup@fontset}{zhongyi}{\cnbase@setup@zhongyitrue\cnbase@setup@timestrue}{%
+    %\setupifstreq{\cnbase@setup@fontset}{founder}{\cnbase@setup@foundertrue\cnbase@setup@timestrue}{%
+    %\setupifstreq{\cnbase@setup@fontset}{sinotype}{\cnbase@setup@sinotypetrue\cnbase@setup@timestrue}{%
+    %\setupifstreq{\cnbase@setup@fontset}{fandol}{\cnbase@setup@fandoltrue\cnbase@setup@timestrue}{%
+    %\setupifstreq{\cnbase@setup@fontset}{adobe}{\cnbase@setup@adobetrue\cnbase@setup@timestrue}{%
+    %\setupifstreq{\cnbase@setup@fontset}{noto}{\cnbase@setup@nototrue\cnbase@setup@timestrue}{%
+    %\cnbase@setup@otherstrue\cnbase@setup@timesfalse}}}}}}
 %}
-\setupifstreq{\cnbook@setup@fontset}{windows}{\cnbook@setup@windowstrue\cnbook@setup@timestrue}{%
-\setupifstreq{\cnbook@setup@fontset}{mac}{\cnbook@setup@mactrue\cnbook@setup@timestrue}{%
-\setupifstreq{\cnbook@setup@fontset}{adobe}{\cnbook@setup@adobetrue\cnbook@setup@timestrue}{%
-\setupifstreq{\cnbook@setup@fontset}{none}{\cnbook@setup@nonetrue\cnbook@setup@timestrue}{%
-\cnbook@setup@otherstrue\cnbook@setup@timesfalse}}}}
+\setupifstreq{\cnbase@setup@fontset}{windows}{\cnbase@setup@windowstrue\cnbase@setup@timestrue}{%
+\setupifstreq{\cnbase@setup@fontset}{mac}{\cnbase@setup@mactrue\cnbase@setup@timestrue}{%
+\setupifstreq{\cnbase@setup@fontset}{adobe}{\cnbase@setup@adobetrue\cnbase@setup@timestrue}{%
+\setupifstreq{\cnbase@setup@fontset}{none}{\cnbase@setup@nonetrue\cnbase@setup@timestrue}{%
+\cnbase@setup@otherstrue\cnbase@setup@timesfalse}}}}
 
 
 %-
 %-> LaTeX engine <pdflatex>, <lualatex>, <xelatex>
 %-
-\newif\ifcnbook@setup@pdftex \cnbook@setup@pdftexfalse%
-\newif\ifcnbook@setup@luatex \cnbook@setup@luatexfalse%
-\newif\ifcnbook@setup@xetex \cnbook@setup@xetexfalse%
+\newif\ifcnbase@setup@pdftex \cnbase@setup@pdftexfalse%
+\newif\ifcnbase@setup@luatex \cnbase@setup@luatexfalse%
+\newif\ifcnbase@setup@xetex \cnbase@setup@xetexfalse%
 \RequirePackage{ifxetex, ifluatex}% LaTeX engine detection
-\newif\ifcnbook@setup@xecjk \cnbook@setup@xecjkfalse
+\newif\ifcnbase@setup@xecjk \cnbase@setup@xecjkfalse
 \ifxetex%
-    \cnbook@setup@xetextrue%
-    \cnbook@setup@xecjktrue%
+    \cnbase@setup@xetextrue%
+    \cnbase@setup@xecjktrue%
     \RequirePackage{xeCJK}% support calling system fonts
 \else\ifluatex%
-    \cnbook@setup@luatextrue%
+    \cnbase@setup@luatextrue%
 \else%
-    \cnbook@setup@pdftextrue%
+    \cnbase@setup@pdftextrue%
 \fi\fi%
 %-
 %-> Bibliography engine <bibtex>, <biber>
 %-
-\newcommand\setcnbookbib[1]{\def\cnbookbib{#1}}
-\newif\ifcnbook@setup@bibauto \cnbook@setup@bibautotrue%
-\newif\ifcnbook@setup@bibtex \cnbook@setup@bibtexfalse%
-\newif\ifcnbook@setup@biber \cnbook@setup@biberfalse%
+\newcommand\setcnbasebib[1]{\def\cnbasebib{#1}}
+\newif\ifcnbase@setup@bibauto \cnbase@setup@bibautotrue%
+\newif\ifcnbase@setup@bibtex \cnbase@setup@bibtexfalse%
+\newif\ifcnbase@setup@biber \cnbase@setup@biberfalse%
 \DeclareOption{bibtex}{%
-    \cnbook@setup@bibtextrue%
-    \cnbook@setup@biberfalse%
-    \cnbook@setup@bibautofalse%
+    \cnbase@setup@bibtextrue%
+    \cnbase@setup@biberfalse%
+    \cnbase@setup@bibautofalse%
 }%
 \DeclareOption{biber}{%
-    \cnbook@setup@bibtexfalse%
-    \cnbook@setup@bibertrue%
-    \cnbook@setup@bibautofalse%
+    \cnbase@setup@bibtexfalse%
+    \cnbase@setup@bibertrue%
+    \cnbase@setup@bibautofalse%
 }%
 % setup for bibauto
 \DeclareOption{bibauto}{%
-	\cnbook@setup@bibautotrue%
-	\cnbook@setup@bibtexfalse%
-	\cnbook@setup@biberfalse%
+	\cnbase@setup@bibautotrue%
+	\cnbase@setup@bibtexfalse%
+	\cnbase@setup@biberfalse%
 }
 %------------------------------------------------
 %-> Citation and reference style
 %-
-\newif\ifcnbook@setup@numbers \cnbook@setup@numberstrue
-\newif\ifcnbook@setup@super \cnbook@setup@superfalse
-\newif\ifcnbook@setup@authoryear \cnbook@setup@authoryearfalse
-\newif\ifcnbook@setup@alpha \cnbook@setup@alphafalse
-\newif\ifcnbook@setup@nsfc \cnbook@setup@nsfcfalse
+\newif\ifcnbase@setup@numbers \cnbase@setup@numberstrue
+\newif\ifcnbase@setup@super \cnbase@setup@superfalse
+\newif\ifcnbase@setup@authoryear \cnbase@setup@authoryearfalse
+\newif\ifcnbase@setup@alpha \cnbase@setup@alphafalse
+\newif\ifcnbase@setup@nsfc \cnbase@setup@nsfcfalse
 \DeclareOption{numbers}{%
-    \cnbook@setup@numberstrue
-    \cnbook@setup@superfalse
-    \cnbook@setup@authoryearfalse
-    \cnbook@setup@alphafalse
+    \cnbase@setup@numberstrue
+    \cnbase@setup@superfalse
+    \cnbase@setup@authoryearfalse
+    \cnbase@setup@alphafalse
 }
 \DeclareOption{super}{%
-    \cnbook@setup@numberstrue
-    \cnbook@setup@supertrue
-    \cnbook@setup@authoryearfalse
-    \cnbook@setup@alphafalse
+    \cnbase@setup@numberstrue
+    \cnbase@setup@supertrue
+    \cnbase@setup@authoryearfalse
+    \cnbase@setup@alphafalse
 }
 \DeclareOption{authoryear}{%
-    \cnbook@setup@numbersfalse
-    \cnbook@setup@superfalse
-    \cnbook@setup@authoryeartrue
-    \cnbook@setup@alphafalse
+    \cnbase@setup@numbersfalse
+    \cnbase@setup@superfalse
+    \cnbase@setup@authoryeartrue
+    \cnbase@setup@alphafalse
 }
 \DeclareOption{alpha}{%
-    \cnbook@setup@numbersfalse
-    \cnbook@setup@superfalse
-    \cnbook@setup@authoryearfalse
-    \cnbook@setup@alphatrue
+    \cnbase@setup@numbersfalse
+    \cnbase@setup@superfalse
+    \cnbase@setup@authoryearfalse
+    \cnbase@setup@alphatrue
 }
 \DeclareOption{nsfc}{%
-    \cnbook@setup@numbersfalse
-    \cnbook@setup@superfalse
-    \cnbook@setup@authoryearfalse
-    \cnbook@setup@alphafalse
-    \cnbook@setup@nsfctrue
+    \cnbase@setup@numbersfalse
+    \cnbase@setup@superfalse
+    \cnbase@setup@authoryearfalse
+    \cnbase@setup@alphafalse
+    \cnbase@setup@nsfctrue
 }
 %-
 %-> Page layout reconfiguration
 %-
-\newif\ifcnbook@setup@geometry \cnbook@setup@geometryfalse
+\newif\ifcnbase@setup@geometry \cnbase@setup@geometryfalse
 \DeclareOption{geometry}{%
-    \cnbook@setup@geometrytrue
+    \cnbase@setup@geometrytrue
 }
 %-
 %-> Landscape layout support
 %-
-\newif\ifcnbook@setup@lscape \cnbook@setup@lscapefalse
+\newif\ifcnbase@setup@lscape \cnbase@setup@lscapefalse
 \DeclareOption{lscape}{%
-    \cnbook@setup@lscapetrue
+    \cnbase@setup@lscapetrue
 }
 %-
 %-> Header and footer
 %-
-\newif\ifcnbook@setup@xhf \cnbook@setup@xhftrue
+\newif\ifcnbase@setup@xhf \cnbase@setup@xhftrue
 \DeclareOption{xhf}{%
-    \cnbook@setup@xhffalse
+    \cnbase@setup@xhffalse
 }
 %-
 %-> Color support
 %-
-\newif\ifcnbook@setup@color \cnbook@setup@colorfalse
+\newif\ifcnbase@setup@color \cnbase@setup@colorfalse
 \DeclareOption{color}{%
-    \cnbook@setup@colortrue
+    \cnbase@setup@colortrue
 }
-\newif\ifcnbook@setup@xlink \cnbook@setup@xlinkfalse
+\newif\ifcnbase@setup@xlink \cnbase@setup@xlinkfalse
 \DeclareOption{xlink}{%
-    \cnbook@setup@xlinktrue
+    \cnbase@setup@xlinktrue
 }
 %-
 %-> Page background
 %-
-\newif\ifcnbook@setup@background \cnbook@setup@backgroundfalse
+\newif\ifcnbase@setup@background \cnbase@setup@backgroundfalse
 \DeclareOption{background}{%
-    \cnbook@setup@colortrue
-    \cnbook@setup@backgroundtrue
+    \cnbase@setup@colortrue
+    \cnbase@setup@backgroundtrue
 }
 %-
 %-> Complex diagrams support
 %-
-\newif\ifcnbook@setup@tikz \cnbook@setup@tikzfalse
+\newif\ifcnbase@setup@tikz \cnbase@setup@tikzfalse
 \DeclareOption{tikz}{%
-    \cnbook@setup@colortrue
-    \cnbook@setup@tikztrue
+    \cnbase@setup@colortrue
+    \cnbase@setup@tikztrue
 }
 %-
 %-> Complex tables support
 %-
-\newif\ifcnbook@setup@table \cnbook@setup@tablefalse
+\newif\ifcnbase@setup@table \cnbase@setup@tablefalse
 \DeclareOption{table}{%
-    \cnbook@setup@tabletrue
+    \cnbase@setup@tabletrue
 }
 %-
 %-> Enhanced list
 %-
-\newif\ifcnbook@setup@list \cnbook@setup@listfalse
+\newif\ifcnbase@setup@list \cnbase@setup@listfalse
 \DeclareOption{list}{%
-    \cnbook@setup@colortrue
-    \cnbook@setup@listtrue
+    \cnbase@setup@colortrue
+    \cnbase@setup@listtrue
 }
 %-
 %-> Extra math support
 %-
-\newif\ifcnbook@setup@math \cnbook@setup@mathfalse
+\newif\ifcnbase@setup@math \cnbase@setup@mathfalse
 \DeclareOption{math}{%
-    \cnbook@setup@mathtrue
+    \cnbase@setup@mathtrue
 }
 %-
 %-> Handle non-implemented options
 %-
 \DeclareOption*{%
-    \PackageWarning{cnbooksetup}{Unknown option '\CurrentOption'}%
+    \PackageWarning{cnbasesetup}{Unknown option '\CurrentOption'}%
 }
 %-
 %-> Terminates all options processing
@@ -229,22 +229,22 @@
 %---------------------------------------------------------------------------%
 %-->> setup auto bibliography backen
 %
-\ifcnbook@setup@bibauto
+\ifcnbase@setup@bibauto
     \if@autobibtex
-        \setcnbookbib{bibtex}
+        \setcnbasebib{bibtex}
     \else
-        \setcnbookbib{biber}
+        \setcnbasebib{biber}
     \fi
 \fi
-\ifcnbook@setup@bibtex \setcnbookbib{bibtex}\fi
-\ifcnbook@setup@biber \setcnbookbib{biber}\fi
-\ifcnbook@setup@bibauto
-	\setupifstreq{\cnbookbib}{bibtex}{%
-		\cnbook@setup@bibtextrue%
-		\cnbook@setup@biberfalse%
+\ifcnbase@setup@bibtex \setcnbasebib{bibtex}\fi
+\ifcnbase@setup@biber \setcnbasebib{biber}\fi
+\ifcnbase@setup@bibauto
+	\setupifstreq{\cnbasebib}{bibtex}{%
+		\cnbase@setup@bibtextrue%
+		\cnbase@setup@biberfalse%
 	}{%
-		\cnbook@setup@bibtexfalse%
-		\cnbook@setup@bibertrue%
+		\cnbase@setup@bibtexfalse%
+		\cnbase@setup@bibertrue%
 	}%
 \fi
 %---------------------------------------------------------------------------%
@@ -253,14 +253,14 @@
 %-
 %-> Detect class and counter
 %-
-\newcommand*{\cnbook@setup@ifcnt}[1]{% check if counter exists
+\newcommand*{\cnbase@setup@ifcnt}[1]{% check if counter exists
     \ifcsname c@#1\endcsname%
         \expandafter\@firstoftwo%
     \else%
         \expandafter\@secondoftwo%
     \fi
 }
-\cnbook@setup@ifcnt{chapter}{\def\cnbook@setup@maincnt{chapter}}{\def\cnbook@setup@maincnt{section}}%
+\cnbase@setup@ifcnt{chapter}{\def\cnbase@setup@maincnt{chapter}}{\def\cnbase@setup@maincnt{section}}%
 %-
 %-> Nomenclature item
 %-
@@ -274,19 +274,19 @@
 %-> Macro for adding link to toc and bookmark
 %-
 \newcommand{\intotocnostar}[3]{% [<\chapter|...>,<*>,<title>][example: \intotoc\chapter*{Nomenclature}]
-    \edef\cnbook@setup@mark{\expandafter\@gobble\string#1}% get the string 'cmd' after '\' in a command '\cmd'
+    \edef\cnbase@setup@mark{\expandafter\@gobble\string#1}% get the string 'cmd' after '\' in a command '\cmd'
     #1#2{% excute command
         \phantomsection% create bookmark link
-        \addcontentsline{toc}{\cnbook@setup@mark}{#3}% add content #3 to toc as #1
+        \addcontentsline{toc}{\cnbase@setup@mark}{#3}% add content #3 to toc as #1
         #3%
     }
-    \setupifstreq{\cnbook@setup@mark}{chapter}{%
+    \setupifstreq{\cnbase@setup@mark}{chapter}{%
         \markboth{\MakeUppercase{#3}}{}% set left mark
     }{%
         \markright{\MakeUppercase{#3}}% set right mark
     }
 }
-\newcommand{\intotocstar}[3][\cnbook@setup@maincnt]{% [<chapter|...>,<extra commands>,<title>][example: \intotoc*{\cleardoublepage}{Abstract}]
+\newcommand{\intotocstar}[3][\cnbase@setup@maincnt]{% [<chapter|...>,<extra commands>,<title>][example: \intotoc*{\cleardoublepage}{Abstract}]
     #2% excute command
     \phantomsection% create bookmark link
     \addcontentsline{toc}{#1}{#3}% add content #3 to toc as #1
@@ -298,7 +298,7 @@
 }
 \newcommand{\intotoc}{\@ifstar{\intotocstar}{\intotocnostar}}% swap starred and non-starred versions
 \newcommand{\intobmknostar}[4][0]{% [<level>,<\chapter|...>,<*>,<title>] [example: \intobmk\chapter*{Abstract}]
-    \edef\cnbook@setup@mark{\expandafter\@gobble\string#2}% get the string 'cmd' after '\' in a command '\cmd'
+    \edef\cnbase@setup@mark{\expandafter\@gobble\string#2}% get the string 'cmd' after '\' in a command '\cmd'
     #2#3{% excute command
         \phantomsection% create bookmark link
         \Hy@writebookmark% write bookmark
@@ -309,7 +309,7 @@
         {toc}%\@title
         #4%
     }%
-    \setupifstreq{\cnbook@setup@mark}{chapter}{%
+    \setupifstreq{\cnbase@setup@mark}{chapter}{%
         \markboth{\MakeUppercase{#4}}{}% set left mark
     }{%
         \markright{\MakeUppercase{#4}}% set right mark
@@ -354,7 +354,7 @@
 %  -section：定理编号依赖于某个章节层次（比如：定理1.1)  
 \theoremstyle{plain}% for theorems, lemmas, propositions, etc
 \providecommand{\theoremname}{Theorem}%
-\newtheorem{theorem}{\theoremname}[\cnbook@setup@maincnt]
+\newtheorem{theorem}{\theoremname}[\cnbase@setup@maincnt]
 \providecommand{\axiomname}{Axiom}%
 \newtheorem{axiom}[theorem]{\axiomname}
 \providecommand{\lemmaname}{Lemma}%
@@ -369,14 +369,14 @@
 \newtheorem{conjecture}[theorem]{\conjecturename}
 \theoremstyle{definition}% for definitions and examples
 \providecommand{\definitionname}{Definition}%
-\newtheorem{definition}{\definitionname}[\cnbook@setup@maincnt]
+\newtheorem{definition}{\definitionname}[\cnbase@setup@maincnt]
 \providecommand{\examplename}{Example}%
-\newtheorem{example}{\examplename}[\cnbook@setup@maincnt]
+\newtheorem{example}{\examplename}[\cnbase@setup@maincnt]
 \theoremstyle{remark}% for remarks and notes
 \providecommand{\remarkname}{Remark}%
 \newtheorem*{remark}{\remarkname}
 
-\ifcnbook@setup@math% extra math packages
+\ifcnbase@setup@math% extra math packages
     \RequirePackage{mathtools}% extension to amsmath
 \fi
 %-
@@ -393,9 +393,9 @@
 %- LaTeX distribution
 %- With path: fontspec will treat the given string as font filename and use kpathsea to
 %- search the font filename in path, and extension is optional but recommended in this case
-\def\cnbook@setup@font@rootdir{./Font/}% extra font location
+\def\cnbase@setup@font@rootdir{./Font/}% extra font location
 % Windows 的
-\newcommand\cnbook@setup@setcjkfont@windows{%
+\newcommand\cnbase@setup@setcjkfont@windows{%
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{SimSun}[AutoFakeBold=3,ItalicFont=KaiTi]%
     \setCJKsansfont{SimHei}[AutoFakeBold=3]%
@@ -407,71 +407,71 @@
     \setCJKfamilyfont{zhli}{LiSu}[AutoFakeBold = 3]% 隶书
     \setCJKfamilyfont{zhyou}{YouYuan}[AutoFakeBold = 3]% 隶书
 }
-\def\windowsfont{\cnbook@setup@setcjkfont@windows}
+\def\windowsfont{\cnbase@setup@setcjkfont@windows}
 
 %中易字体。
-\newcommand\cnbook@setup@setcjkfont@zhongyi{%
-    \def\cnbook@setup@font@cjksubdir{zhongyi/}
-    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+\newcommand\cnbase@setup@setcjkfont@zhongyi{%
+    \def\cnbase@setup@font@cjksubdir{zhongyi/}
+    \def\cnbase@setup@font@cjkdir{\cnbase@setup@font@rootdir\cnbase@setup@font@cjksubdir}
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{ZYSimSun}[% \rmfamily 宋体，默认字体
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         ItalicFont   = ZYKaiTi.ttf,
     ]%
     \setCJKsansfont{ZYSimHei}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]% \sffamily 黑体
     \setCJKmonofont{ZYFangSong}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},    
     ]% \ttfamily 仿宋
     \setCJKfamilyfont{zhkai}{ZYKaiTi}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]% 楷书
     \setCJKfamilyfont{zhsong}{ZYSimSun}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         ItalicFont   = ZYKaiTi.ttf,
     ]%
     \setCJKfamilyfont{zhhei}{ZYSimHei}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]% \sffamily 黑体
     \setCJKfamilyfont{zhfs}{ZYFangSong}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},    
     ]% \ttfamily 仿宋
     \setCJKfamilyfont{zhli}{ZYLiSu}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},    
     ]% 隶书
     \setCJKfamilyfont{zhyou}{ZYYouYuan}[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},    
     ]% 隶书
 }%
-\def\zhongyifont{\cnbook@setup@setcjkfont@zhongyi}
+\def\zhongyifont{\cnbase@setup@setcjkfont@zhongyi}
 %setCJKfamilyfont for chapter section subsection subsubsection
 %\newCJKfontfamily\secCJKfont{KaiTi}[AutoFakeBold = 3]%
 %\setCJKfamilyfont{zhyahei}{Microsoft~YaHei} [ BoldFont = *~Bold ]
-\newcommand\cnbook@setup@setcjkfont@founder{%
-    \def\cnbook@setup@font@cjksubdir{founder/}
-    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+\newcommand\cnbase@setup@setcjkfont@founder{%
+    \def\cnbase@setup@font@cjksubdir{founder/}
+    \def\cnbase@setup@font@cjkdir{\cnbase@setup@font@rootdir\cnbase@setup@font@cjksubdir}
     \defaultCJKfontfeatures{}%
     \setCJKmainfont {FZShuSong-Z01 }[% \rmfamily 宋体
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         BoldFont = FZXiaoBiaoSong-B05.ttf, 
         ItalicFont = FZKai-Z03.ttf
@@ -479,103 +479,103 @@
     %\setCJKsansfont { FZXiHeiI-Z08 } [%
     \setCJKsansfont { FZHei-B01 } [%\sffamily 黑体
         AutoFakeBold=3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         %BoldFont = FZHei-B01.ttf
         ]
     \setCJKmonofont { FZFangSong-Z02 }[%\ttfamily 仿宋
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhsong } { FZShuSong-Z01 } [% 
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         BoldFont = FZXiaoBiaoSong-B05.ttf
         ]
     \setCJKfamilyfont { zhhei  } { FZHei-B01 }[%
         AutoFakeBold=3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhkai  } { FZKai-Z03 }[%
         %AutoFakeBold=3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         BoldFont = FZCuKaiS-R-GB.ttf,
     ]
     \setCJKfamilyfont { zhfs   } { FZFangSong-Z02 }[%
         AutoFakeBold=3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhli   } { FZLiShu-S01 }[%
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhyou  } { FZXiYuan-M01 } [%
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         BoldFont = FZZhunYuan-M02.ttf
     ]
 }
-\def\founderfont{\cnbook@setup@setcjkfont@founder}
-\newcommand\cnbook@setup@setcjkfont@sinotype{%
-    \def\cnbook@setup@font@cjksubdir{sinotype/}
-    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+\def\founderfont{\cnbase@setup@setcjkfont@founder}
+\newcommand\cnbase@setup@setcjkfont@sinotype{%
+    \def\cnbase@setup@font@cjksubdir{sinotype/}
+    \def\cnbase@setup@font@cjkdir{\cnbase@setup@font@rootdir\cnbase@setup@font@cjksubdir}
     \defaultCJKfontfeatures{}%
     \setCJKmainfont { STZhongsong }[% \rmfamily 宋体
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         ItalicFont = STKaiti.ttf
     ]
     %\setCJKsansfont { FZXiHeiI-Z08 } [%
     \setCJKsansfont { STHeiti } [%\sffamily 黑体
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         %BoldFont = FZHei-B01.ttf
         ]
     \setCJKmonofont { STFangsong }[%\ttfamily 仿宋
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhsong } { STZhongsong } [% 
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         ItalicFont = STKaiti.ttf
     ]
     \setCJKfamilyfont { zhhei  } { STHeiti } [%\sffamily 黑体
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
         %BoldFont = FZHei-B01.ttf
     ]
     \setCJKfamilyfont { zhkai  } { KaiTi }[%
         AutoFakeBold = 3,
-        %Path = {\cnbook@setup@font@cjkdir},
+        %Path = {\cnbase@setup@font@cjkdir},
         %Extension = {.ttf},
         %BoldFont = {STBoldKaiti}
     ]
     \setCJKfamilyfont { zhfs   } { STFangsong }[%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhli   } { STLiti }[%
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf},
     ]
     \setCJKfamilyfont { zhyou  } { YouYuan } [%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.ttf}
     ]
 }
-\def\sinotypefont{\cnbook@setup@setcjkfont@sinotype}
-\newcommand\cnbook@setup@setcjkfont@mac{%
+\def\sinotypefont{\cnbase@setup@setcjkfont@sinotype}
+\newcommand\cnbase@setup@setcjkfont@mac{%
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{Songti SC}[
         UprightFont    = * Light,
@@ -607,12 +607,12 @@
         BoldFont       = * Bold,
     ]%
 }
-\def\macfont{\cnbook@setup@setcjkfont@mac}
+\def\macfont{\cnbase@setup@setcjkfont@mac}
 % 思源字体。
 % 注意 Noto CJK 的 regular 字重名字不带“Regular”。
-\newcommand\cnbook@setup@setcjkfont@noto{%
-    \def\cnbook@setup@font@cjksubdir{Noto_Sans/static/}
-    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+\newcommand\cnbase@setup@setcjkfont@noto{%
+    \def\cnbase@setup@font@cjksubdir{Noto_Sans/static/}
+    \def\cnbase@setup@font@cjkdir{\cnbase@setup@font@rootdir\cnbase@setup@font@cjksubdir}
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{NotoSerifCJKsc-Regular}[
         UprightFont    = * Light,
@@ -648,9 +648,9 @@
         UprightFont    = *-Regular,
     ]%
 }
-\def\notofont{\cnbook@setup@setcjkfont@noto}
+\def\notofont{\cnbase@setup@setcjkfont@noto}
 % Fandol 字体。
-\newcommand\cnbook@setup@setcjkfont@fandol{%
+\newcommand\cnbase@setup@setcjkfont@fandol{%
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{FandolSong}[% \ttfaily 宋体
         %cmap       = UniGB-UTF16-H,
@@ -691,68 +691,68 @@
         Extension   = .otf
       ]
 }
-\def\fandolfont{\cnbook@setup@setcjkfont@fandol}
-\newcommand\cnbook@setup@setcjkfont@adobe{
-    \def\cnbook@setup@font@cjksubdir{adobe/}
-    \def\cnbook@setup@font@cjkdir{\cnbook@setup@font@rootdir\cnbook@setup@font@cjksubdir}
+\def\fandolfont{\cnbase@setup@setcjkfont@fandol}
+\newcommand\cnbase@setup@setcjkfont@adobe{
+    \def\cnbase@setup@font@cjksubdir{adobe/}
+    \def\cnbase@setup@font@cjkdir{\cnbase@setup@font@rootdir\cnbase@setup@font@cjksubdir}
     \defaultCJKfontfeatures{}%
     \setCJKmainfont{AdobeSongStd-Light}[%
         cmap = UniGB-UTF16-H,
-        Path=\cnbook@setup@font@cjkdir,
+        Path=\cnbase@setup@font@cjkdir,
         Extension = {.otf},
         AutoFakeBold=3,
         ItalicFont=AdobeKaitiStd-Regular,
     ]
     \setCJKsansfont{AdobeHeitiStd-Regular}[%
         cmap = UniGB-UTF16-H,
-        Path=\cnbook@setup@font@cjkdir,
+        Path=\cnbase@setup@font@cjkdir,
         Extension = {.otf},
         AutoFakeBold = 3,
     ]%
     \setCJKmonofont{AdobeFangsongStd-Regular}[%
         cmap = UniGB-UTF16-H,
-        Path=\cnbook@setup@font@cjkdir,
+        Path=\cnbase@setup@font@cjkdir,
         Extension =  {.otf},
     ]
     \setCJKfamilyfont { zhsong } { AdobeSongStd-Light } [% 
         cmap = UniGB-UTF16-H,
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf},
         ItalicFont = AdobeKaitiStd-Regular
     ]
     \setCJKfamilyfont { zhhei  } { AdobeHeitiStd-Regular } [%\sffamily 黑体
         cmap = UniGB-UTF16-H,
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf},
         %BoldFont = FZHei-B01.ttf
     ]
     \setCJKfamilyfont { zhkai  } { AdobeKaitiStd-Regular }[%
         cmap = UniGB-UTF16-H,
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf}
     ]
     \setCJKfamilyfont { zhfs   } { AdobeFangsongStd-Regular }[%
         cmap = UniGB-UTF16-H,
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf},
     ]
     \setCJKfamilyfont { zhli   } { STLiti }[%
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf},
     ]
     \setCJKfamilyfont { zhyou  } { YouYuan } [%
         AutoFakeBold = 3,
-        Path = {\cnbook@setup@font@cjkdir},
+        Path = {\cnbase@setup@font@cjkdir},
         Extension = {.otf}
     ]
 }
-\def\adobefont{\cnbook@setup@setcjkfont@adobe}
+\def\adobefont{\cnbase@setup@setcjkfont@adobe}
 % xits math style
-\newcommand\cnbook@setup@setmathfont@xits{%
+\newcommand\cnbase@setup@setmathfont@xits{%
     \defaultfontfeatures{}
     \setmainfont[NFSSFamily=entextrm]{XITS}[
         Extension      = .otf,
@@ -815,86 +815,86 @@
         StylisticSet = 1,
     ]
 }
-\def\xitsmathfont{\cnbook@setup@setmathfont@xits}
-\newcommand\cnbook@setup@setmathfont@lmm{%
+\def\xitsmathfont{\cnbase@setup@setmathfont@xits}
+\newcommand\cnbase@setup@setmathfont@lmm{%
      \defaultfontfeatures{}
     \setmathfont{latinmodern-math}[
-        Path = \cnbook@setup@font@rootdir/lm-math/opentype/,
+        Path = \cnbase@setup@font@rootdir/lm-math/opentype/,
         Extension    = .otf
         ]
     \setmathfont{texgyrepagella-math}[
-        Path = \cnbook@setup@font@rootdir/tex-gyre-math/opentype/,
+        Path = \cnbase@setup@font@rootdir/tex-gyre-math/opentype/,
         Extension    = .otf,
         range={\mathbb}
         ]
 }
-\def\lmmmathfont{\cnbook@setup@setmathfont@lmm}
+\def\lmmmathfont{\cnbase@setup@setmathfont@lmm}
 %
-%\setupifstreq{\@setwindowsfontname}{zhongyi}{\def\cnbook@setup@setwindowsfont{\zhongyifont}}{
-%\setupifstreq{\@setwindowsfontname}{founder}{\def\cnbook@setup@setwindowsfont{\founderfont}}{
-%\setupifstreq{\@setwindowsfontname}{fandol}{\def\cnbook@setup@setwindowsfont{\fandolfont}}{
-%\setupifstreq{\@setwindowsfontname}{sinotype}{\def\cnbook@setup@setwindowsfont{\sinotypefont}}{
-%\setupifstreq{\@setwindowsfontname}{notofont}{\def\cnbook@setup@setwindowsfont{\notofont}}{
-%\setupifstreq{\@setwindowsfontname}{adobe}{\def\cnbook@setup@setwindowsfont{\adobefont}}{
-%\setupifstreq{\@setwindowsfontname}{windows}{\def\cnbook@setup@setwindowsfont{\windowsfont}}{\def\cnbook@setup@setwindowsfont{\windowsfont}}
+%\setupifstreq{\@setwindowsfontname}{zhongyi}{\def\cnbase@setup@setwindowsfont{\zhongyifont}}{
+%\setupifstreq{\@setwindowsfontname}{founder}{\def\cnbase@setup@setwindowsfont{\founderfont}}{
+%\setupifstreq{\@setwindowsfontname}{fandol}{\def\cnbase@setup@setwindowsfont{\fandolfont}}{
+%\setupifstreq{\@setwindowsfontname}{sinotype}{\def\cnbase@setup@setwindowsfont{\sinotypefont}}{
+%\setupifstreq{\@setwindowsfontname}{notofont}{\def\cnbase@setup@setwindowsfont{\notofont}}{
+%\setupifstreq{\@setwindowsfontname}{adobe}{\def\cnbase@setup@setwindowsfont{\adobefont}}{
+%\setupifstreq{\@setwindowsfontname}{windows}{\def\cnbase@setup@setwindowsfont{\windowsfont}}{\def\cnbase@setup@setwindowsfont{\windowsfont}}
 %}}}}}}
-%\setupifstreq{\@setmacosfontname}{zhongyi}{\def\cnbook@setup@setmacosfont{\zhongyifont}}{
-%\setupifstreq{\@setmacosfontname}{founder}{\def\cnbook@setup@setmacosfont{\founderfont}}{
-%\setupifstreq{\@setmacosfontname}{fandol}{\def\cnbook@setup@setmacosfont{\fandolfont}}{
-%\setupifstreq{\@setmacosfontname}{sinotype}{\def\cnbook@setup@setmacosfont{\sinotypefont}}{
-%\setupifstreq{\@setmacosfontname}{notofont}{\def\cnbook@setup@setmacosfont{\notofont}}{
-%\setupifstreq{\@setmacosfontname}{adobe}{\def\cnbook@setup@setmacosfont{\adobefont}}{
-%\setupifstreq{\@setmacosfontname}{mac}{\def\cnbook@setup@setmacosfont{\macfont}}{\def\cnbook@setup@setmacosfont{\macfont}}
+%\setupifstreq{\@setmacosfontname}{zhongyi}{\def\cnbase@setup@setmacosfont{\zhongyifont}}{
+%\setupifstreq{\@setmacosfontname}{founder}{\def\cnbase@setup@setmacosfont{\founderfont}}{
+%\setupifstreq{\@setmacosfontname}{fandol}{\def\cnbase@setup@setmacosfont{\fandolfont}}{
+%\setupifstreq{\@setmacosfontname}{sinotype}{\def\cnbase@setup@setmacosfont{\sinotypefont}}{
+%\setupifstreq{\@setmacosfontname}{notofont}{\def\cnbase@setup@setmacosfont{\notofont}}{
+%\setupifstreq{\@setmacosfontname}{adobe}{\def\cnbase@setup@setmacosfont{\adobefont}}{
+%\setupifstreq{\@setmacosfontname}{mac}{\def\cnbase@setup@setmacosfont{\macfont}}{\def\cnbase@setup@setmacosfont{\macfont}}
 %}}}}}}
-%\setupifstreq{\@setnonefontname}{zhongyi}{\def\cnbook@setup@setnonefont{\zhongyifont}}{
-%\setupifstreq{\@setnonefontname}{founder}{\def\cnbook@setup@setnonefont{\founderfont}}{
-%\setupifstreq{\@setnonefontname}{fandol}{\def\cnbook@setup@setnonefont{\fandolfont}}{
-%\setupifstreq{\@setnonefontname}{sinotype}{\def\cnbook@setup@setnonefont{\sinotypefont}}{
-%\setupifstreq{\@setnonefontname}{notofont}{\def\cnbook@setup@setnonefont{\notofont}}{
-%\setupifstreq{\@setnonefontname}{adobe}{\def\cnbook@setup@setnonefont{\adobefont}}{\def\cnbook@setup@setnonefont{\fandolfont}}
+%\setupifstreq{\@setnonefontname}{zhongyi}{\def\cnbase@setup@setnonefont{\zhongyifont}}{
+%\setupifstreq{\@setnonefontname}{founder}{\def\cnbase@setup@setnonefont{\founderfont}}{
+%\setupifstreq{\@setnonefontname}{fandol}{\def\cnbase@setup@setnonefont{\fandolfont}}{
+%\setupifstreq{\@setnonefontname}{sinotype}{\def\cnbase@setup@setnonefont{\sinotypefont}}{
+%\setupifstreq{\@setnonefontname}{notofont}{\def\cnbase@setup@setnonefont{\notofont}}{
+%\setupifstreq{\@setnonefontname}{adobe}{\def\cnbase@setup@setnonefont{\adobefont}}{\def\cnbase@setup@setnonefont{\fandolfont}}
 %}}}}}
 \IfStrEqCase{\@setwindowsfontname}{
-    {zhongyi}{\def\cnbook@setup@setwindowsfont{\zhongyifont}}
-    {founder}{\def\cnbook@setup@setwindowsfont{\founderfont}}
-    {fandol}{\def\cnbook@setup@setwindowsfont{\fandolfont}}
-    {sinotype}{\def\cnbook@setup@setwindowsfont{\sinotypefont}}
-    {noto}{\def\cnbook@setup@setwindowsfont{\notofont}}
-    {adobe}{\def\cnbook@setup@setwindowsfont{\adobefont}}
-    {windows}{\def\cnbook@setup@setwindowsfont{\windowsfont}}
+    {zhongyi}{\def\cnbase@setup@setwindowsfont{\zhongyifont}}
+    {founder}{\def\cnbase@setup@setwindowsfont{\founderfont}}
+    {fandol}{\def\cnbase@setup@setwindowsfont{\fandolfont}}
+    {sinotype}{\def\cnbase@setup@setwindowsfont{\sinotypefont}}
+    {noto}{\def\cnbase@setup@setwindowsfont{\notofont}}
+    {adobe}{\def\cnbase@setup@setwindowsfont{\adobefont}}
+    {windows}{\def\cnbase@setup@setwindowsfont{\windowsfont}}
 }
 \IfStrEqCase{\@setmacosfontname}{
-    {zhongyi}{\def\cnbook@setup@setmacosfont{\zhongyifont}}
-    {founder}{\def\cnbook@setup@setmacosfont{\founderfont}}
-    {fandol}{\def\cnbook@setup@setmacosfont{\fandolfont}}
-    {sinotype}{\def\cnbook@setup@setmacosfont{\sinotypefont}}
-    {noto}{\def\cnbook@setup@setmacosfont{\notofont}}
-    {adobe}{\def\cnbook@setup@setmacosfont{\adobefont}}
-    {mac}{\def\cnbook@setup@setmacosfont{\macfont}}
+    {zhongyi}{\def\cnbase@setup@setmacosfont{\zhongyifont}}
+    {founder}{\def\cnbase@setup@setmacosfont{\founderfont}}
+    {fandol}{\def\cnbase@setup@setmacosfont{\fandolfont}}
+    {sinotype}{\def\cnbase@setup@setmacosfont{\sinotypefont}}
+    {noto}{\def\cnbase@setup@setmacosfont{\notofont}}
+    {adobe}{\def\cnbase@setup@setmacosfont{\adobefont}}
+    {mac}{\def\cnbase@setup@setmacosfont{\macfont}}
 }
 \IfStrEqCase{\@setnonefontname}{
-    {zhongyi}{\def\cnbook@setup@setnonefont{\zhongyifont}}
-    {founder}{\def\cnbook@setup@setnonefont{\founderfont}}
-    {fandol}{\def\cnbook@setup@setnonefont{\fandolfont}}
-    {sinotype}{\def\cnbook@setup@setnonefont{\sinotypefont}}
-    {noto}{\def\cnbook@setup@setnonefont{\notofont}}
-    {adobe}{\def\cnbook@setup@setnonefont{\adobefont}}
+    {zhongyi}{\def\cnbase@setup@setnonefont{\zhongyifont}}
+    {founder}{\def\cnbase@setup@setnonefont{\founderfont}}
+    {fandol}{\def\cnbase@setup@setnonefont{\fandolfont}}
+    {sinotype}{\def\cnbase@setup@setnonefont{\sinotypefont}}
+    {noto}{\def\cnbase@setup@setnonefont{\notofont}}
+    {adobe}{\def\cnbase@setup@setnonefont{\adobefont}}
 }
-\def\cnbook@setup@setadobefont{\setadobefont}
+\def\cnbase@setup@setadobefont{\setadobefont}
 %
 \IfStrEqCase{\@setmathfontname}{
     {xits}{%
-            \def\cnbook@setup@mathfontfile{XITS-Regular.otf}%
-            \def\cnbook@setup@setmathfont{\xitsmathfont}%
+            \def\cnbase@setup@mathfontfile{XITS-Regular.otf}%
+            \def\cnbase@setup@setmathfont{\xitsmathfont}%
         }%
     {latinmodern}{%
-            \def\cnbook@setup@mathfontfile{latinmodern-math.otf}
-            \def\cnbook@setup@setmathfont{\lmmmathfont}%
+            \def\cnbase@setup@mathfontfile{latinmodern-math.otf}
+            \def\cnbase@setup@setmathfont{\lmmmathfont}%
         }%
 }
 
 
 %
-\ifcnbook@setup@pdftex% <pdflatex> call font packages
+\ifcnbase@setup@pdftex% <pdflatex> call font packages
     \RequirePackage[utf8]{inputenc}% set input encoding, document must use utf-8 encoding
     \RequirePackage[T1]{fontenc}% set font encoding to enable modern font encoding
     %- Text font: English <default: computer modern|others: font packages>
@@ -906,7 +906,7 @@
 \else% <xelatex> or <lualatex> call system fonts
     \RequirePackage{fontspec}% support calling system fonts
         \@ifpackagelater{fontspec}{2016/12/27}{}{%
-            \PackageError{setcnbook}{fontspec >= 2016/12/27 is required ...}{}%
+            \PackageError{setcnbase}{fontspec >= 2016/12/27 is required ...}{}%
     }
     %- Font properties: <family:rm|sf|tt> + <weight:lf|md|bf> + <shape:up|it|sl|sc> + <size>
     %- <\rmfamily,\textrm{}|\sffamily,\textsf{}|\ttfamily,\texttt{}>: family of font <Roman|Sans serif|Monospace>, default <\rmfamily>
@@ -941,7 +941,7 @@
     %\RequirePackage[cmintegrals]{newtxmath}% times font, load after amsmath and newtxtext packages
     %\RequirePackage{mathrsfs}% enable \mathscr for script alphabet
     %\RequirePackage[cal=cm]{mathalfa}% map styles for calligraphic \mathcal and script \mathscr alphabet
-    \IfFontExistsTF{\cnbook@setup@mathfontfile}{%
+    \IfFontExistsTF{\cnbase@setup@mathfontfile}{%
         \RequirePackage{unicode-math}% unicode font configuration <XITS|STIX2>
         %\def\boldsymbol#1{\symbfit{#1}}% treat obsoleteness
         %\def\bm#1{\symbfit{#1}}% treat obsoleteness
@@ -951,7 +951,7 @@
         \providecommand{\unitMatrix}[1]{\symbfup{#1}}% identity matrix in bold roman
         \providecommand{\Tensor}[1]{\symbfsfup{#1}}% tensor in sans-serif bold italic
         \providecommand{\unitTensor}[1]{\symbfsfup{#1}}% identity tensor in sans-serif bold
-        \cnbook@setup@setmathfont
+        \cnbase@setup@setmathfont
     }{%
     \RequirePackage{newtxtext}% main font
     \RequirePackage[cmintegrals]{newtxmath}% times font, load after amsmath and newtxtext packages
@@ -968,14 +968,14 @@
     \let\lishu\relax %
     \let\youyuan\relax %
     %
-    \ifcnbook@setup@windows%
-        \cnbook@setup@setwindowsfont
-    \else\ifcnbook@setup@mac%
-        \cnbook@setup@setmacosfont
-    \else\ifcnbook@setup@adobe% call font from system font library
-        \cnbook@setup@setadobefont%
-    \else\ifcnbook@setup@none% call font from local fontdir
-        \cnbook@setup@setnonefont
+    \ifcnbase@setup@windows%
+        \cnbase@setup@setwindowsfont
+    \else\ifcnbase@setup@mac%
+        \cnbase@setup@setmacosfont
+    \else\ifcnbase@setup@adobe% call font from system font library
+        \cnbase@setup@setadobefont%
+    \else\ifcnbase@setup@none% call font from local fontdir
+        \cnbase@setup@setnonefont
     \fi\fi\fi\fi
     %---------------------------------------------------------------%
     % 字体命令，可用于文档中自由设置字体 
@@ -1041,7 +1041,7 @@
 %-
 %- \CJKsetecglue命令定义了CJK字符与其他字符之间的空白，不只限于数字字符，也适用于字母等其他非CJK字符。
 %- 如果你想要更精细的控制，可能需要借助其它工具或者宏包。
-%\ifcnbook@setup@xecjk%
+%\ifcnbase@setup@xecjk%
     % \hskip0.15em plus0.05em minus 0.05em表示基础间距为0.15em，可增加至0.2em，也可减少至0.1em以便满足排版需求。
 %    \CJKsetecglue{\hskip 0.3em plus 0.05em minus 0.1em} % 数字与CJK字符的间距
 %\fi
@@ -1056,39 +1056,39 @@
 %-
 %-> Bibliography processor and package
 %-
-\def\cnbook@setup@bibref{ref}% bibliography reference file
-%\newcommand\bibfile[1]{\def\cnbook@setup@reference{#1}}
-\def\cnbook@setup@bibtexnum{style/gbt7714-numerical}% bibtex numbers bst
-\def\cnbook@setup@bibtexauy{style/gbt7714-author-year}% bibtex authoryear bst
-\def\cnbook@setup@bibtexalp{alpha}% bibtex alpha bst
-\def\cnbook@setup@bibernum{style/gb7714-2015}% biber numbers bst
-%\def\cnbook@setup@bibernsfc{style/nsfc-gb7714-2015}% biber numbers bst
-\def\cnbook@setup@biberauy{style/gb7714-2015ay}% biber authoryear bst
-\def\cnbook@setup@biberalp{alphabetic}% biber alpha bst
+\def\cnbase@setup@bibref{ref}% bibliography reference file
+%\newcommand\bibfile[1]{\def\cnbase@setup@reference{#1}}
+\def\cnbase@setup@bibtexnum{style/gbt7714-numerical}% bibtex numbers bst
+\def\cnbase@setup@bibtexauy{style/gbt7714-author-year}% bibtex authoryear bst
+\def\cnbase@setup@bibtexalp{alpha}% bibtex alpha bst
+\def\cnbase@setup@bibernum{style/gb7714-2015}% biber numbers bst
+%\def\cnbase@setup@bibernsfc{style/nsfc-gb7714-2015}% biber numbers bst
+\def\cnbase@setup@biberauy{style/gb7714-2015ay}% biber authoryear bst
+\def\cnbase@setup@biberalp{alphabetic}% biber alpha bst
 %- Bibtex processor + natbib package
-\ifcnbook@setup@bibtex%
+\ifcnbase@setup@bibtex%
     % Set punctuation and mode of citation style
     \newcommand{\bibstyle@super}{\bibpunct{[}{]}{,}{s}{,}{\textsuperscript{,}}}%
     \newcommand{\bibstyle@numbers}{\bibpunct{[}{]}{,}{n}{,}{,}}%
     \newcommand{\bibstyle@authoryear}{\bibpunct{(}{)}{;}{a}{,}{,}}%
     \newcommand{\bibstyle@alpha}{\bibpunct{[}{]}{,}{n}{,}{,}}%
-    \ifcnbook@setup@numbers% enable numbered citation style
+    \ifcnbase@setup@numbers% enable numbered citation style
         \RequirePackage[sort&compress]{natbib}% numbered citation mode
-        \ifcnbook@setup@super% enable superscripted citation style
+        \ifcnbase@setup@super% enable superscripted citation style
             \citestyle{super}%
         \else
             \citestyle{numbers}%
         \fi
-        \bibliographystyle{\cnbook@setup@bibtexnum}% numbered scheme
+        \bibliographystyle{\cnbase@setup@bibtexnum}% numbered scheme
     \fi
-    \ifcnbook@setup@authoryear% enable author year citation style
+    \ifcnbase@setup@authoryear% enable author year citation style
         \RequirePackage{natbib}% author year citation mode
         \citestyle{authoryear}%
-        \bibliographystyle{\cnbook@setup@bibtexauy}% author year scheme
+        \bibliographystyle{\cnbase@setup@bibtexauy}% author year scheme
     \fi
-    \ifcnbook@setup@alpha% enable alpha citation style
+    \ifcnbase@setup@alpha% enable alpha citation style
         \RequirePackage[square,comma,numbers]{natbib}% alpha citation mode
-        \bibliographystyle{\cnbook@setup@bibtexalp}% alpha scheme
+        \bibliographystyle{\cnbase@setup@bibtexalp}% alpha scheme
     \fi
     \providecommand*{\citetns}[2][]{% text embedded \citet in superscripted mode
         \begingroup\citestyle{numbers}\citet[#1]{#2}\endgroup%
@@ -1098,36 +1098,36 @@
     }
 \fi
 %- Biber processor + biblatex package
-\ifcnbook@setup@biber%
+\ifcnbase@setup@biber%
     \AtEndPreamble{\RequirePackage{hyperref}}% enable biblatex detection of hyperref
-    \ifcnbook@setup@numbers% enable numbered citation style
-        \ifcnbook@setup@super% enable superscripted citation style
-            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+    \ifcnbase@setup@numbers% enable numbered citation style
+        \ifcnbase@setup@super% enable superscripted citation style
+            \RequirePackage[backend=biber,style=\cnbase@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
         \else
-            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+            \RequirePackage[backend=biber,style=\cnbase@setup@bibernum,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
             \renewrobustcmd*{\citet}{\textcite}%
             \renewrobustcmd*{\citep}{\parencite}%
         \fi
     \fi
-    \ifcnbook@setup@nsfc% enable numbered citation style
-        \ifcnbook@setup@super% enable superscripted citation style
-            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%gbnamefmt=fullname,
+    \ifcnbase@setup@nsfc% enable numbered citation style
+        \ifcnbase@setup@super% enable superscripted citation style
+            \RequirePackage[backend=biber,style=\cnbase@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%gbnamefmt=fullname,
         \else
-            \RequirePackage[backend=biber,style=\cnbook@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%
+            \RequirePackage[backend=biber,style=\cnbase@setup@bibernum,gbannote=true,gbnamefmt=quanpin,gbbiblabel=parens,gbtype=false,maxbibnames=100,minbibnames=100,mincitenames=1,maxcitenames=2]{biblatex}%
             \renewrobustcmd*{\citet}{\textcite}%
             \renewrobustcmd*{\citep}{\parencite}%
         \fi
     \fi
-    \ifcnbook@setup@authoryear% enable author year citation style
-        \RequirePackage[backend=biber,style=\cnbook@setup@biberauy,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
+    \ifcnbase@setup@authoryear% enable author year citation style
+        \RequirePackage[backend=biber,style=\cnbase@setup@biberauy,gbannote=true,mincitenames=1,maxcitenames=2]{biblatex}%
             \renewrobustcmd*{\citet}{\textcite}%
             \renewrobustcmd*{\citep}{\parencite}%
     \fi
-    \ifcnbook@setup@alpha% enable alpha citation style
-        \RequirePackage[backend=biber,style=\cnbook@setup@biberalp,gbannote=true]{biblatex}%
+    \ifcnbase@setup@alpha% enable alpha citation style
+        \RequirePackage[backend=biber,style=\cnbase@setup@biberalp,gbannote=true]{biblatex}%
     \fi
     %
-    \ifcnbook@setup@bibauto \addbibresource{\cnbook@setup@bibref.bib} \fi
+    \ifcnbase@setup@bibauto \addbibresource{\cnbase@setup@bibref.bib} \fi
     \providecommand{\citep}[1]{\parencite{#1}}% compatibility
     \providecommand{\citet}[1]{\textcite{#1}}% compatibility
     \providecommand{\bibetal}{et al.}% compatibility
@@ -1139,13 +1139,13 @@
         andothersincitecn = {\bibetal},
     }
     \providecommand{\addbibresource}{}% compatibility
-    \let\cnbook@setup@addbibresource \addbibresource
+    \let\cnbase@setup@addbibresource \addbibresource
     \renewcommand\addbibresource[1]{
-    	%\setupifstreq{\cnbookbib}{biber}{}{}
-   		\ifcnbook@setup@biber
-    		\cnbook@setup@addbibresource{#1}
+    	%\setupifstreq{\cnbasebib}{biber}{}{}
+   		\ifcnbase@setup@biber
+    		\cnbase@setup@addbibresource{#1}
     	\else
-    		\ClassWarning{cnbooksetup}{Command 'addbibresource' requires 'biber' backen.}%
+    		\ClassWarning{cnbasesetup}{Command 'addbibresource' requires 'biber' backen.}%
     	\fi
     }
     % BOLD Specific author
@@ -1159,19 +1159,19 @@
             \ifbibliography{\textcolor{black}{\textbf{#1}}}{#1}
         }{#1}
     }
-\fi% end of \cnbook@setup@biber
-\NewDocumentCommand{\cnbookbibliography}{g}{
+\fi% end of \cnbase@setup@biber
+\NewDocumentCommand{\cnbasebibliography}{g}{
     {\linespread{1.25}
-	\ifcnbook@setup@bibtex%
+	\ifcnbase@setup@bibtex%
 		\IfNoValueTF{#1}{%
-			\bibliography{\cnbook@setup@bibref}%
+			\bibliography{\cnbase@setup@bibref}%
 		}{\bibliography{#1}}%
 	\fi%
-	\ifcnbook@setup@biber%
+	\ifcnbase@setup@biber%
 		\IfNoValueTF{#1}{%
 			\printbibliography\relax%
 		}{%
-            \ClassWarning{cnbooksetup}{'Argument '#1 is not supported by printbibliography with biber backen}%
+            \ClassWarning{cnbasesetup}{'Argument '#1 is not supported by printbibliography with biber backen}%
 			\printbibliography\relax%
 		}%
 	\fi
@@ -1214,31 +1214,31 @@
 %-
 %-> Page layout and spacing
 %-
-%\ifcnbook@setup@geometry% enable geometry to redefine page layout
+%\ifcnbase@setup@geometry% enable geometry to redefine page layout
 %    \RequirePackage{geometry}% page layout
     %\RequirePackage{setspace}% line spacing
 %\fi
-\ifcnbook@setup@lscape% landscape layout
+\ifcnbase@setup@lscape% landscape layout
     \RequirePackage{fancyhdr}% fancy headers and footers
     %- usage: \begin{landscape} [\thispagestyle{lscape}] text... \end{landscape}
     \RequirePackage{pdflscape}% landscape environment
     \RequirePackage[absolute]{textpos}% rotated page number
 \fi
-\ifcnbook@setup@xhf% header and footer style
+\ifcnbase@setup@xhf% header and footer style
     \RequirePackage{fancyhdr}% fancy headers and footers
 \fi
 %\RequirePackage{microtype}% improves general appearance of the text
 %-
 %-> Color
 %-
-\ifcnbook@setup@color% enable color package to use color
+\ifcnbase@setup@color% enable color package to use color
     %\RequirePackage{color}%
     \RequirePackage[usenames,dvipsnames,table]{xcolor}%
 \fi
 %-
 %-> Draw graphics directly with TeX commands
 %-
-\ifcnbook@setup@tikz%
+\ifcnbase@setup@tikz%
     \RequirePackage{tikz}% automatically load pgf package
     \usetikzlibrary{% load libraries
         positioning,
@@ -1250,13 +1250,13 @@
 %-
 %-> Complex tables
 %-
-\ifcnbook@setup@table%
+\ifcnbase@setup@table%
     \RequirePackage{ctable,multirow,longtable,makecell}% imports the array, tabularx, booktabs and multirow packages
 \fi
 %-
 %-> List structures
 %-
-\ifcnbook@setup@list% enable enhanced list and verbatim structures
+\ifcnbase@setup@list% enable enhanced list and verbatim structures
     \RequirePackage{verbatim}% improve verbatim environment
     \RequirePackage{enumitem}% configure the enumerate environment
     \setlist[enumerate]{wide=\parindent}% only indent the first line
@@ -1293,7 +1293,7 @@
         filecolor=blue,% color of file links
         urlcolor=blue,% color of external links
     }
-    \ifcnbook@setup@xlink% set link color to black
+    \ifcnbase@setup@xlink% set link color to black
         \hypersetup{% set hyperlinks
             hidelinks,% remove link color and border
         }
@@ -1308,7 +1308,7 @@
 %- Declare graphic extensions for automatic selection when including graphics
 %- via avoiding supplying graphic extensions in \includegraphics command,
 %- the source file can be more general and adaptive
-\ifcnbook@setup@xetex%
+\ifcnbase@setup@xetex%
     \DeclareGraphicsExtensions{.pdf,.png,.jpg,.eps,.tif,.bmp,.gif}%
 \else% <pdflatex> or <lualatex>
     \DeclareGraphicsExtensions{.pdf,.png,.jpg}%
@@ -1317,7 +1317,7 @@
 %-
 %-> Layout, space, and style
 %-
-%\ifcnbook@setup@geometry% enable geometry to redefine page layout
+%\ifcnbase@setup@geometry% enable geometry to redefine page layout
     %\geometry{paper=a4paper,left=31.7mm,right=31.7mm,top=25.4mm,bottom=25.4mm,headheight=12pt,headsep=17.5pt,footskip=10.4mm}%
 %    \geometry{paper=a4paper,bindingoffset=10mm,left=25mm,right=25mm,top=25mm,bottom=25mm,headheight=17.5pt,headsep=17.5pt,footskip=10.4mm}%
 %\fi
@@ -1333,11 +1333,11 @@
 % \numberwithin{table}{section}% set enumeration level
 % \renewcommand{\thetable}{\thesection\arabic{table}}% configure the label style
 
-\numberwithin{equation}{\cnbook@setup@maincnt}% set equation enumeration level
+\numberwithin{equation}{\cnbase@setup@maincnt}% set equation enumeration level
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}
-\numberwithin{figure}{\cnbook@setup@maincnt}% set figure enumeration level
+\numberwithin{figure}{\cnbase@setup@maincnt}% set figure enumeration level
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}}
-\numberwithin{table}{\cnbook@setup@maincnt}% set table enumeration level
+\numberwithin{table}{\cnbase@setup@maincnt}% set table enumeration level
 \renewcommand{\thetable}{\thechapter-\arabic{table}}
 %\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
 \renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}
@@ -1345,10 +1345,10 @@
 \renewcommand{\thetheorem}{\thechapter-\arabic{theorem}}
 
 %- Set bibliography entry
-\ifcnbook@setup@bibtex%
+\ifcnbase@setup@bibtex%
     \setlength{\bibsep}{0.0ex plus 0.2ex minus 0.2ex}% set distance between entries
 \fi
-\ifcnbook@setup@biber%
+\ifcnbase@setup@biber%
     %\setlength\bibitemsep{0.5\baselineskip}% set distance between entries
     \setlength\bibitemsep{0.0ex plus 0.2ex minus 0.2ex}% set distance between entrie
 \fi
@@ -1361,7 +1361,7 @@
 %- These headers/footers typically contain document titles, chapter
 %- or section numbers/names, and page numbers.
 %- Configure fancy style
-\ifcnbook@setup@xhf% user defined header and footer style
+\ifcnbase@setup@xhf% user defined header and footer style
     \pagestyle{fancy}%
     %- customizing headers and footers in LaTeX is a two-stage process
     %- 1) \chapter|section call \chapter|sectionmark that call \markboth|right to define \left|rightmark
@@ -1448,37 +1448,37 @@
     }
     %- Redefine \frontmatter to include the change
     \providecommand{\frontmatter}{}% compatibility for non-book classes
-    \let\cnbook@setup@frontmatter\frontmatter%
+    \let\cnbase@setup@frontmatter\frontmatter%
     \renewcommand{\frontmatter}{%
-        \cnbook@setup@frontmatter%
+        \cnbase@setup@frontmatter%
         \pagestyle{frontmatterstyle}%
     }
     %- Redefine \mainmatter to include the change
     \providecommand{\contentmatter}{}% compatibility for non-book classes
-    \let\cnbook@setup@contentmatter\contentmatter%
+    \let\cnbase@setup@contentmatter\contentmatter%
     \renewcommand{\contentmatter}{%
-        \cnbook@setup@contentmatter%
+        \cnbase@setup@contentmatter%
     }
     %- Redefine \mainmatter to include the change
     \providecommand{\mainmatter}{}% compatibility for non-book classes
-    \let\cnbook@setup@mainmatter\mainmatter%
+    \let\cnbase@setup@mainmatter\mainmatter%
     \renewcommand{\mainmatter}{%
-        \cnbook@setup@mainmatter%
+        \cnbase@setup@mainmatter%
         \pagestyle{mainmatterstyle}%
     }
     %- define \referencematter
     \providecommand{\referencematter}{}% compatibility for non-book classes
-    \let\cnbook@setup@referencematter\referencematter%
+    \let\cnbase@setup@referencematter\referencematter%
     \renewcommand{\referencematter}{%
-        \cnbook@setup@referencematter%
+        \cnbase@setup@referencematter%
         \pagestyle{mainmatterstyle}%
     }
     %- redefine \appendix
     \providecommand{\appendix}{}% compatibility for non-book classes
-    \let\cnbook@setup@appendix\appendix%
+    \let\cnbase@setup@appendix\appendix%
     \renewcommand{\appendix}{%
         \cleardoublepage%
-        \cnbook@setup@appendix%
+        \cnbase@setup@appendix%
         \pagestyle{appendixstyle}
         %图的中英文编号前缀
         \captionsetup[figure]{name=图, font={small,stretch=1.25}}
@@ -1519,23 +1519,23 @@
     }
     %- Redefine \backmatter to include the change
     \providecommand{\backmatter}{}% compatibility for non-book classes
-    \let\cnbook@setup@backmatter\backmatter%
+    \let\cnbase@setup@backmatter\backmatter%
     \renewcommand{\backmatter}{%
-        \cnbook@setup@backmatter%
+        \cnbase@setup@backmatter%
         \pagestyle{backmatterstyle}%
     }
 \fi
 
 
 \providecommand{\tableofcontents}{}
-\let\cnbook@setup@tableofcontents\tableofcontents
+\let\cnbase@setup@tableofcontents\tableofcontents
 \renewcommand\tableofcontents{
     % content list region
     \linespread{1.35}% local line space
     \intobmk*{\cleardoublepage}{\contentsname}% add link to bookmark
     \newpage
 
-    \cnbook@setup@tableofcontents% content catalog
+    \cnbase@setup@tableofcontents% content catalog
     \intobmk*{\cleardoublepage}{图表目录}
     \pagestyle{figurestyle}
     {
@@ -1572,7 +1572,7 @@
 %-
 %-> Configure landscape environment
 %-
-\ifcnbook@setup@lscape%
+\ifcnbase@setup@lscape%
 \fancypagestyle{lscape}{% landscape layout style
     \fancyhf{}% clear fields
     \fancyhead[C]{%
@@ -1615,10 +1615,10 @@
 %-
 %-> Configure list environment
 %-
-\ifcnbook@setup@list% enable enhanced list
-    \definecolor{cnbook@setup@green}{rgb}{0,0.6,0}
-    \definecolor{cnbook@setup@gray}{rgb}{0.5,0.5,0.5}
-    \definecolor{cnbook@setup@mauve}{rgb}{0.58,0,0.82}
+\ifcnbase@setup@list% enable enhanced list
+    \definecolor{cnbase@setup@green}{rgb}{0,0.6,0}
+    \definecolor{cnbase@setup@gray}{rgb}{0.5,0.5,0.5}
+    \definecolor{cnbase@setup@mauve}{rgb}{0.58,0,0.82}
     \lstset{%
         numberbychapter=false,% numbered sequentially or by chapter
         backgroundcolor=\color{white},% background color;
@@ -1626,7 +1626,7 @@
         breakatwhitespace=false,% sets if automatic breaks should only happen at whitespace
         breaklines=true,% sets automatic line breaking
         captionpos=b,% caption-position to bottom
-        commentstyle=\color{cnbook@setup@green},% comment style
+        commentstyle=\color{cnbase@setup@green},% comment style
         %deletekeywords={...},% delete keywords from the given language
         frame=single,% adds a frame around the code
         keepspaces=true,% keeps spaces in text for keeping indentation of code
@@ -1634,13 +1634,13 @@
         %otherkeywords={*,...},% add more keywords to the set
         numbers=left,% where to put the line-numbers; possible values are (none, left, right)
         numbersep=5pt,% how far the line-numbers are from the code
-        numberstyle=\tiny\color{cnbook@setup@gray},% the style that is used for the line-numbers
+        numberstyle=\tiny\color{cnbase@setup@gray},% the style that is used for the line-numbers
         rulecolor=\color{black},% if not set, the frame-color may be changed on line-breaks
         showspaces=false,% show spaces everywhere adding particular underscores;
         showstringspaces=false,% underline spaces within strings only
         showtabs=false,% show tabs within strings adding particular underscores
         stepnumber=2,% the step between two line-numbers. If it's 1, each line will be numbered
-        stringstyle=\color{cnbook@setup@mauve},% string literal style
+        stringstyle=\color{cnbase@setup@mauve},% string literal style
         tabsize=2,% sets default tabsize to 2 spaces
         title=\lstname% show the filename of files
     }
@@ -1648,7 +1648,7 @@
 %-
 %-> Page background
 %-
-\ifcnbook@setup@background%
+\ifcnbase@setup@background%
     \definecolor{backgroundcolor}{rgb}{0.85,0.85,0.85}%
     \pagecolor{backgroundcolor}% background color
 \fi

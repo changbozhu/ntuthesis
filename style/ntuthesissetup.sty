@@ -24,7 +24,7 @@
 %-
 %- \CJKsetecglue命令定义了CJK字符与其他字符之间的空白，不只限于数字字符，也适用于字母等其他非CJK字符。
 %- 如果你想要更精细的控制，可能需要借助其它工具或者宏包。
-\ifcnbook@setup@xecjk%
+\ifcnbase@setup@xecjk%
     % \hskip0.15em plus0.05em minus 0.05em表示基础间距为0.15em，可增加至0.2em，也可减少至0.1em以便满足排版需求。
     %\ctexset{linestretch=\maxdimen} % <<< added
     \xeCJKsetup{%
@@ -52,7 +52,7 @@
 
 
 \renewcommand*{\bibfont}{\zihao{5}}% set font size for bibliography
-\def\ntuthesisbibliography{\cnbookbibliography}
+\def\ntuthesisbibliography{\cnbasebibliography}
 
 \captionsetup[figure]{name=图, font={normalsize,bf,stretch=1.25}}
 %\captionsetup[figure][bi-first]{name=图, font={small,stretch=1.25}}
@@ -62,7 +62,7 @@
 %\captionsetup[table][bi-first]{name=表, font={small,bf,stretch=1.25}}
 %\captionsetup[table][bi-second]{name=Table, font={small,stretch=1.25}}
 
-\ifcnbook@setup@xhf% header and footer style
+\ifcnbase@setup@xhf% header and footer style
     {}
 \else
     \RequirePackage{fancyhdr}% fancy headers and footers
@@ -140,7 +140,7 @@
 }
 %- Redefine \frontmatter to include the change
 \providecommand{\frontmatter}{}% compatibility for non-book classes
-\let\ntuthesis@setup@frontmatter\cnbook@setup@frontmatter%+
+\let\ntuthesis@setup@frontmatter\cnbase@setup@frontmatter%+
 \renewcommand{\frontmatter}{%
     \ntuthesis@setup@frontmatter%
     \ifntuthesis@bachelor
@@ -167,7 +167,7 @@
 }
 %- Redefine \mainmatter to include the change
 \providecommand{\mainmatter}{}% compatibility for non-book classes
-\let\ntuthesis@setup@mainmatter\cnbook@setup@mainmatter%
+\let\ntuthesis@setup@mainmatter\cnbase@setup@mainmatter%
 \renewcommand{\mainmatter}{%
     \ntuthesis@setup@mainmatter%
     \ifntuthesis@bachelor
@@ -189,7 +189,7 @@
 }
 %- define \appendixmatter 
 \providecommand{\appendix}{}% compatibility for non-book classes
-\let\ntuthesis@setup@appendix\cnbook@setup@appendix%
+\let\ntuthesis@setup@appendix\cnbase@setup@appendix%
 \renewcommand{\appendix}{%
     %\ntuthesis@setup@appendixmatter%
     \cleardoublepage%
@@ -231,7 +231,7 @@
 \providecommand{\backmatter}{}% compatibility for non-book classes
 \let\ntuthesis@setup@backmatter\backmatter%
 \renewcommand{\backmatter}{%
-    \cnbook@setup@backmatter%
+    \cnbase@setup@backmatter%
     %\pagestyle{backmatterstyle}%
     \ifntuthesis@bachelor
         \pagestyle{ntubachelorbackmatterstyle}%
@@ -244,7 +244,7 @@
 
 
 \providecommand{\tableofcontents}{}
-\let\ntuthesis@setup@tableofcontents\cnbook@setup@tableofcontents
+\let\ntuthesis@setup@tableofcontents\cnbase@setup@tableofcontents
 \renewcommand\tableofcontents{
     \contentmatter
     % content list region
@@ -367,9 +367,9 @@
 }%
 \newcommand{\keywords}{\@ifstar{\enkeywords}{\zhcnkeywords}}%
 
-\renewcommand{\labelenumi}{(\arabic{enumi}) }
-\renewcommand{\labelenumii}{(\arabic{enumi}).\arabic{enumii}}
-\renewcommand{\labelenumiii}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}}
-\renewcommand{\labelenumiv}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+%\renewcommand{\labelenumi}{(\arabic{enumi}) }
+%\renewcommand{\labelenumii}{(\arabic{enumi}.\arabic{enumii})}
+%\renewcommand{\labelenumiii}{(\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
+%\renewcommand{\labelenumiv}{(\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv})}
 \endinput
 

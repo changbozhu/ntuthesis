@@ -146,7 +146,7 @@
         \end{enumerate}
 \end{enumerate}
 
-全编译指运行 \verb|xelatex -> bibtex -> xelatex -> xelatex| 以正确生成所有的引用链接，如目录，参考文献及引用等。在写作过程中若无添加新的引用，则可用快速编译，即只运行一遍\LaTeX{}编译引擎以减少编译时间。
+全编译指运行 \verb|xelatex -> biber -> xelatex -> xelatex| 以正确生成所有的引用链接，如目录，参考文献及引用等。在写作过程中若无添加新的引用，则可用快速编译，即只运行一遍\LaTeX{}编译引擎以减少编译时间。
 
 \subsection{Tmp文件夹}
 
@@ -198,7 +198,8 @@
 \documentclass[doctor,academic]{style/ntuthesis}
 %\documentclass[twoside,doctor,academic]{style/ntuthesis}
 %- Multiple optional arguments:
-%- [<oneside|twoside|null>]% oneside print, twoside print, or without print
+%- [<oneside|twoside|null>]% oneside print, twoside print, or  pdf
+%- [<blind>]% blind review mode
 %- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
 %- [scheme=plain]% thesis writing of international students
 %- [draft]% show draft version information

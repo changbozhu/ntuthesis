@@ -44,9 +44,9 @@
 \@iflatexlater{2017/04/15}{}{%
     \ntuthesis@error{TeX Live 2017 or later version is required to compile this document}
 }
-\ProvidesClass{style/ntuthesis}[2025/05/01 v1.0 Nantong University Thesis Template]%
+\ProvidesClass{style/ntuthesis}[2025/09/01 v25.9 Nantong University Thesis Template]%
 \def\texproject@info{}
-\def\texproject@info@cls@version{1.0}
+\def\texproject@info@cls@version{25.9}
 \def\texproject@info@zhauthor{朱昌波}
 \def\texproject@info@email{1207146285@qq.com}
 \def\texproject@info@windows{Windows 11}
@@ -144,6 +144,13 @@
 \DeclareOption{scheme=plain}{% enable plain writing style
     \PassOptionsToClass{scheme=plain}{ctexbook}%
     \ntuthesis@plaintrue%
+}
+%-
+%-> blind review version
+%-
+\newif\ifntuthesis@blind \ntuthesis@blindfalse
+\DeclareOption{blind}{%
+    \ntuthesis@blindtrue%
 }
 %-
 %-> Draft version info
@@ -522,6 +529,7 @@
             \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@bachelor}
             \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@bachelor}
             \def\maketitle{%
+                \blindsetup
                 \maketitle@cover@academic@bachelor%
                 \maketitle@declare@academic@bachelor%
                 %\maketitle@titlepage@academic@bachelor%
@@ -558,6 +566,7 @@
                 \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@master}
                 \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@master}
                 \def\maketitle{%
+                    \blindsetup
                     \maketitle@cover@academic@master%
                     \maketitle@declare@academic@master%
                     \maketitle@titlepage@academic@master%
@@ -595,6 +604,7 @@
                     \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@doctor}
                     \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@doctor}
                     \def\maketitle{%
+                        \blindsetup
                         \maketitle@cover@academic@doctor%
                         \maketitle@declare@academic@doctor%
                         \maketitle@titlepage@academic@doctor%
@@ -632,6 +642,7 @@
                         \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@postdoc}
                         \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@postdoc}
                         \def\maketitle{%
+                            \blindsetup
                             \maketitle@cover@academic@postdoc%
                             \maketitle@declare@academic@postdoc%
                             \maketitle@titlepage@academic@postdoc%
@@ -677,6 +688,7 @@
             \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@master}
             \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@master}
             \def\maketitle{%
+                \blindsetup
                 \maketitle@cover@professional@master%
                 \maketitle@declare@professional@master%
                 \maketitle@titlepage@professional@master%
@@ -714,6 +726,7 @@
                 \def\ntuthesis@value@zhcn@declare@rights{\ntuthesis@value@zhcn@declare@rights@doctor}
                 \def\ntuthesis@value@zhcn@declare@rule{\ntuthesis@value@zhcn@declare@rule@doctor}
                 \def\maketitle{%
+                    \blindsetup
                     \maketitle@cover@professional@doctor%
                     \maketitle@declare@professional@doctor%
                     \maketitle@titlepage@professional@doctor%
@@ -730,6 +743,26 @@
     \makebox[0pt][l]{$\square$}\raisebox{0.25ex}{\hspace{0.1em}{#1}}
 }%
 }
+
+\newcommand{\blindsetup}{
+\ifntuthesis@blind
+    \author{XXXXXXXXX}% 论文作者
+    \author*{XXXXXXXX}%English
+    % 学号
+    %   学号需要与学籍信息一致
+    \studentid{XXXXXXXXXXXX}% 学生学号
+
+    % 指导教师
+    %   指导教师需要与学籍信息一致
+    \advisor{XXXXX~职称}% 指导教师：姓名 专业技术职务 工作单位
+    \advisor*{Prof.~XXXXX}% 指导教师：姓名 专业技术职务 工作单位
+
+    %联合指导教师，如果没有，请清空内容或注释命令
+    \coadvisor{Y**~职称}
+    \coadvisor*{Assoc. Prof.~** Y}
+\fi
+}
+
 %-
 %-> Define Chinese style
 %-
@@ -1364,7 +1397,7 @@
         \abstracttitle*{ABSTRACT}{12pt}{12pt}
     \else
         \frontabstract*
-        \abstracttitle*{Absrtact}{25pt}{25pt}
+        \abstracttitle*{Abstract}{25pt}{25pt}
     \fi
     \par
 }{%endpart

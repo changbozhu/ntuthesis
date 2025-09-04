@@ -16,6 +16,7 @@
     \item \emph{指定文档类型}：在引入文档类时，可以从两选项"[<academic|professional>]"中选一个来指定学位论文的类型，即“学术型academic与“专业型professional”。对于本科毕业设计和博士后报告均选择设置"academic"即可。进一步地，需要通过选项"[<bachelor|master|doctor|postdoctoral>]"指定学位论文的申请学位级别，依次对应“本科、硕士、博士、博士后”。这两组选项配合可完全确定学位论文类型与学位级别，也就完全确定了学位论文文档。
     \item \emph{打印模式}: 在引入文档类时，可以从三选项“[<oneside|twoside|null>]”中选一个来指定文档的打印模式，null为默认的缺省选项，不需要填写。oneside和twoside依次对应单面打印和双面打印。oneside和twoside均没有给出时，采用等边距空白。
     \item \emph{平台字体族选项}：模板默认自动检测操作系统平台，根据操作系统平台选择字体族，在引入文档类时，不需要指定“fontset”选项。当然，也可以通过选项“[<fontset=<windows|mac|adobe|none|>]”强制指定操作系统平台类型以手动确定操作系统平台字体族。详见章节\ref{sec:fontset}。
+    \item \emph{启用盲审模式}：在引入文档类时，填入选项“[<blind>]”，模板会启用盲审模式编译文档，隐去作者及导师相关信息，但是致谢与在学期间的成果两部分需要作者自行处理。
     \item \emph{启用手稿模式}：在引入文档类时，填入选项“[<draft>]”，模板会启用draft模式编译文档，并在文档第二页打印“Draft Version(日期)”。
     \item \emph{其它选项}: 其它受ctex book class支持的选项，包括: "[<draft|paper size|font size|...>]"。
 \end{enumerate}

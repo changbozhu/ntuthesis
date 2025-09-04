@@ -233,6 +233,7 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
 卡尔欣慰地注意到，该绘图环境能智能地预留充足空间容纳整个图形。
 
 下面给出几种常用的绘图基础操作。
+\vskip 10mm
 \begin{enumerate}
     \item \emph{直线路径创建} ~~在TikZ中，path(路径)是所有图形的基本构成单元。所谓路径，即由相互连接的直线段与曲线构成的序列（虽非完整定义，但暂可忽略复杂变体）。创建路径时需以圆括号包裹起始坐标点，如(0,0)。其后可添加一系列"path(路径)延展操作符"，其中最简单的延展符——即我们已使用的"--"符号——必须后接新坐标点，表示将路径沿直线延伸至该位置。例如，若将两条坐标轴路径合并为一条，其代码实现如下：
     \begin{figure}[!hpbt]
@@ -248,7 +249,8 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
     \end{figure}
 
     卡尔对当前未使用 \{tikzpicture\} 环境稍感困惑——此处改用精简命令 \backslash tikz实现。该命令存在两种调用形式：其一接收单参数（以左花括号起始，如 \backslash tikz\{ \backslash draw (0,0) -- (1.5,0)\}，输出效果为 \tikz{\draw (0,0) -- (1.5,0)} ）；其二则自动收集分号前的所有内容并置入 \{tikzpicture\} 环境。经验法则表明：所有TikZ绘图命令必须作为 \backslash tikz 命令的参数，或置于 \{tikzpicture\} 环境内部。所幸 \backslash draw 命令仅在该环境内有效定义，几乎可避免意外出错。
-    
+
+    \vskip 10mm
     \item \emph{曲线路径创建} ~~接下来卡尔要绘制圆形，直线段显然行不通。为此TikZ提供了专用曲线语法，需要借助一至两个"控制点"。其数学背景并非完全平凡，但核心原理可简述如下：假设起点为$x$，第一控制点为$y$，则曲线在$x$点处的切线方向指向$y$；若终点为$z$且第二支撑点为$w$，则曲线将终止于$z$点，并在该点形成指向$w$的切线方向。
 
     在TikZ中实现曲线路径延展的通用语法为：\texttt{.. controls ⟨第一控制点⟩ and ⟨第二控制点⟩ .. ⟨终点⟩ }。若省略and ⟨第二控制点⟩参数，系统将自动复用第一控制点。示例如下（为清晰起见额外标注了控制点）：
@@ -380,6 +382,7 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
 
     尽管通过矩形命令绘制网格是一个理论可行的方法，但是对于类似卡尔这种绘制较多矩形构成网格的问题不是一个好的解决方案，并且这种方法无法实现"未闭合"的边界。因此卡尔的问题遇到了一点困难。正当卡尔欲采用另一种笨办法——使用 \backslash draw 命令直接绘制四条横竖直线时，却意外发现存在专用的grid路径构建操作符。
 
+    \vskip 10mm
     \item \emph{网格形路径创建} ~~grid路径操作符可在当前路径中添加网格。该操作会以前一坐标点为起点，后接坐标点为终点形成一个矩形区域，并自动为该矩形区域生成填充的网格线。例如，代码
     \begin{verbatim}
         \tikz \draw[step=2pt] (0,0) grid (10pt,10pt);
@@ -458,7 +461,7 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
     \end{verbatim}
 
     在此示例中，`Karl's grid`样式被定义为 \{tikzpicture\}环境的可选参数。如需为其他元素添加样式，只需以逗号分隔继续追加。当存在多个样式定义时，环境的可选参数长度很可能超过实际的绘图内容本身。
-
+    \vskip 10mm
     \item \emph{绘图选项} ~~
     卡尔希望了解影响路径绘制的其他选项。他已发现color=⟨颜色⟩可设置线条颜色，而draw=⟨颜色⟩功能类似但更专注——它仅控制线条颜色，填充色可单独设定（这在后续绘制角度弧线填充时将用到）。
 
@@ -534,6 +537,8 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
          x radius=1.75cm, y radius=1cm];
     \end{minipage}
     \end{figure}
+
+    \vskip 10mm
     \item \emph{路径裁剪} ~~
     为精简本手册版面，建议对卡尔的图形进行局部裁剪，从而聚焦呈现"关键"区域。在TikZ中实现裁剪相当便捷：只需使用 \backslash clip命令即可裁剪后续所有绘图内容。该命令语法与 \backslash draw类似，但不会实际绘制路径，而是将给定路径设为裁剪边界作用于后续图形元素。
     \begin{figure}[!hpbt]
@@ -703,7 +708,7 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
 
     还可以使用 \backslash filldraw 命令同时执行填充和绘制路径的双重操作。该命令会先绘制路径轮廓，再进行内部填充。初看似乎作用有限，但关键在于可为填充色（fill）和描边色（stroke）分别指定不同颜色。具体通过如下可选参数实现：
     \begin{figure}[!hpbt]
-    \begin{minipage}{0.5\textwidth}
+    \begin{minipage}{0.65\textwidth}
     \begin{lstlisting}[language=tex]
     \begin{tikzpicture}[scale=3]
         \clip (-0.1,-0.2) rectangle (1.1,0.75);
@@ -716,7 +721,7 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
     \end{tikzpicture}
     \end{lstlisting}%
     \end{minipage}
-    \begin{minipage}{0.45\textwidth}
+    \begin{minipage}{0.3\textwidth}
     \centering
     \begin{tikzpicture}[scale=3]
         \clip (-0.1,-0.2) rectangle (1.1,0.75);
@@ -768,21 +773,21 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
 
     对于卡尔的任务，下面的做法更合适。
     \begin{figure}[!hpbt]
-    \begin{minipage}{0.5\textwidth}
+    \begin{minipage}{0.65\textwidth}
     \begin{lstlisting}[language=tex]
     \begin{tikzpicture}[scale=3]
-        \clip (-0.1,-0.2) rectangle (1.1,0.75);
-        \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
-        \draw (-1.5,0) -- (1.5,0);
-        \draw (0,-1.5) -- (0,1.5);
-        \draw (0,0) circle [radius=1cm];
-        \shadedraw[left color=gray,right color=green, draw=green!50!black]
-            (0,0) -- (3mm,0mm)
-            arc [start angle=0, end angle=30, radius=3mm] -- cycle;
+    \clip (-0.1,-0.2) rectangle (1.1,0.75);
+    \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
+    \draw (-1.5,0) -- (1.5,0);
+    \draw (0,-1.5) -- (0,1.5);
+    \draw (0,0) circle [radius=1cm];
+    \shadedraw[left color=gray,right color=green, draw=green!50!black]
+        (0,0) -- (3mm,0mm)
+        arc [start angle=0, end angle=30, radius=3mm] -- cycle;
     \end{tikzpicture}
     \end{lstlisting}%
     \end{minipage}
-    \begin{minipage}{0.45\textwidth}
+    \begin{minipage}{0.3\textwidth}
     \centering
     \begin{tikzpicture}[scale=3]
         \clip (-0.1,-0.2) rectangle (1.1,0.75);
@@ -797,29 +802,31 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
     \end{minipage}
     \end{figure}
     然而他明智地决定放弃着色——通常这类效果徒增干扰，对图形表达反而无益。
-    \item \emph{指定坐标} ~~卡尔接下来要添加正弦和余弦线。他已知晓可用 color= 选项设置线条颜色，那么如何最优指定坐标位置呢？
+    
+    \vskip 10mm
+    \item \emph{指定坐标} ~~卡尔接下来要添加正弦和余弦线。他已知晓可用 \verb|color= 选项| 设置线条颜色，那么如何最优指定坐标位置呢？
 
     坐标指定存在多种方式。最简易的方法是直接使用 $(10pt,2cm)$ 这类表达式，表示 x轴方向$10pt$、$y$轴方向$2cm$。另一种方式是省略单位写成 $(1,2)$，其含义为"当前$x$向量的$1$倍与当前$y$向量的$2$倍之和"。这两个向量默认值分别为：$x$轴方向$1cm$，$y$轴方向$1cm$。
 
-    要指定极坐标点，可使用 (30:1cm) 格式，表示30度方向上1cm处的点——这在定位"圆周上的点"时尤为实用。
+    要指定极坐标点，可使用 $(30:1cm)$ 格式，表示30度方向上1cm处的点——这在定位"圆周上的点"时尤为实用。
 
-    若在坐标前添加单个"$+$"或双"$++$"符号，如 $+(0cm,1cm)$ 或 $++(2cm,0cm)$，其语义有本质差异：(1)$+$前缀表示“相对前一个坐标点上移$1cm$”;(2) $++$ 前缀表示“相对前一个坐标点右移$2cm$，并将该点更新为新的当前点”。
-    \begin{figure}[!hpbt]
-    \begin{minipage}{0.5\textwidth}
+    若在坐标前添加单个"$+$"或双"$++$"符号，如 $+(0cm,1cm)$ 或 $++(2cm,0cm)$，其语义有本质差异：(a)$+$前缀表示“相对前一个坐标点上移$1cm$”;(b) $++$ 前缀表示“相对前一个坐标点右移$2cm$，并将该点更新为新的当前点”。 我们可以按照下述方法绘制正弦曲线。
+    \begin{figure}[!hbtp]
+    \begin{minipage}{0.65\textwidth}
     \begin{lstlisting}[language=tex]
     \begin{tikzpicture}[scale=3]
-        \clip (-0.1,-0.2) rectangle (1.1,0.75);
-        \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
-        \draw (-1.5,0) -- (1.5,0);
-        \draw (0,-1.5) -- (0,1.5);
-        \draw (0,0) circle [radius=1cm];
-        \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm)
-            arc [start angle=0, end angle=30, radius=3mm] -- cycle;
-        \draw[red,very thick] (30:1cm) -- +(0,-0.5);
+    \clip (-0.1,-0.2) rectangle (1.1,0.75);
+    \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
+    \draw (-1.5,0) -- (1.5,0);
+    \draw (0,-1.5) -- (0,1.5);
+    \draw (0,0) circle [radius=1cm];
+    \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm)
+        arc [start angle=0, end angle=30, radius=3mm] -- cycle;
+    \draw[red,very thick] (30:1cm) -- +(0,-0.5);
     \end{tikzpicture}
     \end{lstlisting}%
     \end{minipage}
-    \begin{minipage}{0.45\textwidth}
+    \begin{minipage}{0.3\textwidth}
     \centering
     \begin{tikzpicture}[scale=3]
         \clip (-0.1,-0.2) rectangle (1.1,0.75);
@@ -834,6 +841,42 @@ Karl 使用 \LaTeX{} 绘制了一个简单图形以测试环境。
     \end{minipage}
     \end{figure}
 
+    这里使用了一个事实 $\sin(30^{\circ})=\frac{1}{2}$。然而，你可能会怀疑他的学生是否知道这个。因此，最好的方式就是通过极坐标系直接指定点$(30:1cm)$。事实上，这里也可以直接使用特定的语法$(30:1cm \vert -0, 0)$。形如 $( p \vert - q)$的语法意义为：通过$p$的竖直线与通过$q$的水平线的交点。
+    \begin{figure}[!hbtp]
+    \begin{minipage}{0.65\textwidth}
+    \begin{lstlisting}[language=tex]
+    \begin{tikzpicture}[scale=3]
+    \clip (-0.1,-0.2) rectangle (1.1,0.75);
+    \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
+    \draw (-1.5,0) -- (1.5,0);
+    \draw (0,-1.5) -- (0,1.5);
+    \draw (0,0) circle [radius=1cm];
+    \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm)
+        arc [start angle=0, end angle=30, radius=3mm] -- cycle;
+    \draw[red,very thick]  (30:1cm) -- +(0,-0.5);
+    \draw[blue,very thick] (30:1cm) ++(0,-0.5) -- (0,0);
+    \end{tikzpicture}
+    \end{lstlisting}%
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \centering
+    \begin{tikzpicture}[scale=3]
+    \clip (-0.1,-0.2) rectangle (1.1,0.75);
+    \draw[step=.5cm,gray,very thin] (-1.4,-1.4) grid (1.4,1.4);
+    \draw (-1.5,0) -- (1.5,0);
+    \draw (0,-1.5) -- (0,1.5);
+    \draw (0,0) circle [radius=1cm];
+    \filldraw[fill=green!20,draw=green!50!black] (0,0) -- (3mm,0mm)
+        arc [start angle=0, end angle=30, radius=3mm] -- cycle;
+    \draw[red,very thick]  (30:1cm) -- +(0,-0.5);
+    \draw[blue,very thick] (30:1cm) ++(0,-0.5) -- (0,0);
+    \end{tikzpicture}
+    \end{minipage}
+    \end{figure}
+
+    \vskip 10mm
+    接着，我们绘制余弦曲线，一种方式就是 \texttt{(30:1cm | -0, 0) -- (0,0)}，另一种方式如下图所示。请注意，\verb|(30:1cm)| 和\verb|++(0,-0.5)| 之间没有使用 \verb|--| 连接。具体而言，该路径的解析逻辑如下：“首先，(30:1cm) 指示将画笔移动到极坐标 $(\cos(30^{\circ}), \frac{1}{2} )$位置。紧接着出现另一个坐标定义，因此画笔会无痕迹地移动至新坐标点——该点由前一个位置向下偏移0.5单位得出，即位于$(\cos(30^{\circ}), 0 )$
+。最后，由于 \verb|--| 的存在，画笔会以绘制线条的方式移动到原点坐标。”
 \end{enumerate}
 
 

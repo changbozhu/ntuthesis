@@ -1,0 +1,639 @@
+\NeedsTeXFormat{LaTeX2e}%
+\ProvidesPackage{style/mlmath}[2025/04/02 v1.0 Machine Learning LaTeX math macros package]
+% packages
+\RequirePackage{xparse}
+\RequirePackage{amsmath,amsthm,amssymb}
+%\RequirePackage{amsfonts}
+%\RequirePackage{mathrsfs}
+\RequirePackage{xstring}
+%\RequirePackage{ctable,multirow}
+
+%-
+%-> Math functions
+%-
+%- International standard layout rules (from isomath package)
+%- The overall rule is that symbols representing math quantities or variables should
+%- be italicised, symbols representing units or labels are unitalicised (roman).
+%- Symbols for vectors and matrices are bold italic, symbols for tensors are 
+%- sans-serif bold italic.
+%- The above rules apply equally to letter symbols from the Greek and 
+%- the Latin alphabet.
+%- More information may be found in <<The LaTeX Mathematics Companion>>
+%- However, math typefaces vary from field to field. To keep consistent typography
+%- and easy adaption, it it always best to create a corresponding command for 
+%- variables in each math category.  
+%\providecommand{\Scalar}[1]{#1}% scalar is the normal math typeset, italic
+
+
+%\RequirePackage{bm}
+%\def\bm{\boldsymbol}
+
+\newif\ifmlmath@bmsty \mlmath@bmstyfalse
+\DeclareOption{bm}{
+	\mlmath@bmstytrue
+}
+
+\newif\ifmlmath@arrow \mlmath@arrowfalse
+\newif\ifmlmath@bold \mlmath@boldtrue
+\DeclareOption{arrow}{
+	\mlmath@arrowtrue
+	\mlmath@boldfalse
+}
+\DeclareOption{bold}{
+	\mlmath@arrowfalse
+	\mlmath@boldtrue
+}
+\ProcessOptions\relax
+
+
+
+%---------------------------------------------------
+%-->  Define command for \bm
+
+\ifmlmath@bmsty
+	\RequirePackage{bm}
+	%\def\boldsymbol#1{\symbfit{#1}}% treat obsoleteness
+	%\def\bm#1{\symbfit{#1}}% treat obsoleteness
+	\providecommand{\Vector}[1]{\bm{#1}}% general vectors in bold italic
+	\providecommand{\unitVector}[1]{\bm{#1}}% unit vectors in bold roman
+	\providecommand{\Matrix}[1]{\bm{#1}}% matrix in bold roman
+	\providecommand{\unitMatrix}[1]{\bm{#1}}% identity matrix in bold roman
+	\providecommand{\Tensor}[1]{\bm{#1}}% tensor in sans-serif bold italic
+	\providecommand{\unitTensor}[1]{\bm{#1}}% identity tensor in sans-serif bold
+
+\else
+	%\RequirePackage{unicode-math}% 下面的代码必须在 unicode-math 宏包后面使用，不许使用 bm 宏包！
+	\ExplSyntaxOn
+	\cs_new:Npn \bm #1 {
+  		\ifmmode
+    		\tl_if_head_eq_catcode:nNTF { #1 } A
+      		{ \mathbfit{#1} } { \mathbf{#1} }
+  		\else
+    		\textbf{#1}
+  		\fi
+	}
+	\ExplSyntaxOff
+
+	%\def\boldsymbol#1{\symbfit{#1}}% treat obsoleteness
+	%\def\bm#1{\symbfit{#1}}% treat obsoleteness
+	\providecommand{\Vector}[1]{\symbfit{#1}}% general vectors in bold italic
+	\providecommand{\unitVector}[1]{\symbfup{#1}}% unit vectors in bold roman
+	%\providecommand{\Matrix}[1]{\symbfup{#1}}% matrix in bold roman
+	\providecommand{\Matrix}[1]{\symbfit{#1}}% matrix in bold roman
+	\providecommand{\unitMatrix}[1]{\symbfup{#1}}% identity matrix in bold roman
+	\providecommand{\Tensor}[1]{\symbfsfup{#1}}% tensor in sans-serif bold italic
+	\providecommand{\unitTensor}[1]{\symbfsfup{#1}}% identity tensor in sans-serif bold
+\fi
+\providecommand{\unit}[1]{\,\mathrm{#1}}% units in roman
+\providecommand{\const}[1]{\mathrm{#1}}% math constants, functions
+
+\providecommand{\div}{\operatorname{div}}% divergence operator
+\providecommand{\order}{\operatorname{O}}% order operator
+\providecommand{\def}{\operatorname{def}}% define
+\providecommand{\loptr}{\operatorname{\mathcal{L}}}% spatial operator
+\providecommand{\toptr}{\operatorname{\mathcal{LL}}}% temporal operator
+\providecommand{\soptr}{\operatorname{\mathcal{S}}}% solution operator
+\providecommand{\descriptive}[1]{\mathrm{#1}}% descriptive superscripts and subscripts in roman type 
+\providecommand{\revision}[1]{\begingroup\color{blue}{#1}\endgroup}% revision highlight
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% set
+\providecommand{\set}[1]{\mathbb{#1}}% special sets in blackboard bold
+
+\newcommand{\bbN}{\set{N}}
+\newcommand{\bbNp}{\set{N}^+}
+\newcommand{\bbZ}{\set{Z}}
+\newcommand{\bbZp}{\set{Z}^+}
+\newcommand{\bbQ}{\set{Q}}
+\newcommand{\bbQp}{\set{Q}^+}
+\newcommand{\bbR}{\set{R}}
+\newcommand{\bbRp}{\set{R}^+}
+\newcommand{\bbC}{\set{C}}
+
+
+\ifmlmath@arrow
+	% arrow vector
+	\def\vectorcnnotes{向量用带箭头的小写字母表示}
+	\def\vectorennotes{We frequently represent a vector with an arrow}
+	\let\@arrvector\vector
+	\let\vector\relax
+	\NewDocumentCommand{\vector}{g}{
+		\IfNoValueTF{#1}{\boldsymbol{\qopname\relax o{vec}}}{\@arrvector{#1}}
+	}
+	\NewDocumentCommand{\numvec}{m}{
+	%m#1 (str): mathematic expression
+	\vector{#1}
+	}
+\fi
+\ifmlmath@bold
+	% bold vector
+	\def\vectorcnnotes{向量用粗体小写字母表示}
+	\def\vectorennotes{We frequently represent a vector with a bold lowercase letter}
+	% default vector symbol
+	\let\vector\relax
+	\NewDocumentCommand{\vector}{g}{
+		%g#1 (str): mathematic expression
+		\IfNoValueTF{#1}{\boldsymbol{\qopname\relax o{vec}}}{\symbfit{#1}}
+	}
+	\NewDocumentCommand{\numvec}{m}{
+		%m#1 (str): mathematic expression
+		\mathbf{#1}
+	}
+\fi
+
+
+
+% matrix symbol
+\def\matrixcnnotes{矩阵用粗体大写字母表示}
+\def\matrixennotes{We frequently represent a matrix with a bold capital letter}
+%\newcommand\Matrix[1]{\symbfit{#1}}
+\def\idmat{\Matrix{I}}
+\providecommand{\tensor}[1]{\symbfsfup{#1}}% tensor in sans-serif bold italic
+
+
+\def\hadamard{\odot}
+\def\kronecker{\otimes}
+\def\conv{*}
+% Expectation
+\newcommand\E[2]{
+	\bm{E}_{#1} \left[ #2 \right]
+}
+
+
+% exclude x
+\newcommand\setexclude[2]{
+	% #1 (str): set
+	% #2 (str): element to exclude
+	#1_{\backslash #2}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% function
+%
+\protected\def\pulse{\delta}
+\protected\def\dirac{\qopname\relax o{Dirac}}
+\protected\def\sigmoid{\qopname\relax o{sigmoid}}
+\protected\def\logit{\qopname\relax o{logit}}
+\protected\def\relu{\qopname\relax o{relu}}
+\protected\def\sign{\qopname\relax o{sign}}
+
+
+\NewDocumentCommand{\fpulse}{m}{
+	% m(#1) (str): variable
+	\begin{cases}
+		1, & #1 = \numvec{0}  \\
+		0, & #1 \neq \numvec{0} 
+	\end{cases}
+}
+\def\fdirac{\fpulse}
+\NewDocumentCommand{\fsigmoid}{m}{
+	% m(#1) (str): variable
+	\frac{1}{1 + \exp(-#1)}
+}
+\NewDocumentCommand{\flogit}{m}{
+	% g#1 (str): variable
+	\ln \left( \frac{#1}{1 - #1} \right)
+}
+\NewDocumentCommand{\ftanh}{m}{
+	% g#1 (str): variable
+	\frac{ \exp(#1) - \exp(-#1) }{ \exp(#1) + \exp(-#1) }
+}
+\NewDocumentCommand{\frelu}{m}{
+	% g#1 (str): variable
+	 \max\left( 0, #1 \right)
+}
+\NewDocumentCommand{\fsign}{m}{
+	% g#1 (str): variable
+	\begin{cases}
+		1, & #1 > 0 \\
+		0, & #1 = 0 \\
+	   -1, & #1 < 0 
+	\end{cases}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% notations for model, agent, functional, etc.
+%
+\newcommand\functional[1]{\mathcal{#1}}
+\NewDocumentCommand{\model}{mg}{
+% #1 m(str): model name
+% #2 g(str): model variable and parameters
+	\IfNoValueTF{#2}
+		{\mathcal{#1}}
+		{\mathcal{#1}\left(#2\right)}	
+}
+\def\function{\model}
+\def\prcmodel{\model}
+\def\respmodel{\model}
+\def\agent{\model}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5%%%%
+\def\argmax{\arg\max}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% distribution
+\NewDocumentCommand{\Diracdist}{mg}{
+	% m(#1) (str): Location
+	% g(#2) (str): variable
+	\IfNoValueTF{#2}{\dirac \left(#1 \right)}%
+	 	{\dirac \left( #2; #1 \right) }
+}
+\NewDocumentCommand{\Diracpdf}{mm}{
+	% #1 (str): Location
+	% #2 (str): variable
+	 \fpulse{#1}{#2}
+}
+\def\sDiracpdf{\Diracpdf}
+\def\mDiracpdf{\Diracpdf}
+%\newcommand\simGaussian[2]{
+% #1 (str): expectation or mean
+% #2 (str): variance, not std. var.
+%	\mathcal{N} \left( #2, #3 \right)
+%}
+\NewDocumentCommand{\Gaussiandist}{mmg}{
+	% m(#1) (str): expectation or mean
+	% m(#2) (str): variance, not std. var.
+	% g(#3) (str): variable
+	\IfNoValueTF{#3} {\mathcal{N} \left(#1, #2 \right)}%
+	 	{\mathcal{N} \left( #3; #1, #2 \right) }
+}
+\NewDocumentCommand{\sGaussianpdf}{mmm}{
+	% #1 (str): expectation or mean
+	% #2 (str): variance, not std. var.
+	% #3 (str): variable
+	 \frac{1}{\sqrt{2\pi #2}} \exp \left( -\frac{ \left( #3 - #1 \right)^2 }{2 #2} \right)
+}
+\NewDocumentCommand{\vGaussianpdf}{mmmm}{
+	% #1 (str): expectation or mean
+	% #2 (str): covariance matrix
+	% #3 (str): variable
+	% #4 (str): dim of the random variable
+	\frac{1}{(2\pi)^{#4/2} \det(#2)^{\frac{1}{2}}} \exp \left(-\frac{1}{2} \left(#3 - #1\right)^\top #2^{-1} \left(#3 - #1\right) \right)
+}
+\NewDocumentCommand{\Bernoullidist}{mg}{
+	% m(#1) (str): expectation or mean
+	% g(#2) (str): variable
+	\IfNoValueTF{#2} 
+		{{\qopname\relax o{Bernoulli}} \left( #1 \right)}%
+		{{\qopname\relax o{Bernoulli}} \left( #2;  #1 \right)}
+}
+\NewDocumentCommand{\sBernoullipdf}{mm}{
+	% m(#1) (str): expectation or mean
+	% m(#2) (str): variable
+	\exp \left( #2 \ln #1  +  (1 - #2) \ln (1 - #1) \right)
+}
+\NewDocumentCommand{\vBernoullipdf}{mm}{
+	% m(#1) (str): expectation or mean
+	% m(#2) (str): variable
+	\vector{\exp} \left( #2^\top \vector{\ln} #1  +  (\numvec{1} - #2)^\top \vector{\ln} (\numvec{1} - #1) \right)
+}
+\NewDocumentCommand{\Expondist}{mg}{
+	% m(#1) (str): expectation or mean
+	% g(#2) (str): variable
+	\IfNoValueTF{#2} {\mathcal{E} \left(#1 \right)}%
+	{\mathcal{E} \left( #2; #1 \right) }
+}
+\NewDocumentCommand{\sExponpdf}{mm}{
+	% m(#1) (str): expectation or mean
+	% m(#2) (str): variable
+	\begin{cases}
+		#1\exp \left( - #1 #2 \right), & #2 \ge 0\\
+		0, & #2 < 0
+	\end{cases}
+}
+\NewDocumentCommand{\vExponpdf}{mm}{
+	% m(#1) (str): expectation or mean
+	% m(#2) (str): variable
+	\begin{cases}
+		#1^\top \vector{\exp} \left( - \Diag\left( #1\right)  #2 \right), & #2 \succeq  \numvec{0}\\
+		0, & #2 \nsucceq \numvec{0}
+	\end{cases}
+}
+%#######################################################
+%#  distance
+\NewDocumentCommand{\abs}{g}{
+	% g#1 (str): the variable name
+	\IfNoValueTF{#1} 
+	{\left\lvert \cdot \right\rvert}%
+	{\left\lvert #1 \right\rvert}%
+}
+\NewDocumentCommand{\norm}{gg}{
+	% #1 (str): the variable name
+	% #2 (str): the degree of the norm
+	\IfNoValueTF{#1} 
+	{\left\lVert \cdot \right\rVert_2}%
+	{\IfNoValueT{#2}{\left\lVert #1 \right\rVert_2}{\left\lVert #1 \right\rVert_{#2}}}%
+}
+\NewDocumentCommand{\fnorm}{mmm}{
+	% m#1 (str): the variable name
+	% m#2 (str): l-m
+	% m#3 (str): the dims of the variable name
+	\left( \sum_{i=1}^{#3} \abs{#1^{(i)}}^#2 \right)^{\frac{1}{#2}}
+}
+% KL
+\NewDocumentCommand{\KL}{gg}{
+	% #1 (str): the first pdf
+	% #2 (str): the second pdf
+	\IfNoValueTF{#1} 
+	{D_{KL}}%
+	{\E{#1}{\ln\frac{#1}{#2}}}%
+}
+
+% 马氏距离(Mahalanobis Distance)
+\NewDocumentCommand{\MD}{ggg}{
+	%g#1 (str): center 
+	%g#2 (str): covariance
+	%g#3 (str): variable
+	\IfNoValueTF{#1} 
+		{D_{M}}%0
+		{ (#3 - #1)^\top #2^{-1} (#3 - #1) }%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% operator
+%
+\NewDocumentCommand{\Diag}{g}{
+	%g#1 (str): mathematic expression
+	\IfNoValueTF{#1} 
+		{\Matrix{\qopname\relax o{Diag}}}%
+		{ \Matrix{\qopname\relax o{Diag}}\left( #1 \right)}%
+}
+\NewDocumentCommand{\diag}{g}{
+	%g#1 (str): mathematic expression
+	\IfNoValueTF{#1} 
+		{\Matrix{\qopname\relax o{diag}}}%
+		{ \vector{\qopname\relax o{diag}}\left( #1 \right)}%
+}
+
+
+
+%\providecommand{\vec}[1]{\vector{#1}}% general vectors in bold italic
+\def\vec{\vector}
+
+\NewDocumentCommand{\vech}{g}{
+	%g#1 (str): mathematic expression
+	\IfNoValueTF{#1} 
+		{\boldsymbol{\qopname\relax o{vech}}}%
+		{\boldsymbol{\qopname\relax o{vech}}\left( #1 \right)}%
+}
+
+\NewDocumentCommand{\vecd}{g}{
+	%g#1 (str): mathematic expression
+	\IfNoValueTF{#1} 
+		{\boldsymbol{\qopname\relax o{vecd}}}%
+		{\boldsymbol{\qopname\relax o{vecd}}\left( #1 \right)}%
+}
+
+\protected\def\tr{\qopname\relax o{tr}}
+\NewDocumentCommand{\ftrace}{mm}{
+	% g#1 (str): variable
+	% g#2 (str): total number of columns (rows)
+	\sum_{i=1}^{#2} #1^{(i,i)}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 	notations for mathematics
+%
+\def\cnnotation{
+	%\section*{符号标记}
+	本文中，我们使用传统的数学符号规则：
+	\begin{itemize}
+		% 向量
+		\item 	\vectorcnnotes。
+				不特别说明的，任意向量$\vector{a}$均是列向量,向量$\vector{a}^\top$是行向量。
+				向量$\vector{a}$的第$i$个维度的元素由相应非粗体小写字母及上角标$^{(i)}$索引，即$a^{(i)}$。
+
+		\item	向量$\vector{a},\bm{b}$的内积$\vector{a} \cdot \vector{b}=\vector{a}^\top\vector{b}=\vector{b}^\top\vector{a}$。
+		% 向量的范数
+		\item 	向量的$\ell^{\alpha}-\mathrm{norm}$用符号$\norm{\cdot}{\alpha}$表示,表达式为
+				$$\norm{\vector{x}}{\alpha}=\fnorm{x}{\alpha}{d},$$
+				其中，$d$是向量$\vector{x}$的维度。
+				特别的，向量$\vector{x}$的$\ell^1-\mathrm{norm}$是其各个维度的绝对值之和，即
+				$$\norm{\vector{x}}{1}=\sum_{i=1}^d \abs{x^{(i)}},$$
+				向量$\vector{x}$的$\ell^2-\mathrm{norm}$是其Euclidean长度，即$\norm{\vector{x}}{2}=\sqrt{\vector{x}^\top\vector{x}}$。
+		% 矩阵
+		\item 	\matrixcnnotes。
+				$m \times n$矩阵$\Matrix{W}$中第$i$行、$j$列的元素也由相应小写字母的下角标$^{(i,j)}$索引，即$w^{(i,j)}$。$\Matrix{W}$可按行划分
+				\begin{equation*}
+				\begin{split}
+					\Matrix{W} = \begin{bmatrix}
+						&\vector{w}_1^{\top} \\ 
+						&\vector{w}_2^{\top} \\ 
+						&\vdots \\ 
+						&\vector{w}_m^{\top} 
+				\end{bmatrix} 
+				\end{split},
+				\end{equation*}
+				其中$\vector{w}_{i}$是$\Matrix{W}$的第$i$行构成的列向量，$\vector{w}_i^{\top}$是$\vector{w}_{i}$的转置。
+		\item   操作$\Matrix{A} \otimes \Matrix{B}$表示$\Matrix{A}$和$\Matrix{B}$的Kronecker积。
+		\item	操作$\Matrix{A} \odot \Matrix{B}$表示$\Matrix{A}$和$\Matrix{B}$的Hadamard积。
+		\item	若$\vector{v}$是一个向量，则操作$\Diag{ \vector{v} }$表示以$\vector{v}$为对角元素的对角矩阵。
+		\item	矩阵或向量的上角标操作$\Matrix{M}^\top,\vector{x}^\top$表示矩阵或向量的转置。
+		\item	可逆矩阵$\Matrix{M}$的上角标操作$\Matrix{M}^{-1}$表示矩阵$\Matrix{M}$的逆。
+		\item   操作$\det\left( \Matrix{M} \right)$表示平方矩阵$\Matrix{M}$的行列式。
+		\item   $n \times n$的矩阵$\Matrix{M}$的迹是其对角线元素之和，即$$\tr\left(\Matrix{M} \right)=\sum_{i=1}^n m^{(i,i)}.$$
+		\item   线性操作$\vector(\Matrix{M})$表示$s \times t$矩阵$\Matrix{M}$的向量化，
+				即把$\Matrix{M}$中的元素按$1,2,\ldots,s$列的顺序拼接成一个$st$维的列向量，
+				$$\vector(\Matrix{M})=\left[ m^{(1,1)},\ldots, m^{(s,1)},\ldots, m^{(1,t)},\ldots, m^{(s,t)} \right]^\top.$$
+		\item   符号$\Matrix{K}_{st}$表示交换矩阵(commutation matrix)，把矩阵$\Matrix{M}$的向量化$\vector\left(\Matrix{M}\right)$
+				映射到其转置$\Matrix{M}^\top$的向量化$\vector\left(\Matrix{M}^\top\right)$，即$\vector\left(\Matrix{M}^\top\right) = \Matrix{K}_{st} \vector\left(\Matrix{M}\right)$。
+		\item   线性操作$\vech(\Matrix{L})$表示$n \times n$下三角矩阵$\Matrix{L}$的向量化，
+				即把$\Matrix{L}$中对角线及下三角区域的元素按$1,2,\ldots,n$列的顺序拼接成一个$\frac{n(n+1)}{2}$维的列向量。
+				%$$\vector(\Matrix{L})=\left[ L_{11},\ldots, L_{m1},\ldots, L_{1n},\ldots, L_{mn} \right]^{T}$$
+		% 向量值函数
+		\item 	向量值函数$\boldsymbol{\exp}(\cdot), \boldsymbol{\ln}(\cdot), \boldsymbol{\sigmoid}(\cdot), \boldsymbol{\logit}(\cdot)$
+				分别是逐元素的指数函数、对数函数、$\sigmoid$函数、$\logit$函数。
+		\item   函数$\pulse(\vector{x})$是一个标量值的脉冲函数,也叫Dirac函数，当$\vector{x} = \numvec{0}$时取值为$1$，否则取值为$0$，
+				即$\pulse(\vector{x}) = \fpulse{\vector{x}}$。
+				对于$\vector{x} \in \set{R}^d$，函数$\vector{\pulse}(\vector{x})$是一个向量值的脉冲函数，即$\vector{\pulse}(\vector{x}) = [ \pulse(x_{1}), \ldots, \pulse(x_{d}) ]^\top$。
+		% 概率及统计
+		\item   连续量的概率密度函数一般用$p(\cdot)$或$q\left( \cdot\right)$表示，累计分布函数用$P(\cdot)$表示。
+				离散量的概率一般用$P(\cdot)$表示。
+		\item 	一个$d$维随机变量$\vector{x}$服从均值$\vector{\mu}$、协方差$\Matrix{\Sigma}$的高斯分布，记为
+				$ \vector{x} \sim \mathcal{N}(\vector{\mu}, \Matrix{\Sigma}) $,概率密度函数记为$$ p(\vector{x}) =\mathcal{N}( \vector{x}; \vector{\mu}, \Matrix{\Sigma})= \vGaussianpdf{\vector{\mu}}{\Matrix{\Sigma}}{\vector{x}}{d}.$$
+		\item 	一个$d$维随机变量$\vector{x}$服从参数为$\vector{\lambda}$的指数分布，记为
+				$\vector{x} \sim \Expondist{\vector{\lambda}}$,其概率密度函数为$$p\left( \vector{x}\right)= \Expondist{\vector{\lambda}}{\vector{x}} = \vExponpdf{\vector{\lambda}}{\vector{x}},$$
+				其中$\vector{x} \succeq \numvec{0}$表示“向量的任意维度值均大于或等于零”，即$\forall x_{i} \ge 0$； $\vector{x} \nsucceq \numvec{0}$表示“向量中存在某个元素小于零”，即$\exists 1 \le i \le d$使得$x_{i} < 0$。
+		\item 	一个$d$维随机变量$\vector{x}$服从参数为$\vector{\mu}$的多元独立Bernoulli分布，记为
+				$\vector{x} \sim \Bernoullidist{\vector{\mu}}$，其概率密度函数为$$p\left( \vector{x}\right)= \Bernoullidist{\vector{\mu}}{\vector{x}} = \vBernoullipdf{\vector{\mu}}{\vector{x}}.$$
+		\item   随机变量$\vector{x}$的概率密度函数为$p(\vector{x})$，关于其函数$\vector{f}\left(\vector{x}\right)$
+				的期望记为$$\E{p(\vector{x})}{\vector{f}\left(\vector{x}\right)}=\int \vector{f}\left(\vector{x}\right) p(\vector{x}) \mathrm{d} \vector{x}.$$
+		\item   Dirac分布(脉冲分布)是一种集中的概率分布。随机变量$\vector{x}$服从位置参数为$\vector{a}$的Dirac分布，记为
+				$\vector{x} \sim \Diracdist{\vector{a}}$，
+				其概率密度函数为$p(\vector{x}) = \Diracdist{\vector{a}}{\vector{x}} = \pulse(\vector{x}-\vector{a})$。
+		\item 	序列由符号“:”简记，如序列$\vector{x}_1, \vector{x}_2,\ldots,\vector{x}_n$记为$\vector{x}_{1:n}$，
+				时间序列$\vector{o}(t_{1:n}) = \vector{o}(t_1), \vector{o}(t_2), \ldots, \vector{o}(t_n)$。
+		\item 	非空集合由空心大写字母表示。若全集为
+				$\set{X} = \left\lbrace \vector{x}_1, \vector{x}_2, \ldots, \vector{x}_n \right\rbrace $,
+				去掉某个元素的减法写为$\set{X}_{\backslash \vector{x}_i} = \set{X} - \left\lbrace \vector{x}_i \right\rbrace $。
+	\end{itemize}
+}
+\def\ennotation{
+	%\section*{Notations}\label{sec:notation}
+	We use conventional mathematical notations:
+	\begin{itemize}
+		\item 	\vectorennotes. Unless otherwise specified, a vector $\vector{a}$ is a column vector, 
+				and the transpose of a vector $\vector{a}^\top$ is a row vector.
+				The $i$-th component of a vector $\vector{a}$ is indexed by the corresponding non-bold lowercase letter with a superscript $^{(i)}$, i.e., $a^{(i)}$.
+		\item   The inner product of two vectors $\vector{a}$ and $\vector{b}$ is denoted by $\vector{a} \cdot \vector{b}$,
+				which is equal to $\vector{a}^\top\vector{b}$ or $\vector{b}^\top\vector{a}$.
+		\item 	The $\ell^{\alpha} $-norm of a vector $\vector{x} $ is denoted by $\norm{\vector{x}}{\alpha}$, and the definition is
+				$$\norm{\vector{x}}{\alpha}=\fnorm{x}{\alpha}{d},$$ 
+				where $d$ is the dimension of the vector $\vector{x}$, and $ \alpha $ is a positive real number.
+				For example, the $\ell^1 $-norm of a vector $\vector{x} $ is the sum of absolute values of all components, i.e.,
+				$$ \norm{\vector{x}}{1}=\sum_{i=1}^d \abs{x^{(i)}},$$
+				the $\ell^2 $-norm of a vector $\vector{x} $ is the Euclidean length, i.e.,
+				$$ \norm{\vector{x}}{2}=\sqrt{\vector{x}^\top\vector{x}}.$$
+		\item 	\matrixennotes. A $m \times n$ matrix $\Matrix{W}$ is also indexed by 
+				the corresponding non-bold lowercase letter with a superscript $^{(i,j)}$, i.e., $w^{(i,j)}$, and can be divided into rows:
+				\begin{equation*}
+				\begin{split}
+				\Matrix{W} = \begin{bmatrix}
+					&\vector{w}_1^{\top} \\ 
+					&\vector{w}_2^{\top} \\ 
+					&\vdots \\ 
+					&\vector{w}_m^{\top} 
+				\end{bmatrix}.
+				\end{split}
+				\end{equation*}
+				where $\vector{w}_{i}$ is the $i$-th row of the matrix $\Matrix{W}$, and $\vector{w}_i^{\top}$ is the transpose.
+		\item 	The operator $\otimes$ is the Kronecker product, which represents the tensor product of two matrices.
+		\item 	The operator $ \odot $ is the Hadamard product, element-wise product of matrices.
+		\item	The operation $\Diag{\vector{v}} $ is to transform a vector $\vector{v}$ into a diagonal square matrix 
+				with the elements of $\vector{v}$ on the principal diagonal.
+		\item	The superscript operation $^\top$ is to transform a matrix $\Matrix{M}$ or a vector $\vector{x}$ into 
+				its transpose $\Matrix{M}^\top,\vector{x}^\top$.
+		\item	The superscript operation $^{-1}$ denotes the inverse of a square matrix $\Matrix{M}$, e.g. $\Matrix{M}^{-1}$.
+		\item   The operation $\det\left(\Matrix{M}\right)$ denotes the determinant of a square matrix $\Matrix{M}$.
+		\item 	The trace function that computes the sum of the principal diagonal elements of a square matrix $\Matrix{M}_{n \times n} $ 
+				is denoted by
+				$$\tr\left( \Matrix{M} \right) = \sum_{i=1}^n m^{(i,i)}.$$
+		\item   The linear operator $ \vector(\Matrix{M}) $ is the vectorization of a matrix $\Matrix{M}_{s \times t}$, 
+				that is to obtain a column vector by concatenating the columns of the matrix $\Matrix{M}$ on top of one another:
+				$\vector(\Matrix{M})=\left[ m^{(1,1)},\ldots, m^{(s,1)},\ldots, m^{(1,t)},\ldots, m^{(s,t)} \right]^{\top}.$
+		\item 	The notation $ \Matrix{K}_{st} $ denotes an $ st $-by-$ st $  commutation matrix 
+				which can map the vectorization of a matrix $\Matrix{M}_{s \times t} $ into the vectorization of its transpose 
+				$ \vector\left( \Matrix{M}^\top \right)  = \Matrix{K}_{st}  \vector\left( \Matrix{M} \right) $.
+		\item 	The linear operator $\vech(\Matrix{L}) $ is to transform a lower triangular matrix
+				$ \Matrix{L}_{n \times n} $ into a column vector with $\frac{n(n+1)}{2}$ elements which is obtained 
+				by column stacking except for all constant zero in the upper triangle part of the matrix.
+		\item   The vector-valued functions $\boldsymbol{\exp}(\cdot), \boldsymbol{\ln}(\cdot), \boldsymbol{\sigmoid}(\cdot), \boldsymbol{\logit}(\cdot)$ represent 
+				the element-wise application of the exponential, natural logarithmic, sigmoid,and logit functions, respectively.
+		\item   The scarlar-valued function $\pulse(\vector{x})$ is a delta function 
+				that takes the value $1$ when $\vector{x} = \numvec{0}$, and $0$ otherwise, i.e., $\pulse(\vector{x}) = \fpulse{\vector{x}}$.
+				The vector-valued function $\vector{\pulse}(\vector{x}-\vector{a}), \vector{x} \in \bbR^d$ is also a delta function,
+				where $\vector{\pulse}(\vector{x}-\vector{a}) = [ \pulse(x_{1}-a_{1}), \ldots, \pulse(x_{d} - a_{d}) ]^\top$.
+		\item   For a continuous random variable, the probability density function is represented by $p(\cdot)$ or $q(\cdot)$,
+				while the cumulative distribution function is denoted by $P(\cdot)$. In the case of a discrete random variable, 
+				the probability is simply denoted by $P(\cdot)$.
+		\item 	A $d$-dimensional random variable $\vector{x}$ follows a Gaussian distribution 
+				with mean $\vector{\mu}$ and covariance $\Matrix{\Sigma}$, and is denoted by
+				$ \vector{x} \sim \mathcal{N}(\vector{\mu}, \Matrix{\Sigma})$.
+				The probability density function (PDF) of a Gaussian random variable is given by
+				\begin{equation*}
+				\begin{split}
+					p(\vector{x}) =&\mathcal{N}( \vector{x}; \vector{\mu}, \Matrix{\Sigma}) \\
+					=& \vGaussianpdf{\vector{\mu}}{\Matrix{\Sigma}}{\vector{x}}{d}.
+				\end{split}
+				\end{equation*}
+		\item 	Under the independent assumption, we can use the expression $\vector{x} \sim \Expondist{\vector{\lambda}}$ 
+				to denote a $d$-dimensional exponential random variable $\vector{x}$ with a rate parameter $\vector{\lambda}$, and the probability density function (PDF) is given by
+				\begin{equation*}
+					\begin{split}
+						p\left( \vector{x}\right)=& \Expondist{\vector{\lambda}}{\vector{x}} \\
+						=& \vExponpdf{\vector{\lambda}}{\vector{x}}.
+					\end{split}
+				\end{equation*}
+				where $\vector{x} \succeq \vector{0}$ means “$\forall i$, the $i$-th component of a vector $\vector{x}$ is greater than or equal to zero”, while $\vector{x} \nsucceq \numvec{0}$ means “there exists a component of a vector $\vector{x}$ which is less than zero”.
+		\item 	A $d$-dimensional random variable $\vector{x}$ follows a Bernoulli distribution with parameter $\numvec{\mu}$,
+				and is denoted by $\vector{x} \sim \Bernoullidist{\vector{\mu}}$, and the probability density function (PDF) is given by
+				\begin{equation*}
+					\begin{split}
+						p\left( \vector{x}\right)=& \Bernoullidist{\vector{\mu}}{\vector{x}}\\
+							=& \vBernoullipdf{\vector{\mu}}{\vector{x}}.
+					\end{split}
+				\end{equation*}
+		\item   The expectation of a function $\vector{f}(\cdot)$ under a probability density function $q(\cdot)$ is denoted by
+				$$\E{q(\vector{x})}{\vector{f}(\vector{x})}=\int \vector{f}(\vector{x}) q(\vector{x}) \mathrm{d} \vector{x}.$$
+		\item   The Dirac distribution (a pulse distribution) is a concentrated probability distribution. 
+				A random variable $\vector{x}$ follows the Dirac distribution with location parameter $\vector{a}$, and is denoted by $\vector{x} \sim \Diracdist{\vector{a}}$. Its probability density function is given by
+				$$p(\vector{x}) = \Diracdist{\vector{a}}{\vector{x}} = \pulse(\vector{x}-\vector{a}).$$
+		\item   A sequence of variables are denoted by the symbol '$:$'. For example, a sequence of variables
+				$\vector{x}_1, \vector{x}_2,\ldots,\vector{x}_n$ is denoted by $\vector{x}_{1:n}$, and a time sequence $\vector{o}(t_1), \vector{o}(t_2), \ldots, \vector{o}(t_n)$ is denoted by $\vector{o}(t_{1:n})$.
+		\item   A non-empty set is denoted by a capital letter with a hollow frame or a symbol $\{ \cdot \}$. 
+				For example, a set of variables $\vector{x}_1, \vector{x}_2,\ldots,\vector{x}_n$ is denoted by $\set{X} = \left\lbrace \vector{x}_1, \vector{x}_2, \ldots, \vector{x}_n \right\rbrace $, and the removal of a certain element $\vector{x}_i$ from set $\set{X}$ is represented as $\set{X}_{\backslash \vector{x}_i} = \set{X} - \left\lbrace \vector{x}_i \right\rbrace $.
+	\end{itemize}
+}
+\NewDocumentCommand{\notation}{m}{
+	\IfStrEqCase{#1}{%
+		{CN}{\cnnotation}%
+		{cn}{\cnnotation}%
+		{zh-cn}{\cnnotation}%
+		{ZH-CN}{\cnnotation}%
+		{EN}{\ennotation}%
+		{en}{\ennotation}%
+	}
+}
+
+
+
+\def\cnalgtable{
+\begin{table}[!htbp]
+    \small% fontsize
+    %\bicaption{线性代数符号表}{The notation table for linear algebra}
+    \caption{线性代数符号表}
+	\label{tab:algebra-notation}
+    \setlength{\tabcolsep}{4pt}% column separation
+    \begin{center}
+    \begin{tabular}{llll}
+	    \hline
+	    \textbf{名称} & \textbf{命令} & \textbf{描述} & \textbf{样例} \\
+	    \hline
+	    \multirow{7}{*}{向量} & \texttt{\textbackslash vector\{\cdot\}} & 粗体小写字母,默认列向量 & $\vector{a}$ \\
+        \cline{2-4}
+        & \texttt{\cdot\^\{(i)\}} & 上角标索引元素$^{(i)}$ & $a^{(i)}$ \\
+		\cline{2-4}
+        & \texttt{\textbackslash numvec\{ \cdot \}} & 常数向量 & $\numvec{1}$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash cdot} & 内积 & $\vector{a}\cdot \vector{b}$ \\
+		\cline{2-4}
+        & \texttt{\textbackslash vector\{ e \}\_i} &单位正交基向量,第$i$个元素为1，其他为$0$ & $\vector{e}_i$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash norm\{ \textbackslash vec\{x\}\}\{ \textbackslash alpha \}} & $\mathcal{l}^{\alpha}-$范数符号 & $\norm{\vector{x}}{\alpha}$ \\
+		\cline{2-4}
+		& \texttt{\textbackslash fnorm\{x\}\{ \textbackslash alpha \}\{d\}\}} & $\mathcal{l}^{\alpha}-$范数表达式 & $\fnorm{x}{\alpha}{d}$ \\
+	    \hline
+	    \multirow{11}{*}{矩阵} & \texttt{\textbackslash mat\{\cdot\}} & 粗体大写字母 & $\Matrix{W}$ \\
+        \cline{2-4}
+        & \texttt{\cdot\_\{i,j\}} & 名称小写+下角标索引$_{i,j}$ & $w_{i,j}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash odot }& Hadamard积 & $\Matrix{A}\odot \Matrix{B}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash otimes} & Kronecker积 & $\Matrix{A}\otimes \Matrix{B}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash trace(\cdot)} & 矩阵的迹，即主对角线元素之和 & $\tr( \Matrix{B} )$ \\
+		\cline{2-4}
+        & \texttt{ \textbackslash ftrace\{ b \}\{ n \}} & 矩阵的迹表达式 & $\ftrace{b}{n}$ \\
+        \cline{2-4}
+        & \texttt{ \textbackslash det(\cdot)} & 平方矩阵的行列式 & $\det( \Matrix{B} )$ \\
+        \cline{2-4}
+        & \texttt{\cdot \^ \ \{-1\}} & 平方可逆矩阵的逆 & $\Matrix{B}^{-1}$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash vec(\cdot)} &矩阵以列堆叠的向量化 & $\vector(\Matrix{B})$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash vech(\cdot)} &下三角矩阵的非常数零区域以列堆叠的向量化 & $\vech(\Matrix{L})$ \\
+        \cline{2-4}
+        & \texttt{\textbackslash Matrix\{I\}\_{n}} &$n$阶单位矩阵 & $\Matrix{I}_n$ \\
+	    \hline
+        转置 & \texttt{\cdot \^ \ \textbackslash top} & 向量或矩阵的转置 & $\vector{x}^\top,\Matrix{A}^\top$ \\
+        \hline
+        向量对角化 & \texttt{\textbackslash Diag\{\cdot\}} & 以向量$\vector{v}$为对角的矩阵 & $\Diag{\vector{x}}$ \\
+        \hline
+    \end{tabular}
+    \end{center}
+\end{table}
+}

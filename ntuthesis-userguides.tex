@@ -1,7 +1,9 @@
 \documentclass[doctor,academic]{style/ntuthesis}
 %\documentclass[twoside,doctor,academic]{style/ntuthesis}
 %- Multiple optional arguments:
-%- [<oneside|twoside|null>]% oneside print, twoside print, or PDF mode (null)
+%- [<bachelor|master|doctor|postdoctoral>]% degree stage
+%- [<academic|professional>]% degree type
+%- [<oneside|twoside>]% oneside print, twoside print, or PDF mode when omitted
 %- [<blind>]% blind review mode
 %- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
 %- [scheme=plain]% thesis writing of international students
@@ -31,8 +33,8 @@
 
 
 \usepackage{style/ntuthesissetup}% document settings
-\usepackage{mlstyle/mlmath}% extension to amsmath
-\usepackage{mlstyle/bayesianagent}
+\usepackage{style/mlmath}% extension to amsmath
+\usepackage{style/bayesianagent}
 % user defined commands
 \usepackage{usercustom}
 %\addbibresource{ref.bib} % only for biber
@@ -134,7 +136,7 @@
 %-> Frontmatter:  abstract, content list, symbol list, preface
 \frontmatter% initialize the environment
 \begin{abstract}    
-ntuthesis 是制作南通大学本科生毕业论文、研究生学位论文、博士后出站报告的 \LaTeX{}文档类。本模板基于研究生生院与教务处的论文撰写规范制作，同时参考研究生院提供的硕士、博士学位材料包，用于生成符合南通大学排版要求和相应的国家标准的学位论文，力求通过\LaTeX{}2e 语法实现清晰的实现逻辑、较高的可定制性以及友好的用户接口。
+ntuthesis 是制作南通大学本科生毕业论文、研究生学位论文、博士后出站报告的 \LaTeX{}文档类。本模板基于研究生生院与教务处的论文撰写规范制作，同时参考研究生院提供的硕士、博士学位材料包，用于生成符合南通大学排版要求和相应的国家标准的学位论文，基于\LaTeX{}2e 语法力求清晰的实现逻辑、较高的可定制性以及友好的用户接口。
 
 \keywords{南通大学，本科毕业设计，硕士论文，博士论文，学位论文 \LaTeX{} 模板}
 \end{abstract}

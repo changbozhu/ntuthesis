@@ -163,13 +163,11 @@
     \item \projectname setup.sty：设置文档类中一些命令、环境、页眉页脚等”。
 \end{enumerate}
 
-\subsection{mlstyle文件夹}
-包含用户自定义的机器学习样式文件，如数学样式、神经网络绘图样式、贝叶斯智能体绘图样式等。
+\subsection{style 文件夹中的机器学习样式}
+当前仓库将机器学习相关的样式文件统一放在 `style` 目录，主要包括数学符号规范和贝叶斯智能体绘图命令。
 \begin{enumerate}
     \item mlmath.sty： 定义了数学基本符号规范，加强了机器学习相关的数学表达式。
     \item bayesianagent.sty： 定义了贝叶斯智能体的一些绘图命令。
-    \item deeplearningplot.sty： 定义了深度学习的一些绘图命令，待开发。
-    \item snnplot.sty： 定义了脉冲神经网络的一些绘图命令，待开发。
 \end{enumerate}
 
 \subsection{doc文件夹}
@@ -198,7 +196,7 @@
 \documentclass[doctor,academic]{style/ntuthesis}
 %\documentclass[twoside,doctor,academic]{style/ntuthesis}
 %- Multiple optional arguments:
-%- [<oneside|twoside|null>]% oneside print, twoside print, or  pdf
+%- [<oneside|twoside>]% oneside print, twoside print, or PDF mode when omitted
 %- [<blind>]% blind review mode
 %- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
 %- [scheme=plain]% thesis writing of international students
@@ -228,8 +226,8 @@
 
 
 \usepackage{style/ntuthesissetup}% document settings
-\usepackage{mlstyle/mlmath}% extension to amsmath
-\usepackage{mlstyle/bayesianagent}
+\usepackage{style/mlmath}% extension to amsmath
+\usepackage{style/bayesianagent}
 % user defined commands
 \usepackage{usercustom}
 %\addbibresource{ref.bib} % only for biber

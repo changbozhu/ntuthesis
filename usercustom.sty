@@ -26,6 +26,8 @@
 %- this part adds normal packages
 \RequirePackage{chemfig}% draw 2D chemical structures
 \RequirePackage[version=4]{mhchem}% typeset chemical formulae [mhchem|chemformula]
+\RequirePackage{pifont}
+\RequirePackage{wrapfig}
 %- this part adds packages that should be loaded at the very end
 \AtEndPreamble{%
     %\RequirePackage{cleveref}% clever cross-referencing
@@ -70,25 +72,17 @@
 %- and easy adaption, it it always best to create a corresponding command for 
 %- variables in each math category.  
 %\providecommand{\Scalar}[1]{#1}% scalar is the normal math typeset, italic
-\providecommand{\Vector}[1]{\boldsymbol{#1}}% general vectors in bold italic
-\providecommand{\unitVector}[1]{\boldsymbol{\mathbf{#1}}}% unit vectors in bold roman
-\providecommand{\Matrix}[1]{\boldsymbol{\mathbf{#1}}}% matrix in bold roman
-\providecommand{\unitMatrix}[1]{\boldsymbol{\mathbf{#1}}}% identity matrix in bold roman
-\providecommand{\Tensor}[1]{\boldsymbol{\mathsf{#1}}}% tensor in sans-serif bold italic
-\providecommand{\unitTensor}[1]{\boldsymbol{\mathsf{#1}}}% identity tensor in sans-serif bold
-\providecommand{\Unit}[1]{\,\mathrm{#1}}% units in roman
-\providecommand{\Const}[1]{\mathrm{#1}}% math constants, functions
-\providecommand{\Set}[1]{\mathbb{#1}}% special sets in blackboard bold
-\providecommand{\Div}{\operatorname{div}}% divergence operator
-\providecommand{\Order}{\operatorname{O}}% order operator
-\providecommand{\Trace}{\operatorname{tr}}% trace operator
-\providecommand{\Diag}{\operatorname{diag}}% diagonal
-\providecommand{\Def}{\operatorname{def}}% define
-\providecommand{\Loptr}{\operatorname{\mathcal{L}}}% spatial operator
-\providecommand{\Toptr}{\operatorname{\mathcal{LL}}}% temporal operator
-\providecommand{\Soptr}{\operatorname{\mathcal{S}}}% solution operator
-\providecommand{\Des}[1]{\mathrm{#1}}% descriptive superscripts and subscripts in roman type 
-\providecommand{\Rev}[1]{\begingroup\color{blue}{#1}\endgroup}% revision highlight
+
+
+
+\newcommand\zhcnparwords[1]{%
+    {\zihao{-4}\sffamily \par #1}\quad%
+}%
+\newcommand\enparwords[1]{%
+    {\fontsize{14pt}{20pt}\selectfont \bfseries \rmfamily \par #1}\quad%
+}%
+\newcommand{\parwords}{\@ifstar{\enparwords}{\zhcnparwords}}%
+
 
 %-
 %-> Graphical length factor
@@ -98,10 +92,27 @@
 \providecommand*{\trif}{0.32}% for three subfigures
 
 
+%\newcommand*{\circled}[1]{\lower.7ex\hbox{\tikz\draw (0pt, 0pt)%
+%    circle (.5em) node {\makebox[1em][c]{\small #1}};
+%    }
+%}
+
 %\renewcommand{\labelenumi}{(\arabic{enumi}) }
-%\renewcommand{\labelenumii}{(\arabic{enumi}).\arabic{enumii}}
-%\renewcommand{\labelenumiii}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}}
-%\renewcommand{\labelenumiv}{(\arabic{enumi}).\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv}}
+%\renewcommand{\labelenumii}{(\arabic{enumi}.\arabic{enumii})}
+%\renewcommand{\labelenumiii}{(\arabic{enumi}.\arabic{enumii}.\arabic{enumiii})}
+%\renewcommand{\labelenumiv}{(\arabic{enumi}.\arabic{enumii}.\arabic{enumiii}.\arabic{enumiv})}
+
+\renewcommand{\labelenumi}{(\arabic{enumi}) }
+\renewcommand{\labelenumii}{
+    %(\roman{enumii})
+    {\large{\textcircled{\xiaosi\arabic{enumii}}}}
+}
+\renewcommand{\labelenumiii}{\alph{enumiii}.}
+%\renewcommand{\labelenumiv}{(\alph{enumiv})}
+
+
+
+
 
 
 %---------------------------------------------------------------------------%

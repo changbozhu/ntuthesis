@@ -1,5 +1,5 @@
 \chapter{数学符号及公式}\label{cha:matheq}
-本部分命令依赖于宏包“mlstyle/mlmath.sty”，需要在导入宏包“cnbasesetup.sty”时，传入选项参数“math”。
+本部分命令依赖于宏包“style/mlmath.sty”，需要在导入宏包“cnbasesetup.sty”时，传入选项参数“math”。
 \begin{verbatim}
     \usepackage[super,tikz,tab,list,math]{style/cnbasesetup}
 \end{verbatim}
@@ -43,13 +43,13 @@
     \texttt{\$\textbackslash bm\{A,F,L,2,3,5,\textbackslash sigma\}\$}显示效果为 $\bm{A,F,L,2,3,5,\sigma}$
 \end{example}
 \begin{example}[向量命令测试]
-\texttt{\$\textbackslash vec\{\textbackslash sigma, T, a, F, n\}\$}显示效果为 $\vec{\sigma, T, a, F, n}$
+\texttt{\$\textbackslash vec\{\textbackslash sigma, T, a, F, n\}\$}显示效果为 $\Vector{\sigma, T, a, F, n}$
 \end{example}
 %\begin{example}[单位向量命令测试]
 %    \texttt{\$\textbackslash unitVector\{\textbackslash sigma, T, a, F, n\}\$}显示效果为： $\unitVector{\sigma, T, a, F, n}$
 %\end{example}
 \begin{example}[矩阵命令测试]
-    \texttt{\$\textbackslash mat\{\textbackslash sigma, T, a, F, n\}\$}显示效果为： $\mat{\sigma, T, a, F, n}$
+    \texttt{\$\textbackslash mat\{\textbackslash sigma, T, a, F, n\}\$}显示效果为： $\Matrix{\sigma, T, a, F, n}$
 \end{example}
 \begin{example}[单位矩阵命令测试]
     \texttt{\$\textbackslash idmat\_n\$}显示效果为： $\idmat_n$，$n$阶单位矩阵的表示形式是固定的。
@@ -63,7 +63,7 @@
 
 \section{数学符号及定义}
 %\notation{CN}
-在表\ref{tab:algebra-notation}中，一些自定义命令的原型定义于“mlstyle/mlmath.sty”，要想在其他模板或文档中使用，必须包含宏包“mlstyle/mlmath.sty”。如果用户不想包含宏包“mlstyle/mlmath.sty”，请不要使用这些命令，采用通用宏包命令直接实现来替代这些命令，常用数学符号参见：\url{https://www.latexlive.com/help}。
+在表\ref{tab:algebra-notation}中，一些自定义命令的原型定义于“style/mlmath.sty”，要想在其他模板或文档中使用，必须包含宏包“style/mlmath.sty”。如果用户不想包含宏包“style/mlmath.sty”，请不要使用这些命令，采用通用宏包命令直接实现来替代这些命令，常用数学符号参见：\url{https://www.latexlive.com/help}。
 \begin{table}[!htbp]
     \small% fontsize
     %\bicaption{线性代数符号表}{The notation table for linear algebra}
@@ -75,45 +75,45 @@
 	    \hline
 	    \textbf{名称} & \textbf{命令} & \textbf{描述} & \textbf{样例} \\
 	    \hline
-	    \multirow{7}{*}{向量} & \texttt{\textbackslash vec\{\cdot\}} & 粗体小写字母,默认列向量 & $\vec{a}$ \\
+	    \multirow{7}{*}{向量} & \texttt{\textbackslash Vector\{\cdot\}} & 粗体小写字母,默认列向量 & $\Vector{a}$ \\
         \cline{2-4}
         & \texttt{\cdot\^\{(i)\}} & 上角标索引元素$^{(i)}$ & $a^{(i)}$ \\
 		\cline{2-4}
         & \texttt{\textbackslash numvec\{ \cdot \}} & 常数向量 & $\numvec{1}$ \\
         \cline{2-4}
-        & \texttt{\textbackslash cdot} & 内积 & $\vec{a}\cdot \vec{b}$ \\
+        & \texttt{\textbackslash cdot} & 内积 & $\Vector{a}\cdot \Vector{b}$ \\
 		\cline{2-4}
-        & \texttt{\textbackslash vec\{ e \}\_i} &单位正交基向量,第$i$个元素为1，其他为$0$ & $\vec{e}_i$ \\
+        & \texttt{\textbackslash Vector\{ e \}\_i} &单位正交基向量,第$i$个元素为1，其他为$0$ & $\Vector{e}_i$ \\
         \cline{2-4}
-        & \texttt{\textbackslash norm\{ \textbackslash vec\{x\}\}\{ \textbackslash alpha \}} & $\mathcal{l}^{\alpha}-$范数符号 & $\norm{\vec{x}}{\alpha}$ \\
+        & \texttt{\textbackslash norm\{ \textbackslash Vector\{x\}\}\{ \textbackslash alpha \}} & $\mathcal{l}^{\alpha}-$范数符号 & $\norm{\Vector{x}}{\alpha}$ \\
 		\cline{2-4}
 		& \texttt{\textbackslash fnorm\{x\}\{ \textbackslash alpha \}\{d\}\}} & $\mathcal{l}^{\alpha}-$范数表达式 & $\fnorm{x}{\alpha}{d}$ \\
 	    \hline
-	    \multirow{11}{*}{矩阵} & \texttt{\textbackslash mat\{\cdot\}} & 粗体大写字母 & $\mat{W}$ \\
+	    \multirow{11}{*}{矩阵} & \texttt{\textbackslash Matrix\{\cdot\}} & 粗体大写字母 & $\Matrix{W}$ \\
         \cline{2-4}
         & \texttt{\cdot\_\{i,j\}} & 名称小写+下角标索引$_{i,j}$ & $w_{i,j}$ \\
         \cline{2-4}
-        & \texttt{ \textbackslash odot }& Hadamard积 & $\mat{A}\odot \mat{B}$ \\
+        & \texttt{ \textbackslash odot }& Hadamard积 & $\Matrix{A}\odot \Matrix{B}$ \\
         \cline{2-4}
-        & \texttt{ \textbackslash otimes} & Kronecker积 & $\mat{A}\otimes \mat{B}$ \\
+        & \texttt{ \textbackslash otimes} & Kronecker积 & $\Matrix{A}\otimes \Matrix{B}$ \\
         \cline{2-4}
-        & \texttt{ \textbackslash trace(\cdot)} & 矩阵的迹，即主对角线元素之和 & $\trace( \mat{B} )$ \\
+        & \texttt{ \textbackslash tr(\cdot)} & 矩阵的迹，即主对角线元素之和 & $\tr( \Matrix{B} )$ \\
 		\cline{2-4}
         & \texttt{ \textbackslash ftrace\{ b \}\{ n \}} & 矩阵的迹表达式 & $\ftrace{b}{n}$ \\
         \cline{2-4}
-        & \texttt{ \textbackslash det(\cdot)} & 平方矩阵的行列式 & $\det( \mat{B} )$ \\
+        & \texttt{ \textbackslash det(\cdot)} & 平方矩阵的行列式 & $\det( \Matrix{B} )$ \\
         \cline{2-4}
-        & \texttt{\cdot \^ \ \{-1\}} & 平方可逆矩阵的逆 & $\mat{B}^{-1}$ \\
+        & \texttt{\cdot \^ \ \{-1\}} & 平方可逆矩阵的逆 & $\Matrix{B}^{-1}$ \\
         \cline{2-4}
-        & \texttt{\textbackslash vec(\cdot)} &矩阵以列堆叠的向量化 & $\vec(\mat{B})$ \\
+        & \texttt{\textbackslash vec(\cdot)} &矩阵以列堆叠的向量化 & $\vec(\Matrix{B})$ \\
         \cline{2-4}
-        & \texttt{\textbackslash lvec(\cdot)} &下三角矩阵的非常数零区域以列堆叠的向量化 & $\lvec(\mat{L})$ \\
+        & \texttt{\textbackslash vech(\cdot)} &下三角矩阵的非常数零区域以列堆叠的向量化 & $\vech(\Matrix{L})$ \\
         \cline{2-4}
-        & \texttt{\textbackslash mat\{I\}\_{n}} &$n$阶单位矩阵 & $\mat{I}_n$ \\
+        & \texttt{\textbackslash Matrix\{I\}\_{n}} &$n$阶单位矩阵 & $\Matrix{I}_n$ \\
 	    \hline
-        转置 & \texttt{\cdot \^ \ \textbackslash top} & 向量或矩阵的转置 & $\vec{x}^\top,\mat{A}^\top$ \\
+        转置 & \texttt{\cdot \^ \ \textbackslash top} & 向量或矩阵的转置 & $\Vector{x}^\top,\Matrix{A}^\top$ \\
         \hline
-        向量对角化 & \texttt{\textbackslash diag(\cdot)} & 以向量$\vec{v}$为对角的矩阵 & $\diag(\vec{x})$ \\
+        向量对角化 & \texttt{\textbackslash diag(\cdot)} & 以向量$\Vector{v}$为对角的矩阵 & $\diag(\Vector{x})$ \\
         \hline
     \end{tabular}
     \end{center}

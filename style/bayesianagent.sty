@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}%
-\ProvidesPackage{mlstyle/bayesianagent}[2025/04/02 v1.0 LaTeX macros package for Bayesian agent]
+\ProvidesPackage{style/bayesianagent}[2025/04/02 v1.0 LaTeX macros package for Bayesian agent]
 \RequirePackage{xparse}
 \RequirePackage{tikz}
 \RequirePackage{xcolor}
@@ -35,12 +35,18 @@
 \tikzstyle{probcondition}= [draw, very thick,-latex]
 \tikzstyle{thickprobcondition}= [draw, thick,-latex]
 \tikzstyle{thickline}= [draw, very thick]
+\tikzstyle{straightline}= [draw, very thick]
 \tikzstyle{dashedlinearrow}= [draw, very thick,-latex,dashed, inner sep = 0pt]
-\tikzstyle{chnode} = [circle, minimum size=0.7cm, ball color=gray!20 , inner sep=0pt, font=\fontsize{9}{9}\selectfont]
-\tikzstyle{cpnode} = [circle, minimum size=0.7cm, ball color=green!20, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
-\tikzstyle{cinput} = [circle, minimum size=0.7cm, ball color=blue!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
-\tikzstyle{coutput}= [circle, minimum size=0.7cm, draw, ball color=yellow!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
-\tikzstyle{rfnode} = [rectangle, minimum size=0.5cm, ball color=green!30, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{chnode} = [circle, minimum size=0.8cm, ball color=gray!20 , inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{cpnode} = [circle, minimum size=0.8cm, ball color=green!20, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{cinput} = [circle, minimum size=0.8cm, ball color=blue!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{coutput}= [circle, minimum size=0.8cm, draw, ball color=yellow!50, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+%\tikzstyle{rfnode} = [rectangle, minimum size=0.5cm, ball color=green!30, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{func}   = [circle, minimum size=0.8cm, fill=gray, inner sep=0pt, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{znode}  = [circle, minimum size=0.8cm, draw, fill=green, inner sep=0pt, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{lnode}  = [circle, minimum size=0.8cm, draw, ball color=pink, inner sep=0pt, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{rhnode} = [rectangle,rounded corners, minimum width=1.5cm,minimum height=0.7cm,text centered, draw=black,fill=gray!30, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
+\tikzstyle{rfnode} = [rectangle,rounded corners, minimum width=0.7cm,minimum height=0.7cm,text centered, draw=black,fill=blue!30, inner sep=0pt, font=\fontsize{9}{9}\selectfont]
 \tikzstyle{point}  = [circle, fill=black, inner sep=0pt, minimum width=3pt]
 \tikzstyle{neuron} = [circle, draw, minimum size=4ex, thick]
 \tikzstyle{legend} = [font=\small\bfseries]
@@ -281,6 +287,24 @@
 }
 
 
+
+
+
+\pgfmathdeclarefunction{sigmoid}{1}{%
+	% #1 variable_domain
+	\pgfmathparse{1/(1+exp(-#1))}%
+}
+
+\pgfmathdeclarefunction{logit}{1}{%
+	% #1 variable_domain
+	\pgfmathparse{ln(#1/(1-#1))}%
+}
+
+\pgfmathdeclarefunction{binom}{2}{%
+  \pgfmathparse{factorial(#1)/(factorial(#2)*factorial(#1-#2))}%
+}
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  pdf cdf and some functions
 % \gauss(var, mean, std)
@@ -299,11 +323,93 @@
 \pgfmathdeclarefunction{fq0}{1}{%
 	\pgfmathparse{1/(sqrt(2*pi*#1))*exp(-#1/2))}%
 }
-\pgfmathdeclarefunction{sigmoid}{1}{%
-	% #1 variable_domain
-	\pgfmathparse{1/(1+exp(-#1))}%
+
+
+
+
+% ============================================================
+% 一、用 \pgfmathdeclarefunction 定义密度计算函数
+%     参数说明：x 为自变量，其余为分布参数
+% ============================================================
+
+% 正态密度：normalpdf(x, mu, sigma)
+\pgfmathdeclarefunction{normalpdf}{3}{%
+  \pgfmathparse{exp(-0.5*((#1-#2)/#3)^2)/(sqrt(2*pi)*#3)}%
 }
-\pgfmathdeclarefunction{logit}{1}{%
-	% #1 variable_domain
-	\pgfmathparse{ln(#1/(1-#1))}%
+
+% 指数密度：exppdf(x, lambda)
+\pgfmathdeclarefunction{exppdf}{2}{%
+  \pgfmathparse{(#1<0)?0:(#2*exp(-#2*#1))}%
 }
+
+% 伽马密度：gammapdf(x, alpha, beta)
+\pgfmathdeclarefunction{gammapdf}{3}{%
+  \pgfmathparse{(#1<=0)?0:((#3^#2)/Gamma(#2)*#1^(#2-1)*exp(-#3*#1))}%
+}
+% 注：pgfmath 无内置 Gamma 函数；下面给出简单替代或直接写具体值
+
+% 贝塔密度（仅 alpha,beta 为整数时可用阶乘）：betapdf(x, a, b)
+\pgfmathdeclarefunction{betapdf}{3}{%
+  \pgfmathparse{(#1<=0||#1>=1)?0:((#1^(#2-1))*((1-#1)^(#3-1))/beta(#2,#3))}%
+}
+
+% 对数正态：lognormpdf(x, mu, sigma)
+\pgfmathdeclarefunction{lognormpdf}{3}{%
+  \pgfmathparse{(#1<=0)?0:(exp(-0.5*((ln(#1)-#2)/#3)^2)/(#1*#3*sqrt(2*pi)))}%
+}
+
+% 逆伽马：invgammapdf(x, alpha, beta)
+\pgfmathdeclarefunction{invgammapdf}{3}{%
+  \pgfmathparse{(#1<=0)?0:((#3^#2)/Gamma(#2)*#1^(-#2-1)*exp(-#3/#1))}%
+}
+
+% 逆高斯：invgausspdf(x, mu, lambda)
+\pgfmathdeclarefunction{invgausspdf}{3}{%
+  \pgfmathparse{(#1<=0)?0:(sqrt(#3/(2*pi*#1^3))*exp(-#3*(#1-#2)^2/(2*#2^2*#1)))}%
+}
+
+% 瑞利：rayleighpdf(x, sigma)
+\pgfmathdeclarefunction{rayleighpdf}{2}{%
+  \pgfmathparse{(#1<0)?0:(#1/#2^2*exp(-#1^2/(2*#2^2)))}%
+}
+
+% 帕累托：paretopdf(x, xm, alpha)
+\pgfmathdeclarefunction{paretopdf}{3}{%
+  \pgfmathparse{(#1<#2)?0:(#3*#2^#3/#1^(#3+1))}%
+}
+
+% 威布尔：weibullpdf(x, k, lambda)
+\pgfmathdeclarefunction{weibullpdf}{3}{%
+  \pgfmathparse{(#1<0)?0:((#2/#3)*(#1/#3)^(#2-1)*exp(-(#1/#3)^#2))}%
+}
+
+% 拉普拉斯：laplacepdf(x, mu, b)
+\pgfmathdeclarefunction{laplacepdf}{3}{%
+  \pgfmathparse{(1/(2*#3))*exp(-abs(#1-#2)/#3)}%
+}
+
+% 伯努利 pmf：bernoullipmf(x, p)，x 取 0/1
+\pgfmathdeclarefunction{bernoullipmf}{2}{%
+  \pgfmathparse{(#1==0)?(1-#2):((#1==1)?#2:0)}%
+}
+
+% 泊松 pmf：poissonpmf(x, lambda)，x 为非负整数
+\pgfmathdeclarefunction{poissonpmf}{2}{%
+  \pgfmathparse{exp(-#2)*#2^#1/factorial(#1)}%
+}
+
+% 几何 pmf：geometricpmf(x, p)，x=1,2,...
+\pgfmathdeclarefunction{geometricpmf}{2}{%
+  \pgfmathparse{(#1<1)?0:(#2*(1-#2)^(#1-1))}%
+}
+
+% 二项 pmf：binomialpmf(x, n, p)
+\pgfmathdeclarefunction{binomialpmf}{3}{%
+  \pgfmathparse{(#1<0||#1>#2)?0:(binom(#2,#1)*#3^#1*(1-#3)^(#2-#1))}%
+}
+
+% 负二项 pmf：negbinpmf(x, r, p)，r 为整数
+\pgfmathdeclarefunction{negbinpmf}{3}{%
+  \pgfmathparse{(#1<0)?0:(binom(#1+#2-1,#1)*#3^#2*(1-#3)^#1)}%
+}
+

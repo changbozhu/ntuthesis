@@ -5,7 +5,8 @@
     %- Multiple optional arguments:
     %- [<academic|professional>]% 
     %- [<bachelor|master|doctor|postdoctoral>]%
-    %- [<oneside|twoside>]% oneside print, twoside print, or without print
+    %- [<oneside|twoside>]% oneside print, twoside print, or PDF mode (null)
+    %- [<blind>]% blind review mode
     %- [fontset=<adobe|none|...>]% specify font set instead of automatic detection
     %- [draft]% show draft version information
     %- [scheme=plain]% thesis writing of international students
@@ -14,7 +15,7 @@
 在导入 \projectname.cls文档类时，提供了下述选项。
 \begin{enumerate}
     \item \emph{指定文档类型}：在引入文档类时，可以从两选项"[<academic|professional>]"中选一个来指定学位论文的类型，即“学术型academic与“专业型professional”。对于本科毕业设计和博士后报告均选择设置"academic"即可。进一步地，需要通过选项"[<bachelor|master|doctor|postdoctoral>]"指定学位论文的申请学位级别，依次对应“本科、硕士、博士、博士后”。这两组选项配合可完全确定学位论文类型与学位级别，也就完全确定了学位论文文档。
-    \item \emph{打印模式}: 在引入文档类时，可以从三选项“[<oneside|twoside|null>]”中选一个来指定文档的打印模式，null为默认的缺省选项，不需要填写。oneside和twoside依次对应单面打印和双面打印。oneside和twoside均没有给出时，采用等边距空白。
+    \item \emph{打印模式}: 在引入文档类时，可以通过选项“[<oneside|twoside>]”指定单面或双面打印；二者均不给出时，模板默认采用 PDF 模式（等价于文档类中未设置打印布局），页面采用等边距空白。无需填写任何“null”选项。
     \item \emph{平台字体族选项}：模板默认自动检测操作系统平台，根据操作系统平台选择字体族，在引入文档类时，不需要指定“fontset”选项。当然，也可以通过选项“[<fontset=<windows|mac|adobe|none|>]”强制指定操作系统平台类型以手动确定操作系统平台字体族。详见章节\ref{sec:fontset}。
     \item \emph{启用盲审模式}：在引入文档类时，填入选项“[<blind>]”，模板会启用盲审模式编译文档，隐去作者及导师相关信息，但是致谢与在学期间的成果两部分需要作者自行处理。
     \item \emph{启用手稿模式}：在引入文档类时，填入选项“[<draft>]”，模板会启用draft模式编译文档，并在文档第二页打印“Draft Version(日期)”。
@@ -25,7 +26,7 @@
 
 \subsection{导入基础配置宏包cnbasesetup.sty}\label{ssec:cnbasesetup}
 \begin{lstlisting}[language=tex]
-    \usepackage[super,list,table]{style/cnbasesetup}% document settings
+    \usepackage[super,color,math,tikz,list,table]{style/cnbasesetup}% document settings
     %- usage: \usepackage[option1,option2,...,optionN]{style/cnbasesetup}
     %- Multiple optional arguments:
     %- [bibauto|bibtex|biber]% set bibliography processor and package
@@ -53,15 +54,16 @@
     没有明确指定参考文献库名的情况下，模板默认配置参考文献库名为“ref.bib”。样例文档中文献处理器采用默认配置“bibauto”，参考文献库只能使用默认文件“ref.bib”。
     对于需要打印多段参考文献列表的，只能选择“biber”或“bibauto”作为参考文献处理器，比如引入“综述”及“综述参考文献”。
     %
-    \item \emph{配置参考文献引用风格}: 在引入cnbasesetup宏包时，可通过三个选项“[<numbers|super|authoryear>]”中选一个来指定参考文献引用风格。
+    \item \emph{配置参考文献引用风格}: 在引入cnbasesetup宏包时，可通过选项“[<numbers|super|authoryear|alpha>]”中选一个来指定参考文献引用风格。
         \begin{enumerate}
         %\footnotesize
         \item \verb|number|：按出现顺序排序，以数字方式索引引用；
         \item \verb|super|：按出现顺序排序，以数字方式索引引用，并且引用处采用上角标小数字引用；
         \item \verb|authoryear|： 以“作者 年份”方式索引引用；
+        \item \verb|alpha|：以字母-数字形式标注文献；
         \item \verb|nsfc|：指定国家自然基金委模板中提到的引用格式，以小括号格式标注文献顺序。
         \end{enumerate}
-    \item \emph{局部转置版面宏包}： 参数"[<lscap>]"指定文档引入宏包fancyhdr、pdflscape、textpos，提供了landscape环境。
+    \item \emph{局部转置版面宏包}： 参数"[<lscape>]"指定文档引入宏包fancyhdr、pdflscape、textpos，提供了landscape环境。
     \item \emph{颜色宏包}： 参数"[<color>]"指定文档引入宏包xcolor，提供丰富的颜色支持。
     \item \emph{tikz绘图宏包}： 参数"[<tikz>]"指定文档引入额外扩展的绘图宏包tikz ，提供绘图支持。
     \item \emph{table类宏包}： 参数"[<table>]"指定文档引入宏包ctable、multirow、longtable、makecell，提供绘图支持。
